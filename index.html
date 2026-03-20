@@ -26,7 +26,7 @@ header { padding: 28px 24px 0; flex-shrink: 0; }
 .logo-main { font-family: 'Zen Antique', serif; font-size: 30px; color: #fff; letter-spacing: 0.3em; line-height: 1; text-shadow: 1px 1px 0 rgba(0,0,0,0.9); }
 .logo-ruby { font-size: 9px; color: #888; letter-spacing: 0.25em; text-transform: uppercase; }
 .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-.header-date { font-family: 'DM Mono', monospace; font-size: 13px; color: #c8c8c8; }
+.header-date { font-family: 'BIZ UDGothic', sans-serif; font-size: 13px; color: #c8c8c8; }
 .header-rule { width: 100%; height: 1px; margin-top: 16px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.25) 20%, rgba(255,255,255,0.1) 80%, transparent); }
 .tab-bar { display: flex; margin: 16px 24px 0; border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
 .tab-btn { flex: 1; padding: 11px 4px; background: transparent; border: none; border-right: 1px solid rgba(255,255,255,0.14); color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s, color 0.2s; }
@@ -42,15 +42,15 @@ header { padding: 28px 24px 0; flex-shrink: 0; }
 .card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
 .field { margin-bottom: 18px; }
 .field-label { display: block; font-size: 12px; font-weight: 700; color: #888; letter-spacing: 0.08em; margin-bottom: 8px; }
-input[type="date"] { display: block; width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 52px; }
+input[type="date"] { display: block; width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; font-weight: 500; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 52px; }
 input[type="date"]:focus { border-color: #c8c8c8; }
-input[type="date"]::-webkit-date-and-time-value { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: #f0f0f0; text-align: left; }
+input[type="date"]::-webkit-date-and-time-value { font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; font-weight: 500; color: #f0f0f0; text-align: left; }
 input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); width: 20px; height: 20px; cursor: pointer; }
 textarea { width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; resize: none; min-height: 80px; line-height: 1.7; }
 textarea:focus { border-color: #c8c8c8; }
 textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
 .memo-footer { display: flex; justify-content: flex-end; margin-top: 5px; }
-.memo-count { font-family: 'DM Mono', monospace; font-size: 10px; color: #555; }
+.memo-count { font-family: 'BIZ UDGothic', sans-serif; font-size: 10px; color: #555; }
 .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 8px 16px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 14px; color: #888; cursor: pointer; transition: all 0.2s; }
 .chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
@@ -61,54 +61,54 @@ textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
 .arrow-hint { font-size: 12px; color: #888; }
 .count-ctrl { display: flex; align-items: center; gap: 14px; }
 .ctrl-btn { width: 32px; height: 32px; background: #2c2c2c; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; color: #c8c8c8; font-size: 20px; font-family: 'BIZ UDGothic', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.ctrl-val { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: #f0f0f0; min-width: 34px; text-align: center; }
+.ctrl-val { font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; font-weight: 500; color: #f0f0f0; min-width: 34px; text-align: center; }
 .arrows-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
-.a-btn { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.14); background: #222; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #444; font-family: 'BIZ UDGothic', sans-serif; }
+.a-btn { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.14); background: #222; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #444; font-family: 'BIZ UDGothic', sans-serif; line-height: 1; }
 .a-btn.hit { background: #fff; border-color: #fff; color: #333; }
-.a-btn.miss:after { content: "x"; }
-.a-btn.hit:after { content: "o"; }
+.a-btn.miss:after { content: "×"; }
+.a-btn.hit:after { content: "○"; }
 .hit-summary { text-align: center; margin: 18px 0 4px; }
 .hit-fraction { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
-.hit-num { font-family: 'DM Mono', monospace; font-size: 54px; font-weight: 500; color: #fff; line-height: 1; }
+.hit-num { font-family: 'BIZ UDGothic', sans-serif; font-size: 54px; font-weight: 500; color: #fff; line-height: 1; }
 .hit-sep { font-size: 20px; color: #888; margin: 0 6px; }
-.hit-total-disp { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: #888; }
-.hit-rate-disp { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: #888; margin-top: 4px; }
+.hit-total-disp { font-family: 'BIZ UDGothic', sans-serif; font-size: 22px; font-weight: 500; color: #888; }
+.hit-rate-disp { font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; font-weight: 500; color: #888; margin-top: 4px; }
 .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 16px 0; }
 .btn-save { width: 100%; padding: 16px; background: #fff; border: none; border-radius: 10px; color: #333; font-family: 'BIZ UDGothic', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; cursor: pointer; }
 .btn-save:active { opacity: 0.85; }
 .btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
 .rec-item { display: flex; align-items: center; gap: 12px; background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; animation: fadeUp 0.3s ease; }
 .rec-date-block { text-align: center; min-width: 36px; flex-shrink: 0; }
-.rec-y { font-family: 'DM Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.02em; }
+.rec-y { font-family: 'BIZ UDGothic', sans-serif; font-size: 9px; color: #555; letter-spacing: 0.02em; }
 .rec-m { font-size: 10px; color: #888; }
-.rec-d { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 500; color: #f0f0f0; line-height: 1.1; }
+.rec-d { font-family: 'BIZ UDGothic', sans-serif; font-size: 24px; font-weight: 500; color: #f0f0f0; line-height: 1.1; }
 .vline { width: 1px; height: 54px; background: rgba(255,255,255,0.14); flex-shrink: 0; }
 .rec-body { flex: 1; min-width: 0; }
-.rec-session { font-family: 'DM Mono', monospace; font-size: 9px; color: #666; letter-spacing: 0.08em; margin-bottom: 2px; text-transform: uppercase; }
+.rec-session { font-family: 'BIZ UDGothic', sans-serif; font-size: 9px; color: #666; letter-spacing: 0.08em; margin-bottom: 2px; text-transform: uppercase; }
 .rec-meta { display: flex; gap: 6px; align-items: center; margin-bottom: 3px; }
 .rec-dist { font-size: 10px; color: #888; }
 .rec-type-badge { font-size: 10px; color: #888; background: #2c2c2c; border-radius: 4px; padding: 1px 6px; }
-.rec-score { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: #f0f0f0; }
+.rec-score { font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; font-weight: 500; color: #f0f0f0; }
 .rec-dots { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 5px; }
 .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .dot.h { background: #c8c8c8; }
 .dot.m { background: #2c2c2c; border: 1px solid rgba(255,255,255,0.14); }
 .rec-memo { font-size: 12px; color: #888; margin-top: 4px; white-space: normal; overflow: visible; word-break: break-all; }
 .rec-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-.rate-badge { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; min-width: 42px; text-align: right; }
+.rate-badge { font-family: 'BIZ UDGothic', sans-serif; font-size: 20px; font-weight: 500; min-width: 60px; text-align: right; }
 /* 削除ボタン：リセットボタンと同じスタイル */
 .rec-del-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'BIZ UDGothic', sans-serif; transition: all 0.2s; }
 .rec-del-btn:active { background: rgba(255,255,255,0.05); }
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .stat-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 14px; position: relative; overflow: hidden; }
 .stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, #3d3d3d, transparent); }
-.stat-val { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 6px; }
+.stat-val { font-family: 'BIZ UDGothic', sans-serif; font-size: 28px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 6px; }
 .stat-lbl { font-size: 9px; color: #888; letter-spacing: 0.12em; text-transform: uppercase; }
 .chart-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
 .chart-heading { font-size: 12px; color: #888; margin-bottom: 14px; }
-.chart-section-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #666; letter-spacing: 0.15em; text-transform: uppercase; margin: 16px 0 8px; }
+.chart-section-label { font-family: 'BIZ UDGothic', sans-serif; font-size: 10px; color: #666; letter-spacing: 0.15em; text-transform: uppercase; margin: 16px 0 8px; }
 .filter-bar { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-.filter-btn { padding: 6px 12px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #888; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+.filter-btn { padding: 6px 12px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 11px; cursor: pointer; transition: all 0.2s; }
 .filter-btn.active { background: #fff; border-color: #fff; color: #333; font-weight: 500; }
 .list-filter-wrap { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
 .list-filter-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -118,12 +118,12 @@ textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
 .lf-chip { padding: 5px 11px; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; font-size: 12px; color: #888; cursor: pointer; transition: all 0.2s; }
 .lf-chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
 .list-filter-date-row { display: flex; align-items: center; gap: 6px; flex: 1; }
-.lf-date-input { flex: 1; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 5px 8px; color: #f0f0f0; font-family: 'DM Mono', monospace; font-size: 11px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 0; }
+.lf-date-input { flex: 1; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 5px 8px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 11px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 0; }
 .lf-date-input:focus { border-color: #c8c8c8; }
 .lf-date-input::-webkit-calendar-picker-indicator { filter: invert(0.5); width: 14px; height: 14px; }
 .lf-date-sep { font-size: 11px; color: #666; flex-shrink: 0; }
 .list-filter-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
-.lf-count { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; }
+.lf-count { font-family: 'BIZ UDGothic', sans-serif; font-size: 11px; color: #666; }
 .lf-reset-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 4px 10px; cursor: pointer; font-family: 'BIZ UDGothic', sans-serif; transition: all 0.2s; }
 .lf-reset-btn:active { background: rgba(255,255,255,0.05); }
 /* エクスポート・インポートカード */
@@ -137,23 +137,23 @@ textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
 .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .cal-nav { width: 32px; height: 32px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #c8c8c8; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .cal-nav:active { background: #2c2c2c; }
-.cal-title { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: #f0f0f0; letter-spacing: 0.05em; }
+.cal-title { font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; font-weight: 500; color: #f0f0f0; letter-spacing: 0.05em; }
 .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 2px; }
-.cal-wd { text-align: center; font-family: 'DM Mono', monospace; font-size: 9px; color: #555; padding: 4px 0; letter-spacing: 0.05em; }
+.cal-wd { text-align: center; font-family: 'BIZ UDGothic', sans-serif; font-size: 9px; color: #555; padding: 4px 0; letter-spacing: 0.05em; }
 .cal-wd:first-child { color: #885555; }
 .cal-wd:last-child  { color: #556688; }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; grid-auto-rows: 72px; }
 .cal-cell { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; height: 72px; padding: 4px 3px 3px; position: relative; overflow: hidden; }
 .cal-cell.empty { background: transparent; border-color: transparent; }
 .cal-cell.today { border-color: rgba(255,255,255,0.3); }
-.cal-day { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; color: #555; line-height: 1; margin-bottom: 3px; }
+.cal-day { font-family: 'BIZ UDGothic', sans-serif; font-size: 10px; font-weight: 500; color: #555; line-height: 1; margin-bottom: 3px; }
 .cal-cell.today .cal-day { color: #e0e0e0; font-weight: 700; }
 .cal-cell:nth-child(7n+1) .cal-day { color: #885555; }
 .cal-cell:nth-child(7n+1).today .cal-day { color: #cc8888; }
 .cal-cell:nth-child(7n) .cal-day { color: #556688; }
 .cal-cell:nth-child(7n).today .cal-day { color: #88aacc; }
 .cal-data { display: flex; flex-direction: column; gap: 0; }
-.cal-rate { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: #e0e0e0; line-height: 1.3; }
+.cal-rate { font-family: 'BIZ UDGothic', sans-serif; font-size: 11px; font-weight: 500; color: #e0e0e0; line-height: 1.3; }
 .cal-sub { font-family: 'BIZ UDGothic', sans-serif; font-size: 9px; color: #8a9ab0; line-height: 1.4; }
 .cal-cell.rate-high  { background: #1a2a1a; border-color: rgba(80,160,80,0.3); }
 .cal-cell.rate-mid   { background: #1e2a3a; border-color: rgba(100,140,200,0.25); }
@@ -168,7 +168,7 @@ textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
 .sheet { width: 100%; max-width: 430px; margin: 0 auto; background: #181818; border-radius: 16px 16px 0 0; padding: 20px 24px 48px; border-top: 1px solid rgba(255,255,255,0.14); animation: sheetUp 0.3s cubic-bezier(0.32,0.72,0,1); }
 @keyframes sheetUp { from{transform:translateY(100%)}to{transform:translateY(0)} }
 .sheet-handle { width: 40px; height: 3px; background: #2c2c2c; border-radius: 2px; margin: 0 auto 20px; }
-.sheet-title { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 18px; }
+.sheet-title { font-family: 'BIZ UDGothic', sans-serif; font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 18px; }
 .sheet-row { margin-bottom: 14px; }
 .sheet-lbl { font-size: 9px; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
 .sheet-val { font-size: 15px; color: #f0f0f0; }
@@ -271,7 +271,6 @@ canvas { width: 100% !important; }
       </div>
     </div>
 
-```
 <!-- 履歴タブ -->
 <div class="section" id="section-list">
   <div class="list-filter-wrap">
@@ -362,7 +361,6 @@ canvas { width: 100% !important; }
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 </div>
-```
 
   </div>
 </div>
@@ -434,7 +432,7 @@ setTimeout(function() {
     document.getElementById("main-app").style.display = "flex";
     initHeader(); initGrid(); initUI(); initFilterBar(); initListFilter(); loadRecords();
   }, 500);
-}, 1000);
+}, 1500);
 
 /* ─── localStorage ─── */
 function loadRecords() {
@@ -822,7 +820,7 @@ function makeLineChart(ctx, data) {
   return new Chart(ctx, {
     type: "line",
     data: { labels:data.labels, datasets:[{ data:data.rates, borderColor:"#c8c8c8", backgroundColor:g, borderWidth:1.5, pointBackgroundColor:"#f0f0f0", pointBorderColor:"#181818", pointBorderWidth:2, pointRadius:4, tension:0, fill:true }] },
-    options: { responsive:true, animation:{duration:600}, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(c){return " "+c.parsed.y+"%";}}, backgroundColor:"#222", titleColor:"#888", bodyColor:"#f0f0f0", borderColor:"rgba(255,255,255,0.1)", borderWidth:1, padding:10} }, scales:{ y:{min:0,max:100,ticks:{callback:function(v){return v+"%";},color:"#666",font:{size:10,family:"DM Mono"}},grid:{color:"rgba(255,255,255,0.05)"}}, x:{ticks:{color:"#666",font:{size:10,family:"DM Mono"}},grid:{display:false}} } }
+    options: { responsive:true, animation:{duration:600}, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(c){return " "+c.parsed.y+"%";}}, backgroundColor:"#222", titleColor:"#888", bodyColor:"#f0f0f0", borderColor:"rgba(255,255,255,0.1)", borderWidth:1, padding:10} }, scales:{ y:{min:0,max:100,ticks:{callback:function(v){return v+"%";},color:"#666",font:{size:10,family:"BIZ UDGothic"}},grid:{color:"rgba(255,255,255,0.05)"}}, x:{ticks:{color:"#666",font:{size:10,family:"BIZ UDGothic"}},grid:{display:false}} } }
   });
 }
 
@@ -830,7 +828,7 @@ function makeBarChart(ctx, data) {
   return new Chart(ctx, {
     type: "bar",
     data: { labels:data.labels, datasets:[{ label:"射数", data:data.totals, backgroundColor:"rgba(70,70,70,0.75)", borderRadius:0, borderSkipped:"bottom", order:2 }, { label:"的中数", data:data.hits, backgroundColor:"rgba(220,220,220,0.9)", borderRadius:0, borderSkipped:"bottom", order:1 }] },
-    options: { responsive:true, animation:{duration:600}, plugins:{ legend:{display:true,labels:{color:"#888",font:{size:10,family:"DM Mono"},boxWidth:10}}, tooltip:{backgroundColor:"#222",titleColor:"#888",bodyColor:"#f0f0f0",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,padding:10} }, scales:{ y:{ticks:{color:"#666",font:{size:10,family:"DM Mono"}},grid:{color:"rgba(255,255,255,0.05)"}}, x:{ticks:{color:"#666",font:{size:10,family:"DM Mono"}},grid:{display:false}} } }
+    options: { responsive:true, animation:{duration:600}, plugins:{ legend:{display:true,labels:{color:"#888",font:{size:10,family:"BIZ UDGothic"},boxWidth:10}}, tooltip:{backgroundColor:"#222",titleColor:"#888",bodyColor:"#f0f0f0",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,padding:10} }, scales:{ y:{ticks:{color:"#666",font:{size:10,family:"BIZ UDGothic"}},grid:{color:"rgba(255,255,255,0.05)"}}, x:{ticks:{color:"#666",font:{size:10,family:"BIZ UDGothic"}},grid:{display:false}} } }
   });
 }
 
