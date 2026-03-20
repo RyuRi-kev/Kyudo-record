@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>弓道記録</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=DM+Mono:wght@400;500&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { background: #0d0d0d; height: 100%; }
+body { font-family: 'BIZ UDGothic', sans-serif; background: #0d0d0d; color: #f0f0f0; font-size: 15px; -webkit-text-size-adjust: 100%; min-height: 100%; padding-bottom: env(safe-area-inset-bottom); }
+.app { max-width: 430px; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
+#splash-screen { position: fixed; inset: 0; background: #0d0d0d; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; gap: 20px; transition: opacity 0.5s ease; }
+#splash-screen.fade-out { opacity: 0; pointer-events: none; }
+.login-title { font-family: 'Zen Antique', serif; font-size: 34px; color: #fff; letter-spacing: 0.3em; text-shadow: 1px 1px 0 rgba(0,0,0,0.9); margin-bottom: 8px; }
+.login-sub { font-size: 11px; color: #888; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 32px; }
+.loading-spinner { width: 36px; height: 36px; border: 2px solid #2a2a2a; border-top-color: #c8c8c8; border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 11px; color: #888; letter-spacing: 0.2em; }
+header { padding: 28px 24px 0; flex-shrink: 0; }
+.header-line { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 6px; }
+.logo-wrap { display: flex; flex-direction: column; gap: 3px; }
+.logo-main { font-family: 'Zen Antique', serif; font-size: 30px; color: #fff; letter-spacing: 0.3em; line-height: 1; text-shadow: 1px 1px 0 rgba(0,0,0,0.9); }
+.logo-ruby { font-size: 9px; color: #888; letter-spacing: 0.25em; text-transform: uppercase; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.header-date { font-family: 'DM Mono', monospace; font-size: 13px; color: #c8c8c8; }
+.header-rule { width: 100%; height: 1px; margin-top: 16px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.25) 20%, rgba(255,255,255,0.1) 80%, transparent); }
+.tab-bar { display: flex; margin: 16px 24px 0; border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+.tab-btn { flex: 1; padding: 11px 4px; background: transparent; border: none; border-right: 1px solid rgba(255,255,255,0.14); color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s, color 0.2s; }
+.tab-btn:last-child { border-right: none; }
+.tab-btn.active { background: #fff; color: #333; }
+.sync-bar { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 0; font-size: 10px; color: #888; flex-shrink: 0; }
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #555; }
+.sync-dot.ok { background: #55aa55; }
+.content { flex: 1; padding: 8px 24px 48px; overflow-y: auto; }
+.section { display: none; }
+.section.active { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+.card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
+.field { margin-bottom: 18px; }
+.field-label { display: block; font-size: 12px; font-weight: 700; color: #888; letter-spacing: 0.08em; margin-bottom: 8px; }
+input[type="date"] { display: block; width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 52px; }
+input[type="date"]:focus { border-color: #c8c8c8; }
+input[type="date"]::-webkit-date-and-time-value { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: #f0f0f0; text-align: left; }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); width: 20px; height: 20px; cursor: pointer; }
+textarea { width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; resize: none; min-height: 80px; line-height: 1.7; }
+textarea:focus { border-color: #c8c8c8; }
+textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
+.memo-footer { display: flex; justify-content: flex-end; margin-top: 5px; }
+.memo-count { font-family: 'DM Mono', monospace; font-size: 10px; color: #555; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 16px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 14px; color: #888; cursor: pointer; transition: all 0.2s; }
+.chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
+.type-chips { display: flex; gap: 8px; }
+.type-chip { flex: 1; padding: 9px 4px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 14px; color: #888; cursor: pointer; transition: all 0.2s; text-align: center; }
+.type-chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
+.arrow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.arrow-hint { font-size: 12px; color: #888; }
+.count-ctrl { display: flex; align-items: center; gap: 14px; }
+.ctrl-btn { width: 32px; height: 32px; background: #2c2c2c; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; color: #c8c8c8; font-size: 20px; font-family: 'BIZ UDGothic', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.ctrl-val { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: #f0f0f0; min-width: 34px; text-align: center; }
+.arrows-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+.a-btn { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.14); background: #222; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #444; font-family: 'BIZ UDGothic', sans-serif; }
+.a-btn.hit { background: #fff; border-color: #fff; color: #333; }
+.a-btn.miss:after { content: "x"; }
+.a-btn.hit:after { content: "o"; }
+.hit-summary { text-align: center; margin: 18px 0 4px; }
+.hit-fraction { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
+.hit-num { font-family: 'DM Mono', monospace; font-size: 54px; font-weight: 500; color: #fff; line-height: 1; }
+.hit-sep { font-size: 20px; color: #888; margin: 0 6px; }
+.hit-total-disp { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: #888; }
+.hit-rate-disp { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: #888; margin-top: 4px; }
+.divider { height: 1px; background: rgba(255,255,255,0.08); margin: 16px 0; }
+.btn-save { width: 100%; padding: 16px; background: #fff; border: none; border-radius: 10px; color: #333; font-family: 'BIZ UDGothic', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; cursor: pointer; }
+.btn-save:active { opacity: 0.85; }
+.btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+.rec-item { display: flex; align-items: center; gap: 12px; background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; animation: fadeUp 0.3s ease; }
+.rec-date-block { text-align: center; min-width: 36px; flex-shrink: 0; }
+.rec-y { font-family: 'DM Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.02em; }
+.rec-m { font-size: 10px; color: #888; }
+.rec-d { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 500; color: #f0f0f0; line-height: 1.1; }
+.vline { width: 1px; height: 54px; background: rgba(255,255,255,0.14); flex-shrink: 0; }
+.rec-body { flex: 1; min-width: 0; }
+.rec-session { font-family: 'DM Mono', monospace; font-size: 9px; color: #666; letter-spacing: 0.08em; margin-bottom: 2px; text-transform: uppercase; }
+.rec-meta { display: flex; gap: 6px; align-items: center; margin-bottom: 3px; }
+.rec-dist { font-size: 10px; color: #888; }
+.rec-type-badge { font-size: 10px; color: #888; background: #2c2c2c; border-radius: 4px; padding: 1px 6px; }
+.rec-score { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: #f0f0f0; }
+.rec-dots { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 5px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.dot.h { background: #c8c8c8; }
+.dot.m { background: #2c2c2c; border: 1px solid rgba(255,255,255,0.14); }
+.rec-memo { font-size: 12px; color: #888; margin-top: 4px; white-space: normal; overflow: visible; word-break: break-all; }
+.rec-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+.rate-badge { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; min-width: 42px; text-align: right; }
+/* 削除ボタン：リセットボタンと同じスタイル */
+.rec-del-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'BIZ UDGothic', sans-serif; transition: all 0.2s; }
+.rec-del-btn:active { background: rgba(255,255,255,0.05); }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 14px; position: relative; overflow: hidden; }
+.stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, #3d3d3d, transparent); }
+.stat-val { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 6px; }
+.stat-lbl { font-size: 9px; color: #888; letter-spacing: 0.12em; text-transform: uppercase; }
+.chart-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.chart-heading { font-size: 12px; color: #888; margin-bottom: 14px; }
+.chart-section-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #666; letter-spacing: 0.15em; text-transform: uppercase; margin: 16px 0 8px; }
+.filter-bar { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.filter-btn { padding: 6px 12px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #888; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+.filter-btn.active { background: #fff; border-color: #fff; color: #333; font-weight: 500; }
+.list-filter-wrap { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.list-filter-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.list-filter-row:last-child { margin-bottom: 0; }
+.list-filter-label { font-size: 10px; font-weight: 700; color: #666; letter-spacing: 0.08em; min-width: 28px; flex-shrink: 0; }
+.list-filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.lf-chip { padding: 5px 11px; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; font-size: 12px; color: #888; cursor: pointer; transition: all 0.2s; }
+.lf-chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
+.list-filter-date-row { display: flex; align-items: center; gap: 6px; flex: 1; }
+.lf-date-input { flex: 1; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 5px 8px; color: #f0f0f0; font-family: 'DM Mono', monospace; font-size: 11px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 0; }
+.lf-date-input:focus { border-color: #c8c8c8; }
+.lf-date-input::-webkit-calendar-picker-indicator { filter: invert(0.5); width: 14px; height: 14px; }
+.lf-date-sep { font-size: 11px; color: #666; flex-shrink: 0; }
+.list-filter-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+.lf-count { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; }
+.lf-reset-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 4px 10px; cursor: pointer; font-family: 'BIZ UDGothic', sans-serif; transition: all 0.2s; }
+.lf-reset-btn:active { background: rgba(255,255,255,0.05); }
+/* エクスポート・インポートカード */
+.data-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+.data-card-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+.data-btn-row { display: flex; gap: 10px; }
+.btn-data { flex: 1; padding: 13px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #c8c8c8; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-data:active { background: #2c2c2c; }
+.btn-data.import { color: #88bbee; border-color: rgba(100,140,200,0.25); }
+.btn-data.export { color: #88dd88; border-color: rgba(80,160,80,0.25); }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-nav { width: 32px; height: 32px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #c8c8c8; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cal-nav:active { background: #2c2c2c; }
+.cal-title { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: #f0f0f0; letter-spacing: 0.05em; }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 2px; }
+.cal-wd { text-align: center; font-family: 'DM Mono', monospace; font-size: 9px; color: #555; padding: 4px 0; letter-spacing: 0.05em; }
+.cal-wd:first-child { color: #885555; }
+.cal-wd:last-child  { color: #556688; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; grid-auto-rows: 72px; }
+.cal-cell { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; height: 72px; padding: 4px 3px 3px; position: relative; overflow: hidden; }
+.cal-cell.empty { background: transparent; border-color: transparent; }
+.cal-cell.today { border-color: rgba(255,255,255,0.3); }
+.cal-day { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; color: #555; line-height: 1; margin-bottom: 3px; }
+.cal-cell.today .cal-day { color: #e0e0e0; font-weight: 700; }
+.cal-cell:nth-child(7n+1) .cal-day { color: #885555; }
+.cal-cell:nth-child(7n+1).today .cal-day { color: #cc8888; }
+.cal-cell:nth-child(7n) .cal-day { color: #556688; }
+.cal-cell:nth-child(7n).today .cal-day { color: #88aacc; }
+.cal-data { display: flex; flex-direction: column; gap: 0; }
+.cal-rate { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: #e0e0e0; line-height: 1.3; }
+.cal-sub { font-family: 'BIZ UDGothic', sans-serif; font-size: 9px; color: #8a9ab0; line-height: 1.4; }
+.cal-cell.rate-high  { background: #1a2a1a; border-color: rgba(80,160,80,0.3); }
+.cal-cell.rate-mid   { background: #1e2a3a; border-color: rgba(100,140,200,0.25); }
+.cal-cell.rate-low   { background: #2a1a1a; border-color: rgba(160,80,80,0.25); }
+.cal-cell.rate-high .cal-rate  { color: #88dd88; }
+.cal-cell.rate-mid  .cal-rate  { color: #88bbee; }
+.cal-cell.rate-low  .cal-rate  { color: #ee8888; }
+.empty { text-align: center; padding: 56px 24px; }
+.empty-text { font-size: 14px; color: #444; }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; align-items: flex-end; backdrop-filter: blur(6px); }
+.overlay.open { display: flex; }
+.sheet { width: 100%; max-width: 430px; margin: 0 auto; background: #181818; border-radius: 16px 16px 0 0; padding: 20px 24px 48px; border-top: 1px solid rgba(255,255,255,0.14); animation: sheetUp 0.3s cubic-bezier(0.32,0.72,0,1); }
+@keyframes sheetUp { from{transform:translateY(100%)}to{transform:translateY(0)} }
+.sheet-handle { width: 40px; height: 3px; background: #2c2c2c; border-radius: 2px; margin: 0 auto 20px; }
+.sheet-title { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 18px; }
+.sheet-row { margin-bottom: 14px; }
+.sheet-lbl { font-size: 9px; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+.sheet-val { font-size: 15px; color: #f0f0f0; }
+.btn-del-modal { width: 100%; padding: 13px; background: transparent; border: 1px solid rgba(255,100,100,0.3); border-radius: 10px; color: rgba(255,120,120,0.85); font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; cursor: pointer; margin-top: 6px; }
+.btn-close-sheet { width: 100%; padding: 13px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; cursor: pointer; margin-top: 8px; }
+.toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(80px); background: #222; border: 1px solid rgba(255,255,255,0.14); color: #f0f0f0; padding: 11px 24px; border-radius: 24px; font-size: 14px; z-index: 300; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 8px 30px rgba(0,0,0,0.6); white-space: nowrap; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: #2c2c2c; border-radius: 2px; }
+canvas { width: 100% !important; }
+/* 非表示ファイル入力 */
+#import-file-input { display: none; }
+</style>
+</head>
+<body>
+
+<!-- スプラッシュ画面（約1秒表示後フェードアウト） -->
+
+<div id="splash-screen">
+  <div class="login-title">弓道記録</div>
+  <div class="login-sub">KYUDO RECORD</div>
+  <div class="loading-spinner"></div>
+  <div class="loading-text">LOADING...</div>
+</div>
+
+<div class="app" id="main-app" style="display:none">
+  <header>
+    <div class="header-line">
+      <div class="logo-wrap">
+        <div class="logo-main">弓道記録</div>
+        <div class="logo-ruby">KYUDO RECORD</div>
+      </div>
+      <div class="header-right">
+        <div class="header-date" id="hd-date">--</div>
+      </div>
+    </div>
+    <div class="header-rule"></div>
+  </header>
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-record">記録</button>
+    <button class="tab-btn" id="tab-list">履歴</button>
+    <button class="tab-btn" id="tab-stats">統計</button>
+    <button class="tab-btn" id="tab-cal">暦</button>
+  </div>
+  <div class="sync-bar">
+    <span class="sync-dot ok" id="sync-dot"></span>
+    <span id="sync-text">ローカル保存</span>
+  </div>
+  <div class="content">
+    <!-- 記録タブ -->
+    <div class="section active" id="section-record">
+      <div class="card">
+        <div class="field">
+          <span class="field-label">種別</span>
+          <div class="type-chips">
+            <span class="type-chip on" data-v="稽古" id="type-keiko">稽古</span>
+            <span class="type-chip" data-v="大会" id="type-taikai">大会</span>
+            <span class="type-chip" data-v="審査" id="type-shinsa">審査</span>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" id="date-label">稽古日</span>
+          <input type="date" id="input-date">
+        </div>
+        <div class="field">
+          <span class="field-label">距離</span>
+          <div class="chip-group">
+            <span class="chip on" data-v="近的（28m）" id="dist-chika">近的 28m</span>
+            <span class="chip" data-v="遠的（60m）" id="dist-too">遠的 60m</span>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="field">
+          <span class="field-label">射数と的中</span>
+          <div class="arrow-header">
+            <span class="arrow-hint">タップで的中 / 外を切替</span>
+            <div class="count-ctrl">
+              <button class="ctrl-btn" id="btn-minus">-</button>
+              <span class="ctrl-val" id="count-disp">8射</span>
+              <button class="ctrl-btn" id="btn-plus">+</button>
+            </div>
+          </div>
+          <div class="arrows-grid" id="arrows-grid"></div>
+          <div class="hit-summary">
+            <div class="hit-fraction">
+              <span class="hit-num" id="hit-num">0</span>
+              <span class="hit-sep">中</span>
+              <span class="hit-total-disp" id="hit-total">/ 8</span>
+            </div>
+            <div class="hit-rate-disp" id="hit-rate">0.0%</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="field" style="margin-bottom:18px">
+          <span class="field-label">メモ</span>
+          <textarea id="input-memo" placeholder="気づきや修正点など..." maxlength="500"></textarea>
+          <div class="memo-footer"><span class="memo-count" id="memo-count">0 / 500</span></div>
+        </div>
+        <button class="btn-save" id="btn-save">記録する</button>
+      </div>
+    </div>
+
+```
+<!-- 履歴タブ -->
+<div class="section" id="section-list">
+  <div class="list-filter-wrap">
+    <div class="list-filter-row">
+      <span class="list-filter-label">種別</span>
+      <div class="list-filter-chips" id="lf-type">
+        <span class="lf-chip on" data-v="">すべて</span>
+        <span class="lf-chip" data-v="稽古">稽古</span>
+        <span class="lf-chip" data-v="大会">大会</span>
+        <span class="lf-chip" data-v="審査">審査</span>
+      </div>
+    </div>
+    <div class="list-filter-row">
+      <span class="list-filter-label">距離</span>
+      <div class="list-filter-chips" id="lf-dist">
+        <span class="lf-chip on" data-v="">すべて</span>
+        <span class="lf-chip" data-v="近的（28m）">近的</span>
+        <span class="lf-chip" data-v="遠的（60m）">遠的</span>
+      </div>
+    </div>
+    <div class="list-filter-row">
+      <span class="list-filter-label">日付</span>
+      <div class="list-filter-date-row">
+        <input type="date" id="lf-date-from" class="lf-date-input">
+        <span class="lf-date-sep">-</span>
+        <input type="date" id="lf-date-to" class="lf-date-input">
+      </div>
+    </div>
+    <div class="list-filter-row">
+      <span class="list-filter-label">メモ</span>
+      <div class="list-filter-chips" id="lf-memo">
+        <span class="lf-chip on" data-v="">すべて</span>
+        <span class="lf-chip" data-v="yes">あり</span>
+        <span class="lf-chip" data-v="no">なし</span>
+      </div>
+    </div>
+    <div class="list-filter-footer">
+      <span class="lf-count" id="lf-count">-- 件</span>
+      <button class="lf-reset-btn" id="lf-reset">リセット</button>
+    </div>
+  </div>
+  <div id="record-list"></div>
+</div>
+
+<!-- 統計タブ -->
+<div class="section" id="section-stats">
+  <div class="stats-grid" id="stats-grid"></div>
+  <div class="chart-section-label">日別</div>
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" data-n="10">直近10日</button>
+    <button class="filter-btn" data-n="20">直近20日</button>
+    <button class="filter-btn" data-n="30">直近30日</button>
+    <button class="filter-btn" data-n="0">全期間</button>
+  </div>
+  <div class="chart-card" id="chart-card1" style="display:none"><div class="chart-heading">的中率の推移（日別）</div><canvas id="chart-rate"></canvas></div>
+  <div class="chart-card" id="chart-card2" style="display:none"><div class="chart-heading">的中数 / 射数（日別）</div><canvas id="chart-hits"></canvas></div>
+  <div class="chart-section-label" id="monthly-label" style="display:none">月別（直近12ヶ月）</div>
+  <div class="chart-card" id="chart-card3" style="display:none"><div class="chart-heading">的中率の推移（月別）</div><canvas id="chart-rate-m"></canvas></div>
+  <div class="chart-card" id="chart-card4" style="display:none"><div class="chart-heading">的中数 / 射数（月別）</div><canvas id="chart-hits-m"></canvas></div>
+  <div class="chart-section-label" id="yearly-label" style="display:none">年別</div>
+  <div class="chart-card" id="chart-card5" style="display:none"><div class="chart-heading">的中率の推移（年別）</div><canvas id="chart-rate-y"></canvas></div>
+  <div class="chart-card" id="chart-card6" style="display:none"><div class="chart-heading">的中数 / 射数（年別）</div><canvas id="chart-hits-y"></canvas></div>
+
+  <!-- データ管理（エクスポート・インポート） -->
+  <div class="chart-section-label" style="margin-top:24px">データ管理</div>
+  <div class="data-card">
+    <div class="data-card-title">バックアップ / 復元</div>
+    <div class="data-btn-row">
+      <button class="btn-data export" id="btn-export">エクスポート</button>
+      <button class="btn-data import" id="btn-import">インポート</button>
+    </div>
+  </div>
+  <input type="file" id="import-file-input" accept=".json">
+</div>
+
+<!-- 暦タブ -->
+<div class="section" id="section-cal">
+  <div class="chart-card">
+    <div class="cal-header">
+      <button class="cal-nav" id="cal-prev">&#8249;</button>
+      <div class="cal-title" id="cal-title">--</div>
+      <button class="cal-nav" id="cal-next">&#8250;</button>
+    </div>
+    <div class="cal-weekdays">
+      <div class="cal-wd">日</div><div class="cal-wd">月</div><div class="cal-wd">火</div>
+      <div class="cal-wd">水</div><div class="cal-wd">木</div><div class="cal-wd">金</div><div class="cal-wd">土</div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- 詳細モーダル -->
+
+<div class="overlay" id="modal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="m-title"></div>
+    <div id="m-body"></div>
+    <button class="btn-del-modal" id="m-del-btn">削除する</button>
+    <button class="btn-close-sheet" id="m-close-btn">閉じる</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 削除確認モーダル -->
+
+<div class="overlay" id="confirm-modal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" style="font-size:15px;color:#f0f0f0">この記録を削除しますか？</div>
+    <div style="font-size:13px;color:#888;margin-bottom:20px">削除した記録は元に戻せません。</div>
+    <button class="btn-del-modal" id="confirm-yes">削除する</button>
+    <button class="btn-close-sheet" id="confirm-no">キャンセル</button>
+  </div>
+</div>
+
+<!-- インポート確認モーダル -->
+
+<div class="overlay" id="import-modal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" style="font-size:15px;color:#f0f0f0">データをインポートしますか？</div>
+    <div style="font-size:13px;color:#888;margin-bottom:8px" id="import-modal-info"></div>
+    <div style="font-size:12px;color:rgba(255,120,120,0.8);margin-bottom:20px">※ 現在のデータはすべて上書きされます。</div>
+    <button class="btn-del-modal" id="import-confirm-yes">上書きしてインポート</button>
+    <button class="btn-close-sheet" id="import-confirm-no">キャンセル</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script>
+(function() {
+
+var LS_KEY = "kyudo_records";
+var records = [];
+var hitStates = [];
+var selDist = "近的（28m）", selType = "稽古", arrowCount = 8;
+var chartRate = null, chartHits = null, chartRateM = null, chartHitsM = null, chartRateY = null, chartHitsY = null;
+var dateLabelMap = { "稽古": "稽古日", "大会": "大会日", "審査": "審査日" };
+var calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
+var pendingDeleteId = null, pendingDeleteFrom = null;
+var pendingImportData = null;
+var dailyFilter = 10;
+var listFilter = { type: "", dist: "", dateFrom: "", dateTo: "", memo: "" };
+
+for (var i = 0; i < 8; i++) hitStates.push(false);
+
+/* ─── スプラッシュ画面 ─── */
+setTimeout(function() {
+  var splash = document.getElementById("splash-screen");
+  splash.classList.add("fade-out");
+  setTimeout(function() {
+    splash.style.display = "none";
+    document.getElementById("main-app").style.display = "flex";
+    initHeader(); initGrid(); initUI(); initFilterBar(); initListFilter(); loadRecords();
+  }, 500);
+}, 1000);
+
+/* ─── localStorage ─── */
+function loadRecords() {
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    records = raw ? JSON.parse(raw) : [];
+  } catch(e) {
+    records = [];
+  }
+}
+
+function saveToStorage() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(records));
+  } catch(e) {
+    showToast("保存に失敗しました");
+  }
+}
+
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+}
+
+/* ─── ヘッダー初期化 ─── */
+function initHeader() {
+  var now = new Date(), days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  document.getElementById("hd-date").textContent = now.getFullYear() + "/" + (now.getMonth()+1) + "/" + now.getDate() + " " + days[now.getDay()];
+  document.getElementById("input-date").valueAsDate = now;
+}
+
+/* ─── UI 初期化 ─── */
+function initUI() {
+  var typeChips = document.querySelectorAll(".type-chip");
+  for (var i = 0; i < typeChips.length; i++) {
+    typeChips[i].addEventListener("click", function() {
+      for (var j = 0; j < typeChips.length; j++) typeChips[j].classList.remove("on");
+      this.classList.add("on"); selType = this.getAttribute("data-v");
+      document.getElementById("date-label").textContent = dateLabelMap[selType] || "日付";
+    });
+  }
+  var distChips = document.querySelectorAll(".chip");
+  for (var i = 0; i < distChips.length; i++) {
+    distChips[i].addEventListener("click", function() {
+      for (var j = 0; j < distChips.length; j++) distChips[j].classList.remove("on");
+      this.classList.add("on"); selDist = this.getAttribute("data-v");
+    });
+  }
+  document.getElementById("btn-minus").addEventListener("click", function() { changeCount(-2); });
+  document.getElementById("btn-plus").addEventListener("click", function() { changeCount(2); });
+  document.getElementById("btn-save").addEventListener("click", saveRecord);
+  document.getElementById("m-close-btn").addEventListener("click", closeModal);
+  document.getElementById("modal").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
+  document.getElementById("tab-record").addEventListener("click", function() { switchTab("record"); });
+  document.getElementById("tab-list").addEventListener("click", function() { switchTab("list"); });
+  document.getElementById("tab-stats").addEventListener("click", function() { switchTab("stats"); });
+  document.getElementById("tab-cal").addEventListener("click", function() { switchTab("cal"); });
+
+  // 削除確認
+  document.getElementById("confirm-yes").addEventListener("click", execDelete);
+  document.getElementById("confirm-no").addEventListener("click", function() {
+    pendingDeleteId = null; pendingDeleteFrom = null;
+    document.getElementById("confirm-modal").classList.remove("open");
+  });
+  document.getElementById("confirm-modal").addEventListener("click", function(e) {
+    if (e.target === this) { pendingDeleteId = null; pendingDeleteFrom = null; this.classList.remove("open"); }
+  });
+
+  // メモ文字数
+  document.getElementById("input-memo").addEventListener("input", function() {
+    document.getElementById("memo-count").textContent = this.value.length + " / 500";
+  });
+
+  // カレンダー
+  document.getElementById("cal-prev").addEventListener("click", function() {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
+  });
+  document.getElementById("cal-next").addEventListener("click", function() {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
+  });
+
+  // エクスポート
+  document.getElementById("btn-export").addEventListener("click", exportData);
+
+  // インポート
+  document.getElementById("btn-import").addEventListener("click", function() {
+    document.getElementById("import-file-input").value = "";
+    document.getElementById("import-file-input").click();
+  });
+  document.getElementById("import-file-input").addEventListener("change", handleImportFile);
+
+  // インポート確認モーダル
+  document.getElementById("import-confirm-yes").addEventListener("click", execImport);
+  document.getElementById("import-confirm-no").addEventListener("click", function() {
+    pendingImportData = null;
+    document.getElementById("import-modal").classList.remove("open");
+  });
+  document.getElementById("import-modal").addEventListener("click", function(e) {
+    if (e.target === this) { pendingImportData = null; this.classList.remove("open"); }
+  });
+}
+
+/* ─── 射数変更 ─── */
+function changeCount(delta) {
+  arrowCount = Math.max(2, Math.min(24, arrowCount + delta));
+  while (hitStates.length > arrowCount) hitStates.pop();
+  while (hitStates.length < arrowCount) hitStates.push(false);
+  document.getElementById("count-disp").textContent = arrowCount + "射";
+  initGrid();
+}
+
+function initGrid() {
+  var grid = document.getElementById("arrows-grid"); grid.innerHTML = "";
+  for (var i = 0; i < hitStates.length; i++) {
+    var b = document.createElement("button");
+    b.className = "a-btn " + (hitStates[i] ? "hit" : "miss");
+    (function(idx) { b.addEventListener("click", function() { hitStates[idx] = !hitStates[idx]; initGrid(); }); })(i);
+    grid.appendChild(b);
+  }
+  var hits = 0;
+  for (var i = 0; i < hitStates.length; i++) { if (hitStates[i]) hits++; }
+  document.getElementById("hit-num").textContent = hits;
+  document.getElementById("hit-total").textContent = "/ " + arrowCount;
+  document.getElementById("hit-rate").textContent = arrowCount ? (hits / arrowCount * 100).toFixed(1) + "%" : "0.0%";
+}
+
+/* ─── 記録保存 ─── */
+function saveRecord() {
+  var date = document.getElementById("input-date").value;
+  var memo = document.getElementById("input-memo").value.trim();
+  if (!date) { showToast("日付を選択してください"); return; }
+  document.getElementById("btn-save").disabled = true;
+  var hits = 0;
+  for (var i = 0; i < hitStates.length; i++) { if (hitStates[i]) hits++; }
+  var data = {
+    id: genId(),
+    date: date,
+    dist: selDist,
+    type: selType,
+    hits: hits,
+    total: arrowCount,
+    arrows: hitStates.slice(),
+    memo: memo,
+    createdAt: new Date().toISOString()
+  };
+  records.unshift(data);
+  records.sort(function(a, b) { return b.date > a.date ? 1 : b.date < a.date ? -1 : 0; });
+  saveToStorage();
+  showToast("記録しました");
+  document.getElementById("input-memo").value = "";
+  document.getElementById("memo-count").textContent = "0 / 500";
+  hitStates = [];
+  for (var i = 0; i < arrowCount; i++) hitStates.push(false);
+  initGrid();
+  document.getElementById("btn-save").disabled = false;
+}
+
+/* ─── 削除 ─── */
+function showConfirm(id, from) { pendingDeleteId = id; pendingDeleteFrom = from; document.getElementById("confirm-modal").classList.add("open"); }
+
+function execDelete() {
+  var id = pendingDeleteId, from = pendingDeleteFrom;
+  pendingDeleteId = null; pendingDeleteFrom = null;
+  document.getElementById("confirm-modal").classList.remove("open");
+  records = records.filter(function(r) { return r.id !== id; });
+  saveToStorage();
+  if (from === "modal") closeModal();
+  renderList(); renderStats(); renderCalendar();
+  showToast("削除しました");
+}
+
+function deleteRecord(id) { showConfirm(id, "modal"); }
+function deleteRecordInline(id) { showConfirm(id, "inline"); }
+
+/* ─── エクスポート ─── */
+function exportData() {
+  if (!records.length) { showToast("エクスポートするデータがありません"); return; }
+  var json = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), records: records }, null, 2);
+  var blob = new Blob([json], { type: "application/json" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  var now = new Date();
+  var fname = "kyudo_" + now.getFullYear() + pad2(now.getMonth()+1) + pad2(now.getDate()) + ".json";
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
+  showToast("エクスポートしました");
+}
+
+/* ─── インポート ─── */
+function handleImportFile(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var parsed = JSON.parse(ev.target.result);
+      var importRecords = null;
+      if (Array.isArray(parsed)) {
+        importRecords = parsed;
+      } else if (parsed && Array.isArray(parsed.records)) {
+        importRecords = parsed.records;
+      }
+      if (!importRecords || !importRecords.length) { showToast("有効なデータが見つかりません"); return; }
+      pendingImportData = importRecords;
+      document.getElementById("import-modal-info").textContent = importRecords.length + " 件のデータが見つかりました。";
+      document.getElementById("import-modal").classList.add("open");
+    } catch(err) {
+      showToast("ファイルの読み込みに失敗しました");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function execImport() {
+  if (!pendingImportData) return;
+  records = pendingImportData.slice();
+  records.sort(function(a, b) { return b.date > a.date ? 1 : b.date < a.date ? -1 : 0; });
+  saveToStorage();
+  pendingImportData = null;
+  document.getElementById("import-modal").classList.remove("open");
+  renderList(); renderStats(); renderCalendar();
+  showToast("インポートしました");
+}
+
+/* ─── セッション番号付与 ─── */
+function withSessionNos(recs) {
+  var byDate = {};
+  for (var i = 0; i < recs.length; i++) { var d = recs[i].date; if (!byDate[d]) byDate[d] = 0; byDate[d]++; }
+  var counter = {}, result = [];
+  for (var i = 0; i < recs.length; i++) {
+    var r = JSON.parse(JSON.stringify(recs[i])), d = r.date;
+    if (!counter[d]) counter[d] = byDate[d];
+    r.sessionNo = counter[d]; counter[d]--; result.push(r);
+  }
+  return result;
+}
+
+/* ─── 履歴描画 ─── */
+function renderList() {
+  var el = document.getElementById("record-list");
+  if (!records.length) { el.innerHTML = "<div class='empty'><div class='empty-text'>記録がありません</div></div>"; document.getElementById("lf-count").textContent = "0 件"; return; }
+  var sorted = records.slice().sort(function(a, b) { return b.date > a.date ? 1 : b.date < a.date ? -1 : 0; });
+  sorted = withSessionNos(sorted);
+  var filtered = applyListFilter(sorted);
+  document.getElementById("lf-count").textContent = filtered.length + " 件";
+  if (!filtered.length) { el.innerHTML = "<div class='empty'><div class='empty-text'>条件に一致する記録がありません</div></div>"; return; }
+  var html = "";
+  for (var i = 0; i < filtered.length; i++) {
+    var r = filtered[i], rate = (r.hits / r.total * 100).toFixed(1), rn = parseFloat(rate);
+    var d = new Date(r.date), col = rn >= 70 ? "#e8e8e8" : rn >= 50 ? "#aaaaaa" : "#555555";
+    var dots = "";
+    for (var j = 0; j < r.arrows.length; j++) { dots += "<span class='dot " + (r.arrows[j] ? "h" : "m") + "'></span>"; }
+    var badge = r.type ? "<span class='rec-type-badge'>" + r.type + "</span>" : "";
+    html += "<div class='rec-item'>";
+    html += "<div class='rec-date-block'><div class='rec-y'>" + d.getFullYear() + "</div><div class='rec-m'>" + (d.getMonth()+1) + "月</div><div class='rec-d'>" + d.getDate() + "</div></div>";
+    html += "<div class='vline'></div><div class='rec-body'>";
+    html += "<div class='rec-session'>SESSION No." + r.sessionNo + "</div>";
+    html += "<div class='rec-meta'><span class='rec-dist'>" + r.dist + "</span>" + badge + "</div>";
+    html += "<div class='rec-score'>" + r.hits + " 中 / " + r.total + " 射</div>";
+    html += "<div class='rec-dots'>" + dots + "</div>";
+    if (r.memo) html += "<div class='rec-memo'>" + r.memo + "</div>";
+    html += "</div><div class='rec-right'>";
+    html += "<span class='rate-badge' style='color:" + col + "'>" + rate + "%</span>";
+    html += "<button class='rec-del-btn' data-id='" + r.id + "'>削除</button>";
+    html += "</div></div>";
+  }
+  el.innerHTML = html;
+  var btns = el.querySelectorAll(".rec-del-btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function(e) { e.stopPropagation(); deleteRecordInline(this.getAttribute("data-id")); });
+  }
+}
+
+function initListFilter() {
+  function bindChipGroup(groupId, key) {
+    var chips = document.querySelectorAll("#" + groupId + " .lf-chip");
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].addEventListener("click", function() {
+        for (var j = 0; j < chips.length; j++) chips[j].classList.remove("on");
+        this.classList.add("on"); listFilter[key] = this.getAttribute("data-v"); renderList();
+      });
+    }
+  }
+  bindChipGroup("lf-type", "type"); bindChipGroup("lf-dist", "dist"); bindChipGroup("lf-memo", "memo");
+  document.getElementById("lf-date-from").addEventListener("change", function() { listFilter.dateFrom = this.value; renderList(); });
+  document.getElementById("lf-date-to").addEventListener("change", function() { listFilter.dateTo = this.value; renderList(); });
+  document.getElementById("lf-reset").addEventListener("click", function() {
+    listFilter = { type: "", dist: "", dateFrom: "", dateTo: "", memo: "" };
+    document.getElementById("lf-date-from").value = "";
+    document.getElementById("lf-date-to").value = "";
+    document.querySelectorAll(".lf-chip").forEach(function(c) { c.classList.remove("on"); });
+    document.querySelectorAll("#lf-type .lf-chip, #lf-dist .lf-chip, #lf-memo .lf-chip").forEach(function(c) {
+      if (c.getAttribute("data-v") === "") c.classList.add("on");
+    });
+    renderList();
+  });
+}
+
+function applyListFilter(recs) {
+  return recs.filter(function(r) {
+    if (listFilter.type && r.type !== listFilter.type) return false;
+    if (listFilter.dist && r.dist !== listFilter.dist) return false;
+    if (listFilter.dateFrom && r.date < listFilter.dateFrom) return false;
+    if (listFilter.dateTo   && r.date > listFilter.dateTo)   return false;
+    if (listFilter.memo === "yes" && !r.memo) return false;
+    if (listFilter.memo === "no"  && r.memo)  return false;
+    return true;
+  });
+}
+
+/* ─── 統計フィルタ ─── */
+function initFilterBar() {
+  var btns = document.querySelectorAll(".filter-btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+      for (var j = 0; j < btns.length; j++) btns[j].classList.remove("active");
+      this.classList.add("active"); dailyFilter = parseInt(this.getAttribute("data-n")); renderCharts();
+    });
+  }
+}
+
+/* ─── 統計描画 ─── */
+function renderStats() {
+  var grid = document.getElementById("stats-grid");
+  var ids = ["chart-card1","chart-card2","chart-card3","chart-card4","chart-card5","chart-card6","monthly-label","yearly-label","filter-bar"];
+  if (!records.length) {
+    grid.innerHTML = "<div class='stat-card'><div class='stat-val'>–</div><div class='stat-lbl'>Average Rate</div></div><div class='stat-card'><div class='stat-val'>–</div><div class='stat-lbl'>Sessions</div></div><div class='stat-card'><div class='stat-val'>–</div><div class='stat-lbl'>Total Hits</div></div><div class='stat-card'><div class='stat-val'>–</div><div class='stat-lbl'>Total Arrows</div></div>";
+    for (var k = 0; k < ids.length; k++) { var el = document.getElementById(ids[k]); if (el) el.style.display = "none"; }
+    return;
+  }
+  var th = 0, ta = 0;
+  for (var i = 0; i < records.length; i++) { th += records[i].hits; ta += records[i].total; }
+  grid.innerHTML = "<div class='stat-card'><div class='stat-val'>" + (th/ta*100).toFixed(1) + "%</div><div class='stat-lbl'>Average Rate</div></div><div class='stat-card'><div class='stat-val'>" + records.length + "</div><div class='stat-lbl'>Sessions</div></div><div class='stat-card'><div class='stat-val'>" + th + "</div><div class='stat-lbl'>Total Hits</div></div><div class='stat-card'><div class='stat-val'>" + ta + "</div><div class='stat-lbl'>Total Arrows</div></div>";
+  var showIds = ["chart-card1","chart-card2","chart-card3","chart-card4","chart-card5","chart-card6","monthly-label","yearly-label"];
+  for (var k = 0; k < showIds.length; k++) { document.getElementById(showIds[k]).style.display = "block"; }
+  document.getElementById("filter-bar").style.display = "flex";
+  renderCharts();
+}
+
+function buildDaily() {
+  var by = {};
+  for (var i = 0; i < records.length; i++) { var r = records[i]; if (!by[r.date]) by[r.date]={hits:0,total:0}; by[r.date].hits+=r.hits; by[r.date].total+=r.total; }
+  var keys = Object.keys(by).sort();
+  if (dailyFilter > 0 && keys.length > dailyFilter) keys = keys.slice(keys.length - dailyFilter);
+  var labels=[], rates=[], hits=[], totals=[];
+  for (var i = 0; i < keys.length; i++) {
+    var dt = new Date(keys[i]);
+    labels.push((dt.getMonth()+1) + "/" + dt.getDate());
+    rates.push(parseFloat((by[keys[i]].hits/by[keys[i]].total*100).toFixed(1)));
+    hits.push(by[keys[i]].hits); totals.push(by[keys[i]].total);
+  }
+  return { labels:labels, rates:rates, hits:hits, totals:totals };
+}
+
+function buildMonthly() {
+  var by = {};
+  for (var i = 0; i < records.length; i++) { var r=records[i]; var key=r.date.substring(0,7); if(!by[key])by[key]={hits:0,total:0}; by[key].hits+=r.hits; by[key].total+=r.total; }
+  var keys = Object.keys(by).sort();
+  if (keys.length > 12) keys = keys.slice(keys.length-12);
+  var labels=[], rates=[], hits=[], totals=[];
+  for (var i = 0; i < keys.length; i++) {
+    var parts = keys[i].split("-");
+    labels.push(parts[0].substring(2)+"/"+parts[1]);
+    rates.push(parseFloat((by[keys[i]].hits/by[keys[i]].total*100).toFixed(1)));
+    hits.push(by[keys[i]].hits); totals.push(by[keys[i]].total);
+  }
+  return { labels:labels, rates:rates, hits:hits, totals:totals };
+}
+
+function buildYearly() {
+  var by = {};
+  for (var i = 0; i < records.length; i++) { var r=records[i]; var key=r.date.substring(0,4); if(!by[key])by[key]={hits:0,total:0}; by[key].hits+=r.hits; by[key].total+=r.total; }
+  var keys = Object.keys(by).sort();
+  var labels=[], rates=[], hits=[], totals=[];
+  for (var i = 0; i < keys.length; i++) {
+    labels.push(keys[i]);
+    rates.push(parseFloat((by[keys[i]].hits/by[keys[i]].total*100).toFixed(1)));
+    hits.push(by[keys[i]].hits); totals.push(by[keys[i]].total);
+  }
+  return { labels:labels, rates:rates, hits:hits, totals:totals };
+}
+
+function makeLineChart(ctx, data) {
+  var g = ctx.createLinearGradient(0,0,0,180);
+  g.addColorStop(0,"rgba(220,220,220,0.12)"); g.addColorStop(1,"rgba(220,220,220,0)");
+  return new Chart(ctx, {
+    type: "line",
+    data: { labels:data.labels, datasets:[{ data:data.rates, borderColor:"#c8c8c8", backgroundColor:g, borderWidth:1.5, pointBackgroundColor:"#f0f0f0", pointBorderColor:"#181818", pointBorderWidth:2, pointRadius:4, tension:0, fill:true }] },
+    options: { responsive:true, animation:{duration:600}, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(c){return " "+c.parsed.y+"%";}}, backgroundColor:"#222", titleColor:"#888", bodyColor:"#f0f0f0", borderColor:"rgba(255,255,255,0.1)", borderWidth:1, padding:10} }, scales:{ y:{min:0,max:100,ticks:{callback:function(v){return v+"%";},color:"#666",font:{size:10,family:"DM Mono"}},grid:{color:"rgba(255,255,255,0.05)"}}, x:{ticks:{color:"#666",font:{size:10,family:"DM Mono"}},grid:{display:false}} } }
+  });
+}
+
+function makeBarChart(ctx, data) {
+  return new Chart(ctx, {
+    type: "bar",
+    data: { labels:data.labels, datasets:[{ label:"射数", data:data.totals, backgroundColor:"rgba(70,70,70,0.75)", borderRadius:0, borderSkipped:"bottom", order:2 }, { label:"的中数", data:data.hits, backgroundColor:"rgba(220,220,220,0.9)", borderRadius:0, borderSkipped:"bottom", order:1 }] },
+    options: { responsive:true, animation:{duration:600}, plugins:{ legend:{display:true,labels:{color:"#888",font:{size:10,family:"DM Mono"},boxWidth:10}}, tooltip:{backgroundColor:"#222",titleColor:"#888",bodyColor:"#f0f0f0",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,padding:10} }, scales:{ y:{ticks:{color:"#666",font:{size:10,family:"DM Mono"}},grid:{color:"rgba(255,255,255,0.05)"}}, x:{ticks:{color:"#666",font:{size:10,family:"DM Mono"}},grid:{display:false}} } }
+  });
+}
+
+function renderCharts() {
+  var daily=buildDaily(), monthly=buildMonthly(), yearly=buildYearly();
+  if(chartRate)  chartRate.destroy();  if(chartHits)  chartHits.destroy();
+  if(chartRateM) chartRateM.destroy(); if(chartHitsM) chartHitsM.destroy();
+  if(chartRateY) chartRateY.destroy(); if(chartHitsY) chartHitsY.destroy();
+  chartRate  = makeLineChart(document.getElementById("chart-rate").getContext("2d"),   daily);
+  chartHits  = makeBarChart( document.getElementById("chart-hits").getContext("2d"),   daily);
+  chartRateM = makeLineChart(document.getElementById("chart-rate-m").getContext("2d"), monthly);
+  chartHitsM = makeBarChart( document.getElementById("chart-hits-m").getContext("2d"), monthly);
+  chartRateY = makeLineChart(document.getElementById("chart-rate-y").getContext("2d"), yearly);
+  chartHitsY = makeBarChart( document.getElementById("chart-hits-y").getContext("2d"), yearly);
+}
+
+/* ─── カレンダー ─── */
+function buildDailyMap() {
+  var map = {};
+  for (var i = 0; i < records.length; i++) {
+    var r = records[i];
+    if (!map[r.date]) map[r.date] = { hits:0, total:0 };
+    map[r.date].hits += r.hits; map[r.date].total += r.total;
+  }
+  return map;
+}
+
+function renderCalendar() {
+  document.getElementById("cal-title").textContent = calYear + " / " + (calMonth+1 < 10 ? "0" : "") + (calMonth+1);
+  var map = buildDailyMap();
+  var today = new Date();
+  var todayStr = today.getFullYear() + "-" + pad2(today.getMonth()+1) + "-" + pad2(today.getDate());
+  var firstDay = new Date(calYear, calMonth, 1).getDay();
+  var daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  var grid = document.getElementById("cal-grid"); grid.innerHTML = "";
+  for (var i = 0; i < firstDay; i++) {
+    var empty = document.createElement("div"); empty.className = "cal-cell empty"; grid.appendChild(empty);
+  }
+  for (var d = 1; d <= daysInMonth; d++) {
+    var dateStr = calYear + "-" + pad2(calMonth+1) + "-" + pad2(d);
+    var cell = document.createElement("div");
+    var data = map[dateStr], cls = "cal-cell";
+    if (dateStr === todayStr) cls += " today";
+    if (data) { var rate = data.hits / data.total * 100; cls += rate >= 70 ? " rate-high" : rate >= 50 ? " rate-mid" : " rate-low"; }
+    cell.className = cls;
+    var dayEl = document.createElement("div"); dayEl.className = "cal-day"; dayEl.textContent = d; cell.appendChild(dayEl);
+    if (data) {
+      var rateStr = (data.hits / data.total * 100).toFixed(0);
+      var dataDiv = document.createElement("div"); dataDiv.className = "cal-data";
+      dataDiv.innerHTML = "<div class='cal-rate'>" + rateStr + "%</div><div class='cal-sub'>" + data.total + "射</div><div class='cal-sub'>" + data.hits + "中</div>";
+      cell.appendChild(dataDiv);
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function pad2(n) { return n < 10 ? "0"+n : ""+n; }
+
+/* ─── モーダル ─── */
+function openModal(id) {
+  var r = null;
+  for (var i = 0; i < records.length; i++) { if (records[i].id === id) { r = records[i]; break; } }
+  if (!r) return;
+  var rate = (r.hits/r.total*100).toFixed(1), d = new Date(r.date), dots = "";
+  for (var i = 0; i < r.arrows.length; i++) { dots += "<span class='dot "+(r.arrows[i]?"h":"m")+"'></span>"; }
+  document.getElementById("m-title").textContent = d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();
+  document.getElementById("m-body").innerHTML =
+    "<div class='sheet-row'><div class='sheet-lbl'>種別</div><div class='sheet-val'>"+(r.type||"–")+"</div></div>"
+    +"<div class='sheet-row'><div class='sheet-lbl'>距離</div><div class='sheet-val'>"+r.dist+"</div></div>"
+    +"<div class='sheet-row'><div class='sheet-lbl'>的中</div><div class='sheet-val'>"+r.hits+" 中 / "+r.total+" 射（"+rate+"%）<div class='rec-dots' style='margin-top:7px'>"+dots+"</div></div></div>"
+    +(r.memo?"<div class='sheet-row'><div class='sheet-lbl'>メモ</div><div class='sheet-val'>"+r.memo+"</div></div>":"");
+  document.getElementById("m-del-btn").onclick = function() { deleteRecord(id); };
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeModal() { document.getElementById("modal").classList.remove("open"); }
+
+/* ─── タブ切替 ─── */
+function switchTab(tab) {
+  var tabs = ["record","list","stats","cal"];
+  for (var i = 0; i < tabs.length; i++) {
+    document.getElementById("tab-"+tabs[i]).classList.toggle("active", tabs[i]===tab);
+    document.getElementById("section-"+tabs[i]).classList.toggle("active", tabs[i]===tab);
+  }
+  if (tab==="list")  renderList();
+  if (tab==="stats") renderStats();
+  if (tab==="cal")   renderCalendar();
+}
+
+function showToast(msg) {
+  var t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 2200);
+}
+
+})();
+</script>
+
+</body>
+</html>
