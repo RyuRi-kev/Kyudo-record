@@ -229,8 +229,8 @@ canvas { width: 100% !important; }
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-record">記録</button>
     <button class="tab-btn" id="tab-list">履歴</button>
-    <button class="tab-btn" id="tab-stats">統計</button>
     <button class="tab-btn" id="tab-cal">暦</button>
+    <button class="tab-btn" id="tab-stats">統計</button>
     <button class="tab-btn" id="tab-setting">設定</button>
   </div>
   <div class="sync-bar">
@@ -240,7 +240,6 @@ canvas { width: 100% !important; }
 
   <div class="content">
 
-```
 <!-- 記録 -->
 <div class="section active" id="section-record">
   <div class="card">
@@ -350,6 +349,10 @@ canvas { width: 100% !important; }
 
 <!-- 統計 -->
 <div class="section" id="section-stats">
+  <!-- 弓道場フィルター（初期:すべて） -->
+  <div class="dojo-select-wrap" id="stats-dojo-wrap" style="margin-bottom:14px">
+    <select id="stats-dojo-sel"></select>
+  </div>
   <div class="stats-grid" id="stats-grid"></div>
   <div class="chart-section-label">日別</div>
   <div class="filter-bar" id="filter-bar">
@@ -366,23 +369,6 @@ canvas { width: 100% !important; }
   <div class="chart-section-label" id="lbl-yearly" style="display:none">年別</div>
   <div class="chart-card" id="cc5" style="display:none"><div class="chart-heading">的中率の推移（年別）</div><canvas id="cr-y"></canvas></div>
   <div class="chart-card" id="cc6" style="display:none"><div class="chart-heading">的中数 / 射数（年別）</div><canvas id="ch-y"></canvas></div>
-  <!-- 弓道場別 -->
-  <div class="chart-section-label" id="lbl-dojo" style="display:none">弓道場別</div>
-  <div class="dojo-select-wrap" id="dojo-select-wrap" style="display:none">
-    <select id="stats-dojo-sel"></select>
-  </div>
-  <div class="filter-bar" id="filter-bar-dojo" style="display:none">
-    <button class="filter-btn active" data-n="10">直近10日</button>
-    <button class="filter-btn" data-n="20">直近20日</button>
-    <button class="filter-btn" data-n="30">直近30日</button>
-    <button class="filter-btn" data-n="0">全期間</button>
-  </div>
-  <div class="chart-card" id="dc1" style="display:none"><div class="chart-heading">的中率の推移（日別）</div><canvas id="dcr"></canvas></div>
-  <div class="chart-card" id="dc2" style="display:none"><div class="chart-heading">的中数 / 射数（日別）</div><canvas id="dch"></canvas></div>
-  <div class="chart-card" id="dc3" style="display:none"><div class="chart-heading">的中率の推移（月別）</div><canvas id="dcr-m"></canvas></div>
-  <div class="chart-card" id="dc4" style="display:none"><div class="chart-heading">的中数 / 射数（月別）</div><canvas id="dch-m"></canvas></div>
-  <div class="chart-card" id="dc5" style="display:none"><div class="chart-heading">的中率の推移（年別）</div><canvas id="dcr-y"></canvas></div>
-  <div class="chart-card" id="dc6" style="display:none"><div class="chart-heading">的中数 / 射数（年別）</div><canvas id="dch-y"></canvas></div>
   <!-- データ管理 -->
   <div class="chart-section-label" style="margin-top:24px">データ管理</div>
   <div class="data-card">
@@ -425,7 +411,6 @@ canvas { width: 100% !important; }
     <div class="dojo-list" id="dojo-list"></div>
   </div>
 </div>
-```
 
   </div>
 </div>
@@ -515,11 +500,21 @@ function refreshAll(){
 
 /* ── 弓道場セレクト更新 ── */
 function refreshDojoSelects(){
-  // 記録フォーム
-  rebuildSelect("input-dojo", selDojo, [{id:"",name:"（未選択）"}].concat(dojos));
-  // 統計弓道場別
-  rebuildSelect("stats-dojo-sel", statsDojoId || (dojos[0]&&dojos[0].id)||"", dojos);
+  // 記録フォーム：初期選択を1番目の弓道場に
+  var prevDojo = selDojo;
+  rebuildSelect("input-dojo", "", [{id:"",name:"（未選択）"}].concat(dojos));
+  // selDojoが空（未設定）かつ弓道場がある場合は1番目を選択
+  if(!prevDojo && dojos.length){
+    selDojo = dojos[0].id;
+    document.getElementById("input-dojo").value = selDojo;
+  } else {
+    document.getElementById("input-dojo").value = selDojo;
+  }
+
+  // 統計：「すべて」を先頭にして初期はすべて
+  rebuildSelect("stats-dojo-sel", statsDojoId, [{id:"",name:"すべて"}].concat(dojos));
   statsDojoId = document.getElementById("stats-dojo-sel").value;
+
   // 暦
   rebuildSelect("cal-dojo-sel", calDojoId || (dojos[0]&&dojos[0].id)||"", [{id:"",name:"すべて"}].concat(dojos));
   if(!calDojoId && dojos.length){ calDojoId = dojos[0].id; document.getElementById("cal-dojo-sel").value = calDojoId; }
@@ -684,8 +679,8 @@ function initUI(){
   document.getElementById("cal-prev").addEventListener("click",function(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
   document.getElementById("cal-next").addEventListener("click",function(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
   document.getElementById("cal-dojo-sel").addEventListener("change",function(){ calDojoId=this.value; renderCalendar(); });
-  // 統計弓道場別
-  document.getElementById("stats-dojo-sel").addEventListener("change",function(){ statsDojoId=this.value; renderDojoCharts(); });
+  // 統計弓道場別プルダウン
+  document.getElementById("stats-dojo-sel").addEventListener("change",function(){ statsDojoId=this.value; renderStats(); });
   // エクスポート/インポート
   document.getElementById("btn-export").addEventListener("click",exportData);
   document.getElementById("btn-import").addEventListener("click",function(){ document.getElementById("import-file-input").value=""; document.getElementById("import-file-input").click(); });
@@ -856,8 +851,7 @@ function applyListFilter(recs){
 
 /* ── フィルターバー初期化 ── */
 function initFilterBars(){
-  bindFilterBar("#filter-bar .filter-btn",      function(n){ dailyFilter=n;     renderCharts(); });
-  bindFilterBar("#filter-bar-dojo .filter-btn", function(n){ dailyFilterDojo=n; renderDojoCharts(); });
+  bindFilterBar("#filter-bar .filter-btn", function(n){ dailyFilter=n; renderCharts(); });
 }
 function bindFilterBar(sel,cb){
   var btns=document.querySelectorAll(sel);
@@ -871,24 +865,21 @@ function bindFilterBar(sel,cb){
 function renderStats(){
   var grid=document.getElementById("stats-grid");
   var mainIds=["cc1","cc2","cc3","cc4","cc5","cc6","lbl-monthly","lbl-yearly","filter-bar"];
-  var dojoIds=["lbl-dojo","dojo-select-wrap","filter-bar-dojo","dc1","dc2","dc3","dc4","dc5","dc6"];
-  if(!records.length){
+
+  // 弓道場フィルター適用
+  var filtered = statsDojoId
+    ? records.filter(function(r){ return r.dojoId===statsDojoId; })
+    : records;
+
+  if(!filtered.length){
     grid.innerHTML=sc("–","Average Rate")+sc("–","Sessions")+sc("–","Total Hits")+sc("–","Total Arrows");
-    mainIds.concat(dojoIds).forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display="none"; });
+    mainIds.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display="none"; });
     return;
   }
-  var th=0,ta=0; records.forEach(function(r){ th+=r.hits; ta+=r.total; });
-  grid.innerHTML=sc((th/ta*100).toFixed(1)+"%","Average Rate")+sc(records.length,"Sessions")+sc(th,"Total Hits")+sc(ta,"Total Arrows");
+  var th=0,ta=0; filtered.forEach(function(r){ th+=r.hits; ta+=r.total; });
+  grid.innerHTML=sc((th/ta*100).toFixed(1)+"%","Average Rate")+sc(filtered.length,"Sessions")+sc(th,"Total Hits")+sc(ta,"Total Arrows");
   mainIds.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display=id==="filter-bar"?"flex":"block"; });
-  renderCharts();
-  if(dojos.length){
-    dojoIds.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display=id==="filter-bar-dojo"?"flex":"block"; });
-    if(!statsDojoId) statsDojoId=dojos[0].id;
-    document.getElementById("stats-dojo-sel").value=statsDojoId;
-    renderDojoCharts();
-  } else {
-    dojoIds.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display="none"; });
-  }
+  renderCharts(filtered);
 }
 function sc(v,l){ return "<div class='stat-card'><div class='stat-val'>"+v+"</div><div class='stat-lbl'>"+l+"</div></div>"; }
 
@@ -914,14 +905,15 @@ function buildYearly(recs){
   return {labels:L,rates:R,hits:H,totals:T};
 }
 
-function renderCharts(){
+function renderCharts(recs){
+  if(!recs) recs=records;
   destroyCharts(["cr","ch","cr-m","ch-m","cr-y","ch-y"]);
-  mkLine("cr",  buildDaily(records,dailyFilter));
-  mkBar( "ch",  buildDaily(records,dailyFilter));
-  mkLine("cr-m",buildMonthly(records));
-  mkBar( "ch-m",buildMonthly(records));
-  mkLine("cr-y",buildYearly(records));
-  mkBar( "ch-y",buildYearly(records));
+  mkLine("cr",  buildDaily(recs,dailyFilter));
+  mkBar( "ch",  buildDaily(recs,dailyFilter));
+  mkLine("cr-m",buildMonthly(recs));
+  mkBar( "ch-m",buildMonthly(recs));
+  mkLine("cr-y",buildYearly(recs));
+  mkBar( "ch-y",buildYearly(recs));
 }
 function renderDojoCharts(){
   destroyCharts(["dcr","dch","dcr-m","dch-m","dcr-y","dch-y"]);
@@ -998,7 +990,7 @@ function closeModal(){ document.getElementById("modal").classList.remove("open")
 
 /* ── タブ切替 ── */
 function switchTab(tab){
-  ["record","list","stats","cal","setting"].forEach(function(t){
+  ["record","list","cal","stats","setting"].forEach(function(t){
     document.getElementById("tab-"+t).classList.toggle("active",t===tab);
     document.getElementById("section-"+t).classList.toggle("active",t===tab);
   });
