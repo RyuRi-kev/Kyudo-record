@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>弓道記録</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -349,9 +349,35 @@ canvas { width: 100% !important; }
 
 <!-- 統計 -->
 <div class="section" id="section-stats">
-  <!-- 弓道場フィルター（初期:すべて） -->
-  <div class="dojo-select-wrap" id="stats-dojo-wrap" style="margin-bottom:14px">
-    <select id="stats-dojo-sel"></select>
+  <!-- フィルター（履歴と同デザイン） -->
+  <div class="list-filter-wrap">
+    <div class="list-filter-row">
+      <span class="list-filter-label">種別</span>
+      <div class="list-filter-chips" id="sf-type">
+        <span class="lf-chip on" data-v="">すべて</span>
+        <span class="lf-chip" data-v="稽古">稽古</span>
+        <span class="lf-chip" data-v="大会">大会</span>
+        <span class="lf-chip" data-v="審査">審査</span>
+      </div>
+    </div>
+    <div class="list-filter-row">
+      <span class="list-filter-label">距離</span>
+      <div class="list-filter-chips" id="sf-dist">
+        <span class="lf-chip on" data-v="">すべて</span>
+        <span class="lf-chip" data-v="近的（28m）">近的</span>
+        <span class="lf-chip" data-v="遠的（60m）">遠的</span>
+      </div>
+    </div>
+    <div class="list-filter-row">
+      <span class="list-filter-label">道場</span>
+      <div class="list-filter-chips lf-dojo-scroll" id="sf-dojo">
+        <span class="lf-chip on" data-v="">すべて</span>
+      </div>
+    </div>
+    <div class="list-filter-footer" style="border-top:none;padding-top:0;margin-top:4px">
+      <span></span>
+      <button class="lf-reset-btn" id="sf-reset">リセット</button>
+    </div>
   </div>
   <div class="stats-grid" id="stats-grid"></div>
   <div class="chart-section-label">日別</div>
@@ -461,7 +487,8 @@ var LS_DOJO = "kyudo_dojos";
 var records = [], dojos = [], hitStates = [];
 var selDist = "近的（28m）", selType = "稽古", selDojo = "", arrowCount = 8;
 var calYear = new Date().getFullYear(), calMonth = new Date().getMonth(), calDojoId = "";
-var dailyFilter = 10, dailyFilterDojo = 10, statsDojoId = "";
+var dailyFilter = 10, dailyFilterDojo = 10;
+var statsFilter = { type:"", dist:"", dojo:"" };
 var listFilter  = { type:"", dist:"", dojo:"", dateFrom:"", dateTo:"", memo:"" };
 var pendingDelId = null, pendingDelFrom = null, pendingImport = null;
 var charts = {};
@@ -478,7 +505,7 @@ setTimeout(function(){
   setTimeout(function(){
     s.style.display = "none";
     document.getElementById("main-app").style.display = "flex";
-    loadData(); initHeader(); initGrid(); initUI(); initFilterBars(); initListFilter(); refreshAll();
+    loadData(); initHeader(); initGrid(); initUI(); initFilterBars(); initListFilter(); initStatsFilter(); refreshAll();
   }, 500);
 }, 1500);
 
@@ -503,7 +530,6 @@ function refreshDojoSelects(){
   // 記録フォーム：初期選択を1番目の弓道場に
   var prevDojo = selDojo;
   rebuildSelect("input-dojo", "", [{id:"",name:"（未選択）"}].concat(dojos));
-  // selDojoが空（未設定）かつ弓道場がある場合は1番目を選択
   if(!prevDojo && dojos.length){
     selDojo = dojos[0].id;
     document.getElementById("input-dojo").value = selDojo;
@@ -511,15 +537,13 @@ function refreshDojoSelects(){
     document.getElementById("input-dojo").value = selDojo;
   }
 
-  // 統計：「すべて」を先頭にして初期はすべて
-  rebuildSelect("stats-dojo-sel", statsDojoId, [{id:"",name:"すべて"}].concat(dojos));
-  statsDojoId = document.getElementById("stats-dojo-sel").value;
+  // 暦：初期は「すべて」
+  rebuildSelect("cal-dojo-sel", calDojoId, [{id:"",name:"すべて"}].concat(dojos));
 
-  // 暦
-  rebuildSelect("cal-dojo-sel", calDojoId || (dojos[0]&&dojos[0].id)||"", [{id:"",name:"すべて"}].concat(dojos));
-  if(!calDojoId && dojos.length){ calDojoId = dojos[0].id; document.getElementById("cal-dojo-sel").value = calDojoId; }
   // 履歴フィルターチップ
   rebuildDojoChips();
+  // 統計フィルターチップ（道場）
+  rebuildStatsDojoChips();
 }
 function rebuildSelect(id, curVal, list){
   var sel = document.getElementById(id);
@@ -551,6 +575,27 @@ function rebuildDojoChips(){
       this.classList.add("on");
       listFilter.dojo = this.getAttribute("data-v");
       renderList();
+    });
+  });
+}
+function rebuildStatsDojoChips(){
+  var wrap = document.getElementById("sf-dojo");
+  if(!wrap) return;
+  var cur = statsFilter.dojo;
+  wrap.innerHTML = '<span class="lf-chip'+(cur===""?" on":"")+'" data-v="">すべて</span>';
+  dojos.forEach(function(d){
+    var c = document.createElement("span");
+    c.className = "lf-chip"+(cur===d.id?" on":"");
+    c.setAttribute("data-v", d.id);
+    c.textContent = d.name;
+    wrap.appendChild(c);
+  });
+  wrap.querySelectorAll(".lf-chip").forEach(function(c){
+    c.addEventListener("click", function(){
+      wrap.querySelectorAll(".lf-chip").forEach(function(x){ x.classList.remove("on"); });
+      this.classList.add("on");
+      statsFilter.dojo = this.getAttribute("data-v");
+      renderStats();
     });
   });
 }
@@ -679,8 +724,7 @@ function initUI(){
   document.getElementById("cal-prev").addEventListener("click",function(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
   document.getElementById("cal-next").addEventListener("click",function(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
   document.getElementById("cal-dojo-sel").addEventListener("change",function(){ calDojoId=this.value; renderCalendar(); });
-  // 統計弓道場別プルダウン
-  document.getElementById("stats-dojo-sel").addEventListener("change",function(){ statsDojoId=this.value; renderStats(); });
+  // 統計弓道場別プルダウン（旧select削除済み・チップはinitStatsFilter）
   // エクスポート/インポート
   document.getElementById("btn-export").addEventListener("click",exportData);
   document.getElementById("btn-import").addEventListener("click",function(){ document.getElementById("import-file-input").value=""; document.getElementById("import-file-input").click(); });
@@ -836,6 +880,24 @@ function initListFilter(){
     rebuildDojoChips(); renderList();
   });
 }
+function initStatsFilter(){
+  function bindGrp(gid,key){
+    var w=document.getElementById(gid); if(!w) return;
+    w.querySelectorAll(".lf-chip").forEach(function(c){ c.addEventListener("click",function(){
+      w.querySelectorAll(".lf-chip").forEach(function(x){x.classList.remove("on");}); this.classList.add("on");
+      statsFilter[key]=this.getAttribute("data-v"); renderStats();
+    });});
+  }
+  bindGrp("sf-type","type"); bindGrp("sf-dist","dist");
+  document.getElementById("sf-reset").addEventListener("click",function(){
+    statsFilter={type:"",dist:"",dojo:""};
+    document.querySelectorAll("#sf-type .lf-chip,#sf-dist .lf-chip").forEach(function(c){
+      c.classList.toggle("on",c.getAttribute("data-v")==="");
+    });
+    rebuildStatsDojoChips();
+    renderStats();
+  });
+}
 function applyListFilter(recs){
   return recs.filter(function(r){
     if(listFilter.type     && r.type!==listFilter.type)     return false;
@@ -851,7 +913,10 @@ function applyListFilter(recs){
 
 /* ── フィルターバー初期化 ── */
 function initFilterBars(){
-  bindFilterBar("#filter-bar .filter-btn", function(n){ dailyFilter=n; renderCharts(); });
+  bindFilterBar("#filter-bar .filter-btn", function(n){
+    dailyFilter = n;
+    renderCharts(applyStatsFilter());
+  });
 }
 function bindFilterBar(sel,cb){
   var btns=document.querySelectorAll(sel);
@@ -861,15 +926,22 @@ function bindFilterBar(sel,cb){
   });});
 }
 
+/* ── 統計フィルター適用ヘルパー ── */
+function applyStatsFilter(){
+  return records.filter(function(r){
+    if(statsFilter.type && r.type   !== statsFilter.type)  return false;
+    if(statsFilter.dist && r.dist   !== statsFilter.dist)  return false;
+    if(statsFilter.dojo && r.dojoId !== statsFilter.dojo)  return false;
+    return true;
+  });
+}
+
 /* ── 統計 ── */
 function renderStats(){
   var grid=document.getElementById("stats-grid");
   var mainIds=["cc1","cc2","cc3","cc4","cc5","cc6","lbl-monthly","lbl-yearly","filter-bar"];
 
-  // 弓道場フィルター適用
-  var filtered = statsDojoId
-    ? records.filter(function(r){ return r.dojoId===statsDojoId; })
-    : records;
+  var filtered = applyStatsFilter();
 
   if(!filtered.length){
     grid.innerHTML=sc("–","Average Rate")+sc("–","Sessions")+sc("–","Total Hits")+sc("–","Total Arrows");
