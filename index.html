@@ -494,6 +494,10 @@ textarea::placeholder{color:var(--text4);-webkit-text-fill-color:var(--text4)}
 </div>
 
 <div class="section" id="section-setting">
+<div class="card">
+    <div class="setting-label">カラーテーマ</div>
+    <div id="theme-btns" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+  </div>
   <div class="card">
     <div class="setting-label">弓道場の管理</div>
     <div class="dojo-add-row">
@@ -709,6 +713,38 @@ function initUI(){
   document.getElementById('yazo-btn-plus').addEventListener('click',function(){if(yazoCount>=24)return;yazoCount+=2;document.getElementById('yazo-count-disp').textContent=yazoCount+'\u5c04';updateYazo();});
   document.getElementById('btn-undo').addEventListener('click',function(){if(!yazoArrows.length)return;yazoArrows.pop();updateYazo();});
   document.getElementById('btn-yazo-reset').addEventListener('click',function(){yazoArrows=[];updateYazo();});
+    // テーマボタン生成
+  var themeMeta={
+    dark:     {label:'黒',     color:'#c8c8c8', bg:'#111111'},
+    sakura:   {label:'桜',         color:'#B83258', bg:'#FDF0F2'},
+    bamboo:   {label:'竹',         color:'#3D6B4F', bg:'#F2F7EF'},
+    wisteria: {label:'藤',         color:'#9B6BB5', bg:'#F5F0F8'},
+    sky:      {label:'空',         color:'#1A3A6B', bg:'#F0F5F8'},
+    maple:    {label:'楓',       color:'#C03828', bg:'#FDF5EE'},
+    white:    {label:'白',   color:'#1a1a1a', bg:'#ffffff'},
+  };
+  var tbWrap=document.getElementById('theme-btns');
+  Object.keys(themeMeta).forEach(function(key){
+    var m=themeMeta[key];
+    var btn=document.createElement('button');
+    btn.setAttribute('data-theme',key);
+    btn.style.cssText='flex:1;min-width:72px;padding:10px 4px;border-radius:8px;border:2px solid transparent;background:'+m.bg+';color:'+m.color+';font-family:"BIZ UDGothic",sans-serif;font-size:12px;font-weight:700;cursor:pointer;';
+    btn.textContent=m.label;
+    btn.addEventListener('click',function(){
+      applyTheme(this.getAttribute('data-theme'));
+      updateThemeBtns();
+    });
+    tbWrap.appendChild(btn);
+  });
+
+  function updateThemeBtns(){
+    tbWrap.querySelectorAll('button').forEach(function(b){
+      var active=b.getAttribute('data-theme')===currentTheme;
+      b.style.borderColor=active?themeMeta[b.getAttribute('data-theme')].color:'transparent';
+      b.style.opacity=active?'1':'0.65';
+    });
+  }
+  updateThemeBtns();
 }
 function setInputMode(mode){
   inputMode=mode;var btn=document.getElementById('mode-yazo-btn');
