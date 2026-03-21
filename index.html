@@ -1162,7 +1162,8 @@ function mkBar(id,data,gridId){
     var barHit=document.createElement('div');barHit.className='vbar-hit';
     // ツールチップ
     var tip=document.createElement('div');tip.className='vbullet-tip';
-    tip.innerHTML='<div class="tip-label">'+label+'</div><span class="tip-hit">'+data.hits[i]+'中</span><span class="tip-total"> / '+data.totals[i]+'射</span>';
+    var F='"BIZ UDGothic",sans-serif';
+    tip.innerHTML='<div class="tip-label" style="font-family:'+F+';font-size:9px;font-weight:400;color:#888;margin-bottom:3px">'+label+'</div><span class="tip-hit" style="font-family:'+F+';font-size:11px;font-weight:700;color:#f0f0f0">'+data.hits[i]+'中</span><span class="tip-total" style="font-family:'+F+';font-size:11px;font-weight:400;color:#888"> / '+data.totals[i]+'射</span>';
     track.appendChild(barTotal);track.appendChild(barHit);track.appendChild(tip);
     // タップ／クリックで表示トグル
     var allTips=[];
