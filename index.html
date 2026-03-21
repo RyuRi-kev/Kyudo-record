@@ -593,7 +593,7 @@ function applyTheme(name){
   HIT_COLOR=t.HIT;MISS_COLOR=t.MISS;
   try{localStorage.setItem(LS_THEME,name);}catch(e){}
 }
-
+try{var _t=localStorage.getItem(LS_THEME);if(_t&&THEMES[_t])applyTheme(_t);}catch(e){}
 for(var i=0;i<4;i++)hitStates.push(false);
 
 setTimeout(function(){
