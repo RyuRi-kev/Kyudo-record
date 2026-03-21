@@ -566,7 +566,7 @@ var inputMode='grid';
 var yazoArrows=[],yazoCount=4;
 var tCanvas,tCtx,tSize=0,pCanvas,pCtx,pSize=0,mpCanvas,mpCtx,mpSize=0;
 var HIT_COLOR='rgba(184,50,88,0.88)';
-var MISS_COLOR='rgba(210,50,50,0.85)';
+var MISS_COLOR='rgba(106,153,60,0.85)';
 for(var i=0;i<4;i++)hitStates.push(false);
 
 setTimeout(function(){
@@ -770,7 +770,7 @@ function drawPlotCanvas(data){
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(184,50,88,0.4)';ctx.lineWidth=1.5;ctx.stroke();
   if(!data.length){ctx.fillStyle='#B08090';ctx.font='12px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);document.getElementById('plot-summary').textContent='-';return;}
   var hits=0;
-  data.forEach(function(a){var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle=a.hit?'rgba(184,50,88,0.82)':'rgba(210,50,50,0.75)';ctx.fill();if(a.hit)hits++;});
+  data.forEach(function(a){var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle=a.hit?'rgba(184,50,88,0.82)':'rgba(106,153,60,0.75)';ctx.fill();if(a.hit)hits++;});
   document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+(hits/data.length*100).toFixed(1)+'%';
 }
 function initModalPlotCanvas(){mpCanvas=document.getElementById('modal-plot-canvas');mpCtx=mpCanvas.getContext('2d');}
@@ -787,7 +787,7 @@ function drawModalPlot(arrows){
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(184,50,88,0.4)';ctx.lineWidth=1.5;ctx.stroke();
   var dotR=Math.max(7,s*0.038);
   yazoArr.forEach(function(a,idx){
-    var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);ctx.fillStyle=a.hit?'rgba(184,50,88,0.88)':'rgba(210,50,50,0.82)';ctx.fill();
+    var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);ctx.fillStyle=a.hit?'rgba(184,50,88,0.88)':'rgba(106,153,60,0.82)';ctx.fill();
     ctx.fillStyle=a.hit?'#f8e4ea':'#fff';ctx.font='bold '+(dotR*0.9)+'px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(a.no!=null?a.no:(idx+1),px,py+0.5);
   });
 }
