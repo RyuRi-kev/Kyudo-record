@@ -993,11 +993,19 @@ function renderCharts(recs){
 function destroyCharts(ids){ids.forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}else{var el=document.getElementById(id);if(el&&el.classList.contains('vbullet-chart')){el.querySelectorAll('.vbullet-col').forEach(function(c){c.remove();});var g=el.querySelector('.vbullet-grid');if(g)g.innerHTML=';'}}});}
 function mkLine(id,data){
   var ctx=document.getElementById(id).getContext('2d');
-  var g=ctx.createLinearGradient(0,0,0,180);g.addColorStop(0,'rgba(200,200,200,0.18)');g.addColorStop(1,'rgba(200,200,200,0)');
-  charts[id]=new Chart(ctx,{type:'line',data:{labels:data.labels,datasets:[{data:data.rates,borderColor:'#aaaaaa',backgroundColor:g,borderWidth:1.5,pointBackgroundColor:'#c8c8c8',pointBorderColor:'#111111',pointBorderWidth:2,pointRadius:4,tension:0,fill:true}]},
-    options:{responsive:true,animation:false,plugins:{legend:{display:false},tooltip:{displayColors:false,callbacks:{title:function(c){return c[0].label;},label:function(c){return c.parsed.y+'%';}},backgroundColor:'#fff',titleColor:'#888888',bodyColor:'#c8c8c8',borderColor:'rgba(255,255,255,0.2)',borderWidth:1,padding:10,cornerRadius:6,titleFont:{family:'BIZ UDGothic',size:9,weight:'normal'},bodyFont:{family:'BIZ UDGothic',size:11,weight:'bold'}}},
-    scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+'%';},color:'#888888',font:CFONT},grid:{color:'rgba(255,255,255,0.07)'}},x:{ticks:{color:'#888888',font:CFONT},grid:{display:false}}}}});
+  var t=THEMES[currentTheme];
+  var borderC=t['--sakura-d'];
+  var pointC=t['--crimson'];
+  var bgBase=t['--sakura-d'].replace('#','');
+  var r=parseInt(bgBase.substring(0,2),16),g=parseInt(bgBase.substring(2,4),16),b=parseInt(bgBase.substring(4,6),16);
+  var grad=ctx.createLinearGradient(0,0,0,180);
+  grad.addColorStop(0,'rgba('+r+','+g+','+b+',0.18)');
+  grad.addColorStop(1,'rgba('+r+','+g+','+b+',0)');
+  charts[id]=new Chart(ctx,{type:'line',data:{labels:data.labels,datasets:[{data:data.rates,borderColor:borderC,backgroundColor:grad,borderWidth:1.5,pointBackgroundColor:pointC,pointBorderColor:t['--bg'],pointBorderWidth:2,pointRadius:4,tension:0,fill:true}]},
+    options:{responsive:true,animation:false,plugins:{legend:{display:false},tooltip:{displayColors:false,callbacks:{title:function(c){return c[0].label;},label:function(c){return c.parsed.y+'%';}},backgroundColor:'#fff',titleColor:t['--text3'],bodyColor:t['--crimson'],borderColor:t['--border'],borderWidth:1,padding:10,cornerRadius:6,titleFont:{family:'BIZ UDGothic',size:9,weight:'normal'},bodyFont:{family:'BIZ UDGothic',size:11,weight:'bold'}}},
+    scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+'%';},color:t['--text3'],font:CFONT},grid:{color:t['--border2']}},x:{ticks:{color:t['--text3'],font:CFONT},grid:{display:false}}}}});
 }
+
 function mkBar(id,data,gridId){
   var container=document.getElementById(id);container.querySelectorAll('.vbullet-col').forEach(function(c){c.remove();});
   var grid=document.getElementById(gridId);if(grid)grid.innerHTML='';if(!data.labels.length)return;
