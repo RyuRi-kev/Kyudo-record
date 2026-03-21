@@ -908,7 +908,8 @@ function renderList(){
   var html='';
   filtered.forEach(function(r){
     var rate=(r.hits/r.total*100).toFixed(1),rn=parseFloat(rate);
-    var d=new Date(r.date),col=rn>=70?'#c8c8c8':rn>=50?'#aaaaaa':'#555555';
+    var t=THEMES[currentTheme];
+    var d=new Date(r.date),col=rn>=70?t['--crimson']:rn>=50?t['--sakura-d']:t['--text4'];
     var hasYazo=r.arrows&&r.arrows.some(function(a){return a&&a.x!=null;});
     var dots=(r.arrows||[]).map(function(a){var h=typeof a==='boolean'?a:(a&&a.hit);return "<span class='dot "+(h?'h':'m')+"'></span>";}).join('');
     var dname=r.dojoId?dojoName(r.dojoId):'';
