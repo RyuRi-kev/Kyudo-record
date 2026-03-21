@@ -737,14 +737,14 @@ function initUI(){
     tbWrap.appendChild(btn);
   });
 
-  function updateThemeBtns(){
-    tbWrap.querySelectorAll('button').forEach(function(b){
-      var active=b.getAttribute('data-theme')===currentTheme;
-      b.style.borderColor=active?themeMeta[b.getAttribute('data-theme')].color:'transparent';
-      b.style.opacity=active?'1':'0.65';
-    });
-  }
-  updateThemeBtns();
+function updateThemeBtns(){
+  tbWrap.querySelectorAll('button').forEach(function(b){
+    var key=b.getAttribute('data-theme');
+    var active=key===currentTheme;
+    b.style.borderColor=active?themeMeta[key].color:'transparent';
+    b.style.opacity=active?'1':'0.65';
+    b.style.fontWeight=active?'700':'400';
+  });
 }
 function setInputMode(mode){
   inputMode=mode;var btn=document.getElementById('mode-yazo-btn');
