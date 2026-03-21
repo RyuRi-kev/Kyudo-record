@@ -795,22 +795,23 @@ function updateYazo(){
 }
 function drawTargetCanvas(){
   if(!tCtx||!tSize)return;
+  var t=THEMES[currentTheme];
   var ctx=tCtx,s=tSize,cx=s/2,cy=s/2,R=s*0.31;
   ctx.clearRect(0,0,s,s);
-  ctx.fillStyle='#3a3a3a';ctx.fillRect(0,0,s,s);
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle='#888888';ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.65)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,s);
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=t['--card'];ctx.fill();
+  ctx.strokeStyle=t['--border'];ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=t['--sakura-d'];ctx.lineWidth=1.5;ctx.stroke();
   var dotR=Math.max(7,s*0.032);
   yazoArrows.forEach(function(a){
     var px=cx+a.x*R,py=cy+a.y*R;
     ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();
-    ctx.fillStyle=a.hit?'#333333':'#fff';ctx.font='bold '+(dotR*0.95)+'px BIZ UDGothic,sans-serif';
+    ctx.fillStyle=a.hit?t['--chip-bg']:t['--card'];ctx.font='bold '+(dotR*0.95)+'px BIZ UDGothic,sans-serif';
     ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(a.no,px,py+0.5);
   });
   if(yazoArrows.length>=yazoCount){
-    ctx.fillStyle='rgba(50,50,50,0.45)';ctx.fillRect(0,0,s,s);
-    ctx.fillStyle='rgba(255,255,255,0.9)';ctx.font='bold 13px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('入力完了',cx,cy);
+    ctx.fillStyle=t['--border2'];ctx.fillRect(0,0,s,s);
+    ctx.fillStyle=t['--crimson'];ctx.font='bold 13px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('入力完了',cx,cy);
   }
 }
 function initPlotCanvas(){pCanvas=document.getElementById('plot-canvas');pCtx=pCanvas.getContext('2d');}
@@ -820,14 +821,15 @@ function resizePlotCanvas(){
 }
 function drawPlotCanvas(data){
   if(!pCtx||!pSize)return;
+  var t=THEMES[currentTheme];
   var ctx=pCtx,s=pSize,cx=s/2,cy=s/2,R=s*0.31;
-  ctx.clearRect(0,0,s,s);ctx.fillStyle='#3a3a3a';ctx.fillRect(0,0,s,s);
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle='#888888';ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.65)';ctx.lineWidth=1.5;ctx.stroke();
-  if(!data.length){ctx.fillStyle='#888888';ctx.font='12px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);document.getElementById('plot-summary').textContent='-';return;}
+  ctx.clearRect(0,0,s,s);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,s);
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=t['--card'];ctx.fill();
+  ctx.strokeStyle=t['--border'];ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=t['--sakura-d'];ctx.lineWidth=1.5;ctx.stroke();
+  if(!data.length){ctx.fillStyle=t['--text3'];ctx.font='12px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);document.getElementById('plot-summary').textContent='-';return;}
   var hits=0;
-  data.forEach(function(a){var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle=a.hit?'rgba(255,255,255,0.82)':'rgba(210,50,50,0.75)';ctx.fill();if(a.hit)hits++;});
+  data.forEach(function(a){var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();if(a.hit)hits++;});
   document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+(hits/data.length*100).toFixed(1)+'%';
 }
 function initModalPlotCanvas(){mpCanvas=document.getElementById('modal-plot-canvas');mpCtx=mpCanvas.getContext('2d');}
@@ -835,17 +837,18 @@ function drawModalPlot(arrows){
   var wrap=document.getElementById('modal-plot-wrap'),yazoArr=arrows.filter(function(a){return a&&a.x!=null;});
   if(!yazoArr.length){wrap.style.display='none';return;}
   wrap.style.display='block';
+  var t=THEMES[currentTheme];
   var dpr=window.devicePixelRatio||1,rect=mpCanvas.parentElement.getBoundingClientRect();
   mpSize=rect.width;mpCanvas.width=mpSize*dpr;mpCanvas.height=mpSize*dpr;mpCtx=mpCanvas.getContext('2d');mpCtx.scale(dpr,dpr);
   var ctx=mpCtx,s=mpSize,cx=s/2,cy=s/2,R=s*0.31;
-  ctx.clearRect(0,0,s,s);ctx.fillStyle='#3a3a3a';ctx.fillRect(0,0,s,s);
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle='#888888';ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.65)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.clearRect(0,0,s,s);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,s);
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=t['--card'];ctx.fill();
+  ctx.strokeStyle=t['--border'];ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=t['--sakura-d'];ctx.lineWidth=1.5;ctx.stroke();
   var dotR=Math.max(7,s*0.038);
   yazoArr.forEach(function(a,idx){
-    var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);ctx.fillStyle=a.hit?'rgba(255,255,255,0.88)':'rgba(210,50,50,0.82)';ctx.fill();
-    ctx.fillStyle=a.hit?'#333333':'#fff';ctx.font='bold '+(dotR*0.9)+'px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(a.no!=null?a.no:(idx+1),px,py+0.5);
+    var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();
+    ctx.fillStyle=a.hit?t['--chip-bg']:t['--card'];ctx.font='bold '+(dotR*0.9)+'px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(a.no!=null?a.no:(idx+1),px,py+0.5);
   });
 }
 function saveRecord(){
@@ -1007,6 +1010,7 @@ function mkLine(id,data){
 }
 
 function mkBar(id,data,gridId){
+  var t=THEMES[currentTheme];
   var container=document.getElementById(id);container.querySelectorAll('.vbullet-col').forEach(function(c){c.remove();});
   var grid=document.getElementById(gridId);if(grid)grid.innerHTML='';if(!data.labels.length)return;
   var maxTotal=Math.max.apply(null,data.totals);
@@ -1015,7 +1019,9 @@ function mkBar(id,data,gridId){
     var col=document.createElement('div');col.className='vbullet-col';
     var track=document.createElement('div');track.className='vbullet-track';
     var barTotal=document.createElement('div');barTotal.className='vbar-total';
+    barTotal.style.background=t['--border'];
     var barHit=document.createElement('div');barHit.className='vbar-hit';
+    barHit.style.background=t['--sakura-d'];
     var tip=document.createElement('div');tip.className='vbullet-tip';
     var F='"BIZ UDGothic",sans-serif';
     tip.innerHTML='<div class="tip-label" style="font-family:'+F+'">'+label+'</div><span class="tip-hit" style="font-family:'+F+'">'+data.hits[i]+'中</span><span class="tip-total" style="font-family:'+F+'"> / '+data.totals[i]+'射</span>';
@@ -1026,6 +1032,7 @@ function mkBar(id,data,gridId){
     setTimeout(function(){barTotal.style.height=(data.totals[i]/maxTotal*100).toFixed(1)+'%';barHit.style.height=(data.hits[i]/maxTotal*100).toFixed(1)+'%';},80+i*40);
   });
 }
+
 function buildDailyMap(dojoId){var map={};records.forEach(function(r){if(dojoId&&r.dojoId!==dojoId)return;if(!map[r.date])map[r.date]={hits:0,total:0};map[r.date].hits+=r.hits;map[r.date].total+=r.total;});return map;}
 function renderCalendar(){
   document.getElementById('cal-title').textContent=calYear+' / '+(calMonth+1<10?'0':'')+(calMonth+1);
