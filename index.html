@@ -42,25 +42,25 @@ header{padding:28px 24px 0;flex-shrink:0}
 .field{margin-bottom:18px}
 .field-label{display:block;font-size:12px;font-weight:700;color:#888;letter-spacing:.08em;margin-bottom:8px}
 .divider{height:1px;background:rgba(255,255,255,.08);margin:16px 0}
-input[type=date]{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#f0f0f0;min-height:52px}
+input[type=date]{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:11px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#f0f0f0;min-height:42px}
 input[type=date]:focus{border-color:#c8c8c8}
 input[type=date]::-webkit-date-and-time-value{font-family:"BIZ UDGothic",sans-serif;font-size:15px;color:#f0f0f0;text-align:left}
 input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7);width:20px;height:20px;cursor:pointer}
 input[type=text]{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0}
 input[type=text]:focus{border-color:#c8c8c8}
 input[type=text]::placeholder{color:#555;-webkit-text-fill-color:#555}
-select{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+select{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:11px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
 select option{background:#222;color:#f0f0f0}
 textarea{width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:14px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0;resize:none;min-height:80px;line-height:1.7}
 textarea:focus{border-color:#c8c8c8}
 textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .memo-footer{display:flex;justify-content:flex-end;margin-top:5px}
 .memo-count{font-size:10px;color:#555}
-.chip-group{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:8px 16px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:14px;color:#888;cursor:pointer;transition:all .2s}
+.chip-group{display:flex;gap:8px}
+.chip{flex:1;padding:0 4px;min-height:42px;display:flex;align-items:center;justify-content:center;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:14px;color:#888;cursor:pointer;transition:all .2s;text-align:center}
 .chip.on{background:#fff;border-color:#fff;color:#333;font-weight:700}
 .type-chips{display:flex;gap:8px}
-.type-chip{flex:1;padding:9px 4px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:14px;color:#888;cursor:pointer;transition:all .2s;text-align:center}
+.type-chip{flex:1;padding:0 4px;min-height:42px;display:flex;align-items:center;justify-content:center;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:14px;color:#888;cursor:pointer;transition:all .2s;text-align:center}
 .type-chip.on{background:#fff;border-color:#fff;color:#333;font-weight:700}
 .arrow-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .arrow-hint{font-size:12px;color:#888}
@@ -173,9 +173,9 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .lf-dojo-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
 .lf-dojo-scroll::-webkit-scrollbar{display:none}
 .list-filter-date-row{display:flex;align-items:center;gap:6px;flex:1}
-.lf-date-input{flex:1;background:#222;border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:5px 8px;color:#f0f0f0;font-family:“BIZ UDGothic”,sans-serif;font-size:11px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0}
+.lf-date-input{flex:1;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:11px 16px;color:#f0f0f0;font-family:“BIZ UDGothic”,sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#f0f0f0;min-height:42px}
 .lf-date-input:focus{border-color:#c8c8c8}
-.lf-date-input::-webkit-calendar-picker-indicator{filter:invert(.5);width:14px;height:14px}
+.lf-date-input::-webkit-calendar-picker-indicator{filter:invert(.7);width:20px;height:20px;cursor:pointer}
 .lf-date-sep{font-size:11px;color:#666;flex-shrink:0}
 .list-filter-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
 .lf-count{font-size:11px;color:#666}
@@ -469,15 +469,6 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
     <div class="plot-wrap"><canvas id="plot-canvas"></canvas></div>
 
   </div>
-  <div class="chart-section-label" style="margin-top:24px">データ管理</div>
-  <div class="data-card">
-    <div class="data-card-title">バックアップ / 復元</div>
-    <div class="data-btn-row">
-      <button class="btn-data export" id="btn-export">エクスポート</button>
-      <button class="btn-data import" id="btn-import">インポート</button>
-    </div>
-  </div>
-  <input type="file" id="import-file-input" accept=".json">
 </div>
 
 <div class="section" id="section-cal">
@@ -505,9 +496,14 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
     </div>
     <div class="dojo-list" id="dojo-list"></div>
   </div>
-</div>
-
+  <div class="data-card">
+    <div class="data-card-title">バックアップ / 復元</div>
+    <div class="data-btn-row">
+      <button class="btn-data export" id="btn-export">エクスポート</button>
+      <button class="btn-data import" id="btn-import">インポート</button>
+    </div>
   </div>
+  <input type="file" id="import-file-input" accept=".json">
 </div>
 
 <div class="overlay" id="modal">
