@@ -314,7 +314,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
           <span class="arrow-hint">タップで的中 / 外を切替</span>
           <div class="count-ctrl">
             <button class="ctrl-btn" id="btn-minus">-</button>
-            <span class="ctrl-val" id="count-disp">8射</span>
+            <span class="ctrl-val" id="count-disp">4射</span>
             <button class="ctrl-btn" id="btn-plus">+</button>
           </div>
         </div>
@@ -323,7 +323,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
           <div class="hit-fraction">
             <span class="hit-num" id="hit-num">0</span>
             <span class="hit-sep">中</span>
-            <span class="hit-total-disp" id="hit-total">/ 8</span>
+            <span class="hit-total-disp" id="hit-total">/ 4</span>
           </div>
           <div class="hit-rate-disp" id="hit-rate">0.0%</div>
         </div>
@@ -333,7 +333,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
           <span class="arrow-hint">的をタップして矢所を記録</span>
           <div class="count-ctrl">
             <button class="ctrl-btn" id="yazo-btn-minus">-</button>
-            <span class="ctrl-val" id="yazo-count-disp">8射</span>
+            <span class="ctrl-val" id="yazo-count-disp">4射</span>
             <button class="ctrl-btn" id="yazo-btn-plus">+</button>
           </div>
         </div>
@@ -347,7 +347,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
             </div>
             <div class="yazo-rate" id="yazo-rate">0.0%</div>
           </div>
-          <div class="yazo-remain" id="yazo-remain">残 8本</div>
+          <div class="yazo-remain" id="yazo-remain">残 4本</div>
         </div>
         <div class="yazo-btn-row">
           <button class="btn-undo" id="btn-undo" disabled>&#x21A9; 取消</button>
@@ -548,7 +548,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 (function(){
 var LS_REC='kyudo_records',LS_DOJO='kyudo_dojos';
 var records=[],dojos=[],hitStates=[];
-var selDist='\u8fd1\u7684\uff0828m\uff09',selType='\u7a3d\u53e4',selDojo='',arrowCount=8;
+var selDist='\u8fd1\u7684\uff0828m\uff09',selType='\u7a3d\u53e4',selDojo='',arrowCount=4;
 var calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calDojoId='';
 var dailyFilter=10;
 var statsFilter={type:'',dist:'',dojo:''};
@@ -559,11 +559,11 @@ var dragSrcIdx=null,touchSrcIdx=null,touchClone=null;
 var dateLabelMap={'\u7a3d\u53e4':'\u7a3d\u53e4\u65e5','\u5927\u4f1a':'\u5927\u4f1a\u65e5','\u5be9\u67fb':'\u5be9\u67fb\u65e5'};
 var CFONT={family:'BIZ UDGothic',size:10};
 var inputMode='grid';
-var yazoArrows=[],yazoCount=8;
+var yazoArrows=[],yazoCount=4;
 var tCanvas,tCtx,tSize=0,pCanvas,pCtx,pSize=0,mpCanvas,mpCtx,mpSize=0;
 var HIT_COLOR='rgba(20,20,20,0.92)';
 var MISS_COLOR='rgba(210,50,50,0.85)';
-for(var i=0;i<8;i++)hitStates.push(false);
+for(var i=0;i<4;i++)hitStates.push(false);
 
 setTimeout(function(){
   var s=document.getElementById('splash-screen');
