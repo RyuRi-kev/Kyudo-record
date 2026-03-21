@@ -143,8 +143,8 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .vbullet-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#222;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 10px;font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#f0f0f0;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10}
 .vbullet-tip.show{opacity:1}
 .vbullet-tip .tip-label{font-family:“BIZ UDGothic”,sans-serif;font-size:9px;font-weight:400;color:#888;margin-bottom:3px}
-.vbullet-tip .tip-hit{font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#f0f0f0;font-weight:700}
-.vbullet-tip .tip-total{font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#666;font-weight:400}
+.vbullet-tip .tip-hit{font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#f0f0f0;font-weight:700;letter-spacing:.02em}
+.vbullet-tip .tip-total{font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#888;font-weight:400}
 .chart-card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;margin-bottom:14px}
 .chart-heading{font-size:12px;color:#888;margin-bottom:14px}
 .chart-section-label{font-size:10px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin:16px 0 8px}
@@ -1173,7 +1173,10 @@ function mkBar(id,data,gridId){
       container.querySelectorAll('.vbullet-tip').forEach(function(t){t.classList.remove('show');});
       if(!isShow)tip.classList.add('show');
     });
-    var xlabel=document.createElement('div');xlabel.className='vbullet-xlabel';xlabel.textContent=label;
+    var xlabel=document.createElement('div');xlabel.className='vbullet-xlabel';
+    // 件数が多い時は間引く（8本以下は全表示、それ以上は偶数インデックスのみ）
+    var showLabel=data.labels.length<=8||(i%2===0)||(i===data.labels.length-1);
+    xlabel.textContent=showLabel?label:'';
     col.appendChild(track);col.appendChild(xlabel);container.appendChild(col);
     setTimeout(function(){
       barTotal.style.height=(data.totals[i]/maxTotal*100).toFixed(1)+'%';
