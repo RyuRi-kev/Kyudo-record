@@ -1173,7 +1173,9 @@ function mkBar(id,data,gridId){
     });
     var xlabel=document.createElement('div');xlabel.className='vbullet-xlabel';
     // 件数が多い時は間引く（8本以下は全表示、それ以上は偶数インデックスのみ）
-    var showLabel=data.labels.length<=8||(i%2===0)||(i===data.labels.length-1);
+    // 間引き：ラベル幅を考慮してステップ数を動的に決定
+    var step=data.labels.length<=8?1:data.labels.length<=16?2:3;
+    var showLabel=(i%step===0);
     xlabel.textContent=showLabel?label:'';
     col.appendChild(track);col.appendChild(xlabel);container.appendChild(col);
     setTimeout(function(){
