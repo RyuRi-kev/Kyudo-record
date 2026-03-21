@@ -9,212 +9,234 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { background: #0d0d0d; height: 100%; }
-body { font-family: 'BIZ UDGothic', sans-serif; background: #0d0d0d; color: #f0f0f0; font-size: 15px; -webkit-text-size-adjust: 100%; min-height: 100%; padding-bottom: env(safe-area-inset-bottom); }
-.app { max-width: 430px; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; }
-#splash-screen { position: fixed; inset: 0; background: #0d0d0d; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; gap: 20px; transition: opacity 0.5s ease; }
-#splash-screen.fade-out { opacity: 0; pointer-events: none; }
-.login-title { font-family: 'Zen Antique', serif; font-size: 34px; color: #fff; letter-spacing: 0.3em; text-shadow: 1px 1px 0 rgba(0,0,0,0.9); margin-bottom: 8px; }
-.login-sub { font-size: 11px; color: #888; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 32px; }
-.loading-spinner { width: 36px; height: 36px; border: 2px solid #2a2a2a; border-top-color: #c8c8c8; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-size: 11px; color: #888; letter-spacing: 0.2em; }
-header { padding: 28px 24px 0; flex-shrink: 0; }
-.header-line { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 6px; }
-.logo-wrap { display: flex; flex-direction: column; gap: 3px; }
-.logo-main { font-family: 'Zen Antique', serif; font-size: 30px; color: #fff; letter-spacing: 0.3em; line-height: 1; text-shadow: 1px 1px 0 rgba(0,0,0,0.9); }
-.logo-ruby { font-size: 9px; color: #888; letter-spacing: 0.25em; text-transform: uppercase; }
-.header-date { font-family: 'BIZ UDGothic', sans-serif; font-size: 13px; color: #c8c8c8; }
-.header-rule { width: 100%; height: 1px; margin-top: 16px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.25) 20%, rgba(255,255,255,0.1) 80%, transparent); }
-.tab-bar { display: flex; margin: 16px 24px 0; border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
-.tab-btn { flex: 1; padding: 11px 2px; background: transparent; border: none; border-right: 1px solid rgba(255,255,255,0.14); color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s, color 0.2s; }
-.tab-btn:last-child { border-right: none; }
-.tab-btn.active { background: #fff; color: #333; }
-.sync-bar { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 0; font-size: 10px; color: #888; flex-shrink: 0; }
-.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #55aa55; }
-.content { flex: 1; padding: 8px 24px 48px; overflow-y: auto; }
-.section { display: none; }
-.section.active { display: block; animation: fadeUp 0.3s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
-.card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
-.field { margin-bottom: 18px; }
-.field-label { display: block; font-size: 12px; font-weight: 700; color: #888; letter-spacing: 0.08em; margin-bottom: 8px; }
-.divider { height: 1px; background: rgba(255,255,255,0.08); margin: 16px 0; }
-input[type="date"] { display: block; width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; -webkit-text-fill-color: #f0f0f0; min-height: 52px; }
-input[type="date"]:focus { border-color: #c8c8c8; }
-input[type="date"]::-webkit-date-and-time-value { font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; color: #f0f0f0; text-align: left; }
-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); width: 20px; height: 20px; cursor: pointer; }
-input[type="text"] { display: block; width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; }
-input[type="text"]:focus { border-color: #c8c8c8; }
-input[type="text"]::placeholder { color: #555; -webkit-text-fill-color: #555; }
-select { display: block; width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 15px; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-select option { background: #222; color: #f0f0f0; }
-textarea { width: 100%; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 16px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; resize: none; min-height: 80px; line-height: 1.7; }
-textarea:focus { border-color: #c8c8c8; }
-textarea::placeholder { color: #555; -webkit-text-fill-color: #555; }
-.memo-footer { display: flex; justify-content: flex-end; margin-top: 5px; }
-.memo-count { font-size: 10px; color: #555; }
-.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { padding: 8px 16px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 14px; color: #888; cursor: pointer; transition: all 0.2s; }
-.chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
-.type-chips { display: flex; gap: 8px; }
-.type-chip { flex: 1; padding: 9px 4px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 14px; color: #888; cursor: pointer; transition: all 0.2s; text-align: center; }
-.type-chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
-.arrow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.arrow-hint { font-size: 12px; color: #888; }
-.count-ctrl { display: flex; align-items: center; gap: 14px; }
-.ctrl-btn { width: 32px; height: 32px; background: #2c2c2c; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; color: #c8c8c8; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.ctrl-val { font-size: 15px; font-weight: 500; color: #f0f0f0; min-width: 34px; text-align: center; }
-.arrows-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
-.a-btn { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.14); background: #222; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #444; line-height: 1; }
-.a-btn.hit { background: #fff; border-color: #fff; color: #333; }
-.a-btn.miss:after { content: "×"; }
-.a-btn.hit:after  { content: "○"; }
-.hit-summary { text-align: center; margin: 18px 0 4px; }
-.hit-fraction { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
-.hit-num { font-size: 54px; font-weight: 500; color: #fff; line-height: 1; }
-.hit-sep { font-size: 20px; color: #888; margin: 0 6px; }
-.hit-total-disp { font-size: 22px; font-weight: 500; color: #888; }
-.hit-rate-disp { font-size: 14px; font-weight: 500; color: #888; margin-top: 4px; }
-.btn-save { width: 100%; padding: 16px; background: #fff; border: none; border-radius: 10px; color: #333; font-family: 'BIZ UDGothic', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; }
-.btn-save:active { opacity: 0.85; }
-.btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
-.rec-item { display: flex; align-items: center; gap: 12px; background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; animation: fadeUp 0.3s ease; }
-.rec-date-block { text-align: center; min-width: 36px; flex-shrink: 0; }
-.rec-y { font-size: 9px; color: #555; }
-.rec-m { font-size: 10px; color: #888; }
-.rec-d { font-size: 24px; font-weight: 500; color: #f0f0f0; line-height: 1.1; }
-.vline { width: 1px; height: 54px; background: rgba(255,255,255,0.14); flex-shrink: 0; }
-.rec-body { flex: 1; min-width: 0; }
-.rec-session { font-size: 9px; color: #666; letter-spacing: 0.08em; margin-bottom: 2px; text-transform: uppercase; }
-.rec-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 3px; }
-.rec-dist { font-size: 10px; color: #888; }
-.rec-type-badge { font-size: 10px; color: #888; background: #2c2c2c; border-radius: 4px; padding: 1px 6px; }
-.rec-dojo-badge { font-size: 10px; color: #aaa; background: #252525; border-radius: 4px; padding: 1px 6px; border: 1px solid rgba(255,255,255,0.08); }
-.rec-score { font-size: 14px; font-weight: 500; color: #f0f0f0; }
-.rec-dots { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 5px; }
-.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.dot.h { background: #c8c8c8; }
-.dot.m { background: #2c2c2c; border: 1px solid rgba(255,255,255,0.14); }
-.rec-memo { font-size: 12px; color: #888; margin-top: 4px; word-break: break-all; }
-.rec-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-.rate-badge { font-size: 20px; font-weight: 500; min-width: 60px; text-align: right; }
-.rec-del-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 3px 8px; cursor: pointer; transition: all 0.2s; }
-.rec-del-btn:active { background: rgba(255,255,255,0.05); }
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.stat-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 14px; position: relative; overflow: hidden; }
-.stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, #3d3d3d, transparent); }
-.stat-val { font-size: 28px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 6px; }
-.stat-lbl { font-size: 9px; color: #888; letter-spacing: 0.12em; text-transform: uppercase; }
-.chart-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
-.chart-heading { font-size: 12px; color: #888; margin-bottom: 14px; }
-.chart-section-label { font-size: 10px; color: #666; letter-spacing: 0.15em; text-transform: uppercase; margin: 16px 0 8px; }
-.filter-bar { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-.filter-btn { padding: 6px 12px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 11px; cursor: pointer; transition: all 0.2s; }
-.filter-btn.active { background: #fff; border-color: #fff; color: #333; font-weight: 500; }
-.dojo-select-wrap { margin-bottom: 12px; }
-.dojo-select-wrap select, .cal-filter-wrap select { font-size: 13px; padding: 10px 36px 10px 12px; }
-.list-filter-wrap { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
-.list-filter-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.list-filter-row:last-child { margin-bottom: 0; }
-.list-filter-label { font-size: 10px; font-weight: 700; color: #666; letter-spacing: 0.08em; min-width: 28px; flex-shrink: 0; }
-.list-filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.lf-chip { padding: 5px 11px; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; font-size: 12px; color: #888; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-.lf-chip.on { background: #fff; border-color: #fff; color: #333; font-weight: 700; }
-.lf-dojo-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex-wrap: nowrap !important; }
-.lf-dojo-scroll::-webkit-scrollbar { display: none; }
-.list-filter-date-row { display: flex; align-items: center; gap: 6px; flex: 1; }
-.lf-date-input { flex: 1; background: #222; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 5px 8px; color: #f0f0f0; font-family: 'BIZ UDGothic', sans-serif; font-size: 11px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: #f0f0f0; }
-.lf-date-input:focus { border-color: #c8c8c8; }
-.lf-date-input::-webkit-calendar-picker-indicator { filter: invert(0.5); width: 14px; height: 14px; }
-.lf-date-sep { font-size: 11px; color: #666; flex-shrink: 0; }
-.list-filter-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
-.lf-count { font-size: 11px; color: #666; }
-.lf-reset-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 4px 10px; cursor: pointer; font-family: 'BIZ UDGothic', sans-serif; transition: all 0.2s; }
-.lf-reset-btn:active { background: rgba(255,255,255,0.05); }
-.data-card { background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
-.data-card-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
-.data-btn-row { display: flex; gap: 10px; }
-.btn-data { flex: 1; padding: 13px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #c8c8c8; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.btn-data:active { background: #2c2c2c; }
-.btn-data.import { color: #88bbee; border-color: rgba(100,140,200,0.25); }
-.btn-data.export { color: #88dd88; border-color: rgba(80,160,80,0.25); }
-.cal-filter-wrap { margin-bottom: 14px; }
-.cal-filter-wrap select { font-size: 13px; padding: 9px 36px 9px 12px; }
-.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.cal-nav { width: 32px; height: 32px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #c8c8c8; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.cal-nav:active { background: #2c2c2c; }
-.cal-title { font-size: 15px; font-weight: 500; color: #f0f0f0; }
-.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 2px; }
-.cal-wd { text-align: center; font-size: 9px; color: #555; padding: 4px 0; }
-.cal-wd:first-child { color: #885555; }
-.cal-wd:last-child  { color: #556688; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; grid-auto-rows: 72px; }
-.cal-cell { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; height: 72px; padding: 4px 3px 3px; overflow: hidden; }
-.cal-cell.empty { background: transparent; border-color: transparent; }
-.cal-cell.today { border-color: rgba(255,255,255,0.3); }
-.cal-day { font-size: 10px; font-weight: 500; color: #555; line-height: 1; margin-bottom: 3px; }
-.cal-cell.today .cal-day { color: #e0e0e0; font-weight: 700; }
-.cal-cell:nth-child(7n+1) .cal-day { color: #885555; }
-.cal-cell:nth-child(7n+1).today .cal-day { color: #cc8888; }
-.cal-cell:nth-child(7n) .cal-day { color: #556688; }
-.cal-cell:nth-child(7n).today .cal-day { color: #88aacc; }
-.cal-data { display: flex; flex-direction: column; }
-.cal-rate { font-size: 11px; font-weight: 500; color: #e0e0e0; line-height: 1.3; }
-.cal-sub  { font-size: 9px; color: #8a9ab0; line-height: 1.4; }
-.cal-cell.rate-high { background: #1a2a1a; border-color: rgba(80,160,80,0.3); }
-.cal-cell.rate-mid  { background: #1e2a3a; border-color: rgba(100,140,200,0.25); }
-.cal-cell.rate-low  { background: #2a1a1a; border-color: rgba(160,80,80,0.25); }
-.cal-cell.rate-high .cal-rate { color: #88dd88; }
-.cal-cell.rate-mid  .cal-rate { color: #88bbee; }
-.cal-cell.rate-low  .cal-rate { color: #ee8888; }
-/* 設定タブ */
-.setting-label { font-size: 10px; color: #666; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 10px; }
-.dojo-add-row { display: flex; gap: 8px; margin-bottom: 14px; }
-.dojo-add-row input { flex: 1; }
-.btn-add { padding: 12px 18px; background: #fff; border: none; border-radius: 8px; color: #333; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-.btn-add:active { opacity: 0.85; }
-.dojo-list { margin-bottom: 14px; }
-.dojo-item { display: flex; align-items: center; gap: 10px; background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; transition: opacity 0.2s; user-select: none; -webkit-user-select: none; }
-.dojo-item.dragging  { opacity: 0.35; }
-.dojo-item.drag-over { border-color: rgba(255,255,255,0.45); background: #222; }
-.dojo-handle { color: #444; font-size: 18px; flex-shrink: 0; cursor: grab; touch-action: none; line-height: 1; }
-.dojo-order  { font-size: 10px; color: #555; min-width: 16px; flex-shrink: 0; }
-.dojo-name-txt { flex: 1; font-size: 14px; color: #f0f0f0; }
-.dojo-del-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #666; font-size: 11px; padding: 3px 8px; cursor: pointer; flex-shrink: 0; }
-.dojo-del-btn:active { background: rgba(255,255,255,0.05); }
-.dojo-empty { font-size: 13px; color: #444; padding: 20px 0; text-align: center; }
-.empty { text-align: center; padding: 56px 24px; }
-.empty-text { font-size: 14px; color: #444; }
-.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; align-items: flex-end; backdrop-filter: blur(6px); }
-.overlay.open { display: flex; }
-.sheet { width: 100%; max-width: 430px; margin: 0 auto; background: #181818; border-radius: 16px 16px 0 0; padding: 20px 24px 48px; border-top: 1px solid rgba(255,255,255,0.14); animation: sheetUp 0.3s cubic-bezier(0.32,0.72,0,1); }
-@keyframes sheetUp { from{transform:translateY(100%)}to{transform:translateY(0)} }
-.sheet-handle { width: 40px; height: 3px; background: #2c2c2c; border-radius: 2px; margin: 0 auto 20px; }
-.sheet-title { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 18px; }
-.sheet-row { margin-bottom: 14px; }
-.sheet-lbl { font-size: 9px; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
-.sheet-val { font-size: 15px; color: #f0f0f0; }
-.btn-del-modal   { width: 100%; padding: 13px; background: transparent; border: 1px solid rgba(255,100,100,0.3); border-radius: 10px; color: rgba(255,120,120,0.85); font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; cursor: pointer; margin-top: 6px; }
-.btn-close-sheet { width: 100%; padding: 13px; background: #222; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #888; font-family: 'BIZ UDGothic', sans-serif; font-size: 14px; cursor: pointer; margin-top: 8px; }
-.toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(80px); background: #222; border: 1px solid rgba(255,255,255,0.14); color: #f0f0f0; padding: 11px 24px; border-radius: 24px; font-size: 14px; z-index: 300; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 8px 30px rgba(0,0,0,0.6); white-space: nowrap; }
-.toast.show { transform: translateX(-50%) translateY(0); }
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-thumb { background: #2c2c2c; border-radius: 2px; }
-canvas { width: 100% !important; }
-#import-file-input { display: none; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:#0d0d0d;height:100%}
+body{font-family:"BIZ UDGothic",sans-serif;background:#0d0d0d;color:#f0f0f0;font-size:15px;-webkit-text-size-adjust:100%;min-height:100%;padding-bottom:env(safe-area-inset-bottom)}
+.app{max-width:430px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
+#splash-screen{position:fixed;inset:0;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;gap:20px;transition:opacity .5s ease}
+#splash-screen.fade-out{opacity:0;pointer-events:none}
+.login-title{font-family:"Zen Antique",serif;font-size:34px;color:#fff;letter-spacing:.3em;text-shadow:1px 1px 0 rgba(0,0,0,.9);margin-bottom:8px}
+.login-sub{font-size:11px;color:#888;letter-spacing:.3em;text-transform:uppercase;margin-bottom:32px}
+.loading-spinner{width:36px;height:36px;border:2px solid #2a2a2a;border-top-color:#c8c8c8;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:11px;color:#888;letter-spacing:.2em}
+header{padding:28px 24px 0;flex-shrink:0}
+.header-line{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px}
+.logo-wrap{display:flex;flex-direction:column;gap:3px}
+.logo-main{font-family:"Zen Antique",serif;font-size:30px;color:#fff;letter-spacing:.3em;line-height:1;text-shadow:1px 1px 0 rgba(0,0,0,.9)}
+.logo-ruby{font-size:9px;color:#888;letter-spacing:.25em;text-transform:uppercase}
+.header-date{font-family:"BIZ UDGothic",sans-serif;font-size:13px;color:#c8c8c8}
+.header-rule{width:100%;height:1px;margin-top:16px;background:linear-gradient(to right,transparent,rgba(255,255,255,.25) 20%,rgba(255,255,255,.1) 80%,transparent)}
+.tab-bar{display:flex;margin:16px 24px 0;border:1px solid rgba(255,255,255,.14);border-radius:6px;overflow:hidden;flex-shrink:0}
+.tab-btn{flex:1;padding:11px 2px;background:transparent;border:none;border-right:1px solid rgba(255,255,255,.14);color:#888;font-family:"BIZ UDGothic",sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background .2s,color .2s}
+.tab-btn:last-child{border-right:none}
+.tab-btn.active{background:#fff;color:#333}
+.sync-bar{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 0;font-size:10px;color:#888;flex-shrink:0}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#55aa55}
+.content{flex:1;padding:8px 24px 48px;overflow-y:auto}
+.section{display:none}
+.section.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;margin-bottom:14px}
+.field{margin-bottom:18px}
+.field-label{display:block;font-size:12px;font-weight:700;color:#888;letter-spacing:.08em;margin-bottom:8px}
+.divider{height:1px;background:rgba(255,255,255,.08);margin:16px 0}
+input[type=date]{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#f0f0f0;min-height:52px}
+input[type=date]:focus{border-color:#c8c8c8}
+input[type=date]::-webkit-date-and-time-value{font-family:"BIZ UDGothic",sans-serif;font-size:15px;color:#f0f0f0;text-align:left}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7);width:20px;height:20px;cursor:pointer}
+input[type=text]{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0}
+input[type=text]:focus{border-color:#c8c8c8}
+input[type=text]::placeholder{color:#555;-webkit-text-fill-color:#555}
+select{display:block;width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:15px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+select option{background:#222;color:#f0f0f0}
+textarea{width:100%;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:14px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0;resize:none;min-height:80px;line-height:1.7}
+textarea:focus{border-color:#c8c8c8}
+textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
+.memo-footer{display:flex;justify-content:flex-end;margin-top:5px}
+.memo-count{font-size:10px;color:#555}
+.chip-group{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 16px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:14px;color:#888;cursor:pointer;transition:all .2s}
+.chip.on{background:#fff;border-color:#fff;color:#333;font-weight:700}
+.type-chips{display:flex;gap:8px}
+.type-chip{flex:1;padding:9px 4px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:14px;color:#888;cursor:pointer;transition:all .2s;text-align:center}
+.type-chip.on{background:#fff;border-color:#fff;color:#333;font-weight:700}
+.arrow-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.arrow-hint{font-size:12px;color:#888}
+.input-mode-toggle{display:flex;border:1px solid rgba(255,255,255,.14);border-radius:6px;overflow:hidden;flex-shrink:0}
+.mode-btn{padding:6px 11px;background:transparent;border:none;color:#666;font-family:"BIZ UDGothic",sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;border-right:1px solid rgba(255,255,255,.14);white-space:nowrap}
+.mode-btn:last-child{border-right:none}
+.mode-btn.active{background:#fff;color:#333}
+.count-ctrl{display:flex;align-items:center;gap:14px}
+.ctrl-btn{width:32px;height:32px;background:#2c2c2c;border:1px solid rgba(255,255,255,.14);border-radius:8px;color:#c8c8c8;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl-val{font-size:15px;font-weight:500;color:#f0f0f0;min-width:34px;text-align:center}
+.arrows-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.a-btn{aspect-ratio:1;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);background:#222;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#444;line-height:1}
+.a-btn.hit{background:#fff;border-color:#fff;color:#333}
+.a-btn.miss::after{content:"x"}
+.a-btn.hit::after{content:"o"}
+.hit-summary{text-align:center;margin:18px 0 4px}
+.hit-fraction{display:flex;align-items:baseline;justify-content:center;gap:4px}
+.hit-num{font-size:54px;font-weight:500;color:#fff;line-height:1}
+.hit-sep{font-size:20px;color:#888;margin:0 6px}
+.hit-total-disp{font-size:22px;font-weight:500;color:#888}
+.hit-rate-disp{font-size:14px;font-weight:500;color:#888;margin-top:4px}
+#yazo-mode{overflow:hidden}
+#grid-mode.mode-hidden,#yazo-mode.mode-hidden{height:0;overflow:hidden;opacity:0;pointer-events:none}
+.target-wrap{position:relative;width:100%;aspect-ratio:1;margin-bottom:14px}
+#target-canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+.yazo-score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.yazo-fraction{display:flex;align-items:baseline;gap:4px}
+.yazo-hit-num{font-size:44px;font-weight:500;color:#fff;line-height:1}
+.yazo-sep{font-size:16px;color:#888;margin:0 4px}
+.yazo-total{font-size:18px;color:#888}
+.yazo-rate{font-size:13px;color:#888;margin-top:2px}
+.yazo-remain{font-size:12px;color:#555;text-align:right}
+.yazo-btn-row{display:flex;gap:8px}
+.btn-undo{flex:1;padding:11px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#aaa;font-family:"BIZ UDGothic",sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-undo:disabled{opacity:.3;cursor:not-allowed}
+.btn-yazo-reset{padding:11px 16px;background:transparent;border:1px solid rgba(255,100,100,.25);border-radius:8px;color:rgba(255,120,120,.7);font-family:"BIZ UDGothic",sans-serif;font-size:13px;cursor:pointer}
+.btn-save{width:100%;padding:16px;background:#fff;border:none;border-radius:10px;color:#333;font-family:"BIZ UDGothic",sans-serif;font-size:16px;font-weight:700;cursor:pointer}
+.btn-save:active{opacity:.85}
+.btn-save:disabled{opacity:.4;cursor:not-allowed}
+.rec-item{display:flex;align-items:center;gap:12px;background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;margin-bottom:10px;animation:fadeUp .3s ease;cursor:pointer}
+.rec-date-block{text-align:center;min-width:36px;flex-shrink:0}
+.rec-y{font-size:9px;color:#555}
+.rec-m{font-size:10px;color:#888}
+.rec-d{font-size:24px;font-weight:500;color:#f0f0f0;line-height:1.1}
+.vline{width:1px;height:54px;background:rgba(255,255,255,.14);flex-shrink:0}
+.rec-body{flex:1;min-width:0}
+.rec-session{font-size:9px;color:#666;letter-spacing:.08em;margin-bottom:2px;text-transform:uppercase}
+.rec-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:3px}
+.rec-dist{font-size:10px;color:#888}
+.rec-type-badge{font-size:10px;color:#888;background:#2c2c2c;border-radius:4px;padding:1px 6px}
+.rec-dojo-badge{font-size:10px;color:#aaa;background:#252525;border-radius:4px;padding:1px 6px;border:1px solid rgba(255,255,255,.08)}
+.rec-yazo-badge{font-size:10px;color:#7ab;background:rgba(100,150,180,.12);border-radius:4px;padding:1px 6px;border:1px solid rgba(100,150,180,.2)}
+.rec-score{font-size:14px;font-weight:500;color:#f0f0f0}
+.rec-dots{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot.h{background:#c8c8c8}
+.dot.m{background:#2c2c2c;border:1px solid rgba(255,255,255,.14)}
+.rec-memo{font-size:12px;color:#888;margin-top:4px;word-break:break-all}
+.rec-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.rate-badge{font-size:20px;font-weight:500;min-width:60px;text-align:right}
+.rec-del-btn{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#666;font-size:11px;padding:3px 8px;cursor:pointer;transition:all .2s}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 14px;position:relative;overflow:hidden}
+.stat-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,#3d3d3d,transparent)}
+.stat-val{font-size:28px;font-weight:500;color:#fff;line-height:1;margin-bottom:6px}
+.stat-lbl{font-size:9px;color:#888;letter-spacing:.12em;text-transform:uppercase}
+.chart-card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;margin-bottom:14px}
+.chart-heading{font-size:12px;color:#888;margin-bottom:14px}
+.chart-section-label{font-size:10px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin:16px 0 8px}
+.filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.filter-btn{padding:6px 12px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:20px;color:#888;font-family:"BIZ UDGothic",sans-serif;font-size:11px;cursor:pointer;transition:all .2s}
+.filter-btn.active{background:#fff;border-color:#fff;color:#333;font-weight:500}
+.yazo-plot-card{background:#181818;border:1px solid rgba(100,150,180,.2);border-radius:12px;padding:18px;margin-bottom:14px}
+.yazo-plot-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.yazo-plot-title{font-size:12px;color:#7ab;letter-spacing:.08em}
+.yazo-plot-summary{font-size:11px;color:#666}
+.plot-wrap{width:100%;aspect-ratio:1}
+#plot-canvas{width:100%;height:100%;display:block}
+.plot-legend{display:flex;gap:16px;justify-content:center;margin-top:10px}
+.plot-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#666}
+.plot-legend-dot{width:8px;height:8px;border-radius:50%}
+.plot-legend-dot.hit{background:#1a1a1a;border:1px solid #555}
+.plot-legend-dot.miss{background:rgba(210,50,50,.8)}
+.list-filter-wrap{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.list-filter-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.list-filter-row:last-child{margin-bottom:0}
+.list-filter-label{font-size:10px;font-weight:700;color:#666;letter-spacing:.08em;min-width:28px;flex-shrink:0}
+.list-filter-chips{display:flex;flex-wrap:wrap;gap:6px}
+.lf-chip{padding:5px 11px;background:#222;border:1px solid rgba(255,255,255,.08);border-radius:20px;font-size:12px;color:#888;cursor:pointer;transition:all .2s;white-space:nowrap}
+.lf-chip.on{background:#fff;border-color:#fff;color:#333;font-weight:700}
+.lf-dojo-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
+.lf-dojo-scroll::-webkit-scrollbar{display:none}
+.list-filter-date-row{display:flex;align-items:center;gap:6px;flex:1}
+.lf-date-input{flex:1;background:#222;border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:5px 8px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:11px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0}
+.lf-date-input:focus{border-color:#c8c8c8}
+.lf-date-input::-webkit-calendar-picker-indicator{filter:invert(.5);width:14px;height:14px}
+.lf-date-sep{font-size:11px;color:#666;flex-shrink:0}
+.list-filter-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.lf-count{font-size:11px;color:#666}
+.lf-reset-btn{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#666;font-size:11px;padding:4px 10px;cursor:pointer;font-family:"BIZ UDGothic",sans-serif;transition:all .2s}
+.data-card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;margin-bottom:14px}
+.data-card-title{font-size:11px;font-weight:700;color:#888;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.data-btn-row{display:flex;gap:10px}
+.btn-data{flex:1;padding:13px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#c8c8c8;font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-data.import{color:#88bbee;border-color:rgba(100,140,200,.25)}
+.btn-data.export{color:#88dd88;border-color:rgba(80,160,80,.25)}
+.cal-filter-wrap{margin-bottom:14px}
+.cal-filter-wrap select{font-size:13px;padding:9px 36px 9px 12px}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-nav{width:32px;height:32px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#c8c8c8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cal-title{font-size:15px;font-weight:500;color:#f0f0f0}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:2px}
+.cal-wd{text-align:center;font-size:9px;color:#555;padding:4px 0}
+.cal-wd:first-child{color:#885555}
+.cal-wd:last-child{color:#556688}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;grid-auto-rows:72px}
+.cal-cell{background:#1a1a1a;border:1px solid rgba(255,255,255,.05);border-radius:4px;height:72px;padding:4px 3px 3px;overflow:hidden}
+.cal-cell.empty{background:transparent;border-color:transparent}
+.cal-cell.today{border-color:rgba(255,255,255,.3)}
+.cal-day{font-size:10px;font-weight:500;color:#555;line-height:1;margin-bottom:3px}
+.cal-cell.today .cal-day{color:#e0e0e0;font-weight:700}
+.cal-cell:nth-child(7n+1) .cal-day{color:#885555}
+.cal-cell:nth-child(7n+1).today .cal-day{color:#cc8888}
+.cal-cell:nth-child(7n) .cal-day{color:#556688}
+.cal-cell:nth-child(7n).today .cal-day{color:#88aacc}
+.cal-data{display:flex;flex-direction:column}
+.cal-rate{font-size:11px;font-weight:500;color:#e0e0e0;line-height:1.3}
+.cal-sub{font-size:9px;color:#8a9ab0;line-height:1.4}
+.cal-cell.rate-high{background:#1a2a1a;border-color:rgba(80,160,80,.3)}
+.cal-cell.rate-mid{background:#1e2a3a;border-color:rgba(100,140,200,.25)}
+.cal-cell.rate-low{background:#2a1a1a;border-color:rgba(160,80,80,.25)}
+.cal-cell.rate-high .cal-rate{color:#88dd88}
+.cal-cell.rate-mid .cal-rate{color:#88bbee}
+.cal-cell.rate-low .cal-rate{color:#ee8888}
+.setting-label{font-size:10px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin:0 0 10px}
+.dojo-add-row{display:flex;gap:8px;margin-bottom:14px}
+.dojo-add-row input{flex:1}
+.btn-add{padding:12px 18px;background:#fff;border:none;border-radius:8px;color:#333;font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.dojo-list{margin-bottom:14px}
+.dojo-item{display:flex;align-items:center;gap:10px;background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 14px;margin-bottom:8px;transition:opacity .2s;user-select:none;-webkit-user-select:none}
+.dojo-item.dragging{opacity:.35}
+.dojo-item.drag-over{border-color:rgba(255,255,255,.45);background:#222}
+.dojo-handle{color:#444;font-size:18px;flex-shrink:0;cursor:grab;touch-action:none;line-height:1}
+.dojo-order{font-size:10px;color:#555;min-width:16px;flex-shrink:0}
+.dojo-name-txt{flex:1;font-size:14px;color:#f0f0f0}
+.dojo-del-btn{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#666;font-size:11px;padding:3px 8px;cursor:pointer;flex-shrink:0}
+.dojo-empty{font-size:13px;color:#444;padding:20px 0;text-align:center}
+.empty{text-align:center;padding:56px 24px}
+.empty-text{font-size:14px;color:#444}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:flex-end;backdrop-filter:blur(6px)}
+.overlay.open{display:flex}
+.sheet{width:100%;max-width:430px;margin:0 auto;background:#181818;border-radius:16px 16px 0 0;padding:20px 24px 48px;border-top:1px solid rgba(255,255,255,.14);animation:sheetUp .3s cubic-bezier(.32,.72,0,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:40px;height:3px;background:#2c2c2c;border-radius:2px;margin:0 auto 20px}
+.sheet-title{font-size:16px;font-weight:500;color:#fff;margin-bottom:18px}
+.sheet-row{margin-bottom:14px}
+.sheet-lbl{font-size:9px;color:#888;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+.sheet-val{font-size:15px;color:#f0f0f0}
+.modal-plot-wrap{width:100%;aspect-ratio:1;max-width:200px;margin:0 auto 14px}
+#modal-plot-canvas{width:100%;height:100%;display:block}
+.btn-del-modal{width:100%;padding:13px;background:transparent;border:1px solid rgba(255,100,100,.3);border-radius:10px;color:rgba(255,120,120,.85);font-family:"BIZ UDGothic",sans-serif;font-size:14px;cursor:pointer;margin-top:6px}
+.btn-close-sheet{width:100%;padding:13px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#888;font-family:"BIZ UDGothic",sans-serif;font-size:14px;cursor:pointer;margin-top:8px}
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(80px);background:#222;border:1px solid rgba(255,255,255,.14);color:#f0f0f0;padding:11px 24px;border-radius:24px;font-size:14px;z-index:300;transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 30px rgba(0,0,0,.6);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#2c2c2c;border-radius:2px}
+canvas{width:100%!important}
+#import-file-input{display:none}
 </style>
 </head>
 <body>
-
 <div id="splash-screen">
   <div class="login-title">弓道記録</div>
   <div class="login-sub">KYUDO RECORD</div>
   <div class="loading-spinner"></div>
   <div class="loading-text">LOADING...</div>
 </div>
-
 <div class="app" id="main-app" style="display:none">
   <header>
     <div class="header-line">
@@ -233,14 +255,9 @@ canvas { width: 100% !important; }
     <button class="tab-btn" id="tab-stats">統計</button>
     <button class="tab-btn" id="tab-setting">設定</button>
   </div>
-  <div class="sync-bar">
-    <span class="sync-dot"></span>
-    <span>ローカル保存</span>
-  </div>
-
+  <div class="sync-bar"><span class="sync-dot"></span><span>ローカル保存</span></div>
   <div class="content">
 
-<!-- 記録 -->
 <div class="section active" id="section-record">
   <div class="card">
     <div class="field">
@@ -268,23 +285,57 @@ canvas { width: 100% !important; }
     </div>
     <div class="divider"></div>
     <div class="field">
-      <span class="field-label">射数と的中</span>
       <div class="arrow-header">
-        <span class="arrow-hint">タップで的中 / 外を切替</span>
-        <div class="count-ctrl">
-          <button class="ctrl-btn" id="btn-minus">-</button>
-          <span class="ctrl-val" id="count-disp">8射</span>
-          <button class="ctrl-btn" id="btn-plus">+</button>
+        <span class="field-label" style="margin-bottom:0">射数と的中</span>
+        <div class="input-mode-toggle">
+          <button class="mode-btn active" id="mode-grid-btn">グリッド</button>
+          <button class="mode-btn" id="mode-yazo-btn">矢所</button>
         </div>
       </div>
-      <div class="arrows-grid" id="arrows-grid"></div>
-      <div class="hit-summary">
-        <div class="hit-fraction">
-          <span class="hit-num" id="hit-num">0</span>
-          <span class="hit-sep">中</span>
-          <span class="hit-total-disp" id="hit-total">/ 8</span>
+      <div id="grid-mode">
+        <div class="arrow-header" style="margin-top:12px">
+          <span class="arrow-hint">タップで的中 / 外を切替</span>
+          <div class="count-ctrl">
+            <button class="ctrl-btn" id="btn-minus">-</button>
+            <span class="ctrl-val" id="count-disp">8射</span>
+            <button class="ctrl-btn" id="btn-plus">+</button>
+          </div>
         </div>
-        <div class="hit-rate-disp" id="hit-rate">0.0%</div>
+        <div class="arrows-grid" id="arrows-grid"></div>
+        <div class="hit-summary">
+          <div class="hit-fraction">
+            <span class="hit-num" id="hit-num">0</span>
+            <span class="hit-sep">中</span>
+            <span class="hit-total-disp" id="hit-total">/ 8</span>
+          </div>
+          <div class="hit-rate-disp" id="hit-rate">0.0%</div>
+        </div>
+      </div>
+      <div id="yazo-mode" class="mode-hidden">
+        <div class="arrow-header" style="margin-top:12px">
+          <span class="arrow-hint">的をタップして矢所を記録</span>
+          <div class="count-ctrl">
+            <button class="ctrl-btn" id="yazo-btn-minus">-</button>
+            <span class="ctrl-val" id="yazo-count-disp">8射</span>
+            <button class="ctrl-btn" id="yazo-btn-plus">+</button>
+          </div>
+        </div>
+        <div class="target-wrap"><canvas id="target-canvas"></canvas></div>
+        <div class="yazo-score-row">
+          <div>
+            <div class="yazo-fraction">
+              <span class="yazo-hit-num" id="yazo-hit-num">0</span>
+              <span class="yazo-sep">中</span>
+              <span class="yazo-total" id="yazo-total">/ 8</span>
+            </div>
+            <div class="yazo-rate" id="yazo-rate">0.0%</div>
+          </div>
+          <div class="yazo-remain" id="yazo-remain">残 8本</div>
+        </div>
+        <div class="yazo-btn-row">
+          <button class="btn-undo" id="btn-undo" disabled>&#x21A9; 取消</button>
+          <button class="btn-yazo-reset" id="btn-yazo-reset">リセット</button>
+        </div>
       </div>
     </div>
     <div class="divider"></div>
@@ -297,7 +348,6 @@ canvas { width: 100% !important; }
   </div>
 </div>
 
-<!-- 履歴 -->
 <div class="section" id="section-list">
   <div class="list-filter-wrap">
     <div class="list-filter-row">
@@ -347,9 +397,7 @@ canvas { width: 100% !important; }
   <div id="record-list"></div>
 </div>
 
-<!-- 統計 -->
 <div class="section" id="section-stats">
-  <!-- フィルター（履歴と同デザイン） -->
   <div class="list-filter-wrap">
     <div class="list-filter-row">
       <span class="list-filter-label">種別</span>
@@ -395,7 +443,17 @@ canvas { width: 100% !important; }
   <div class="chart-section-label" id="lbl-yearly" style="display:none">年別</div>
   <div class="chart-card" id="cc5" style="display:none"><div class="chart-heading">的中率の推移（年別）</div><canvas id="cr-y"></canvas></div>
   <div class="chart-card" id="cc6" style="display:none"><div class="chart-heading">的中数 / 射数（年別）</div><canvas id="ch-y"></canvas></div>
-  <!-- データ管理 -->
+  <div class="chart-section-label" id="lbl-yazo-plot" style="display:none">矢所分布</div>
+  <div class="yazo-plot-card" id="yazo-plot-card" style="display:none">
+    <div class="yazo-plot-header">
+      <span class="yazo-plot-summary" id="plot-summary">-</span>
+    </div>
+    <div class="plot-wrap"><canvas id="plot-canvas"></canvas></div>
+    <div class="plot-legend">
+      <div class="plot-legend-item"><span class="plot-legend-dot hit"></span>的中</div>
+      <div class="plot-legend-item"><span class="plot-legend-dot miss"></span>外れ</div>
+    </div>
+  </div>
   <div class="chart-section-label" style="margin-top:24px">データ管理</div>
   <div class="data-card">
     <div class="data-card-title">バックアップ / 復元</div>
@@ -407,12 +465,9 @@ canvas { width: 100% !important; }
   <input type="file" id="import-file-input" accept=".json">
 </div>
 
-<!-- 暦 -->
 <div class="section" id="section-cal">
   <div class="chart-card">
-    <div class="cal-filter-wrap">
-      <select id="cal-dojo-sel"></select>
-    </div>
+    <div class="cal-filter-wrap"><select id="cal-dojo-sel"></select></div>
     <div class="cal-header">
       <button class="cal-nav" id="cal-prev">&#8249;</button>
       <div class="cal-title" id="cal-title">--</div>
@@ -426,7 +481,6 @@ canvas { width: 100% !important; }
   </div>
 </div>
 
-<!-- 設定 -->
 <div class="section" id="section-setting">
   <div class="card">
     <div class="setting-label">弓道場の管理</div>
@@ -441,19 +495,19 @@ canvas { width: 100% !important; }
   </div>
 </div>
 
-<!-- 詳細モーダル -->
-
 <div class="overlay" id="modal">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title" id="m-title"></div>
     <div id="m-body"></div>
+    <div class="modal-plot-wrap" id="modal-plot-wrap" style="display:none">
+      <canvas id="modal-plot-canvas"></canvas>
+    </div>
     <button class="btn-del-modal" id="m-del-btn">削除する</button>
     <button class="btn-close-sheet" id="m-close-btn">閉じる</button>
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<!-- 削除確認 -->
 <div class="overlay" id="confirm-modal">
   <div class="sheet">
     <div class="sheet-handle"></div>
@@ -463,13 +517,12 @@ canvas { width: 100% !important; }
     <button class="btn-close-sheet" id="confirm-no">キャンセル</button>
   </div>
 </div>
-<!-- インポート確認 -->
 <div class="overlay" id="import-modal">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title" style="font-size:15px;color:#f0f0f0">データをインポートしますか？</div>
     <div style="font-size:13px;color:#888;margin-bottom:8px" id="import-modal-info"></div>
-    <div style="font-size:12px;color:rgba(255,120,120,0.8);margin-bottom:20px">※ 現在のデータはすべて上書きされます。</div>
+    <div style="font-size:12px;color:rgba(255,120,120,.8);margin-bottom:20px">※ 現在のデータはすべて上書きされます。</div>
     <button class="btn-del-modal" id="import-confirm-yes">上書きしてインポート</button>
     <button class="btn-close-sheet" id="import-confirm-no">キャンセル</button>
   </div>
@@ -479,604 +532,657 @@ canvas { width: 100% !important; }
 
 <script>
 (function(){
-/* ── ストレージキー ── */
-var LS_REC  = "kyudo_records";
-var LS_DOJO = "kyudo_dojos";
+var LS_REC='kyudo_records',LS_DOJO='kyudo_dojos';
+var records=[],dojos=[],hitStates=[];
+var selDist='\u8fd1\u7684\uff0828m\uff09',selType='\u7a3d\u53e4',selDojo='',arrowCount=8;
+var calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calDojoId='';
+var dailyFilter=10;
+var statsFilter={type:'',dist:'',dojo:''};
+var listFilter={type:'',dist:'',dojo:'',dateFrom:'',dateTo:'',memo:''};
+var pendingDelId=null,pendingDelFrom=null,pendingImport=null;
+var charts={};
+var dragSrcIdx=null,touchSrcIdx=null,touchClone=null;
+var dateLabelMap={'\u7a3d\u53e4':'\u7a3d\u53e4\u65e5','\u5927\u4f1a':'\u5927\u4f1a\u65e5','\u5be9\u67fb':'\u5be9\u67fb\u65e5'};
+var CFONT={family:'BIZ UDGothic',size:10};
+var inputMode='grid';
+var yazoArrows=[],yazoCount=8;
+var tCanvas,tCtx,tSize=0,pCanvas,pCtx,pSize=0,mpCanvas,mpCtx,mpSize=0;
+var HIT_COLOR='rgba(20,20,20,0.92)';
+var MISS_COLOR='rgba(210,50,50,0.85)';
+for(var i=0;i<8;i++)hitStates.push(false);
 
-/* ── 状態 ── */
-var records = [], dojos = [], hitStates = [];
-var selDist = "近的（28m）", selType = "稽古", selDojo = "", arrowCount = 8;
-var calYear = new Date().getFullYear(), calMonth = new Date().getMonth(), calDojoId = "";
-var dailyFilter = 10, dailyFilterDojo = 10;
-var statsFilter = { type:"", dist:"", dojo:"" };
-var listFilter  = { type:"", dist:"", dojo:"", dateFrom:"", dateTo:"", memo:"" };
-var pendingDelId = null, pendingDelFrom = null, pendingImport = null;
-var charts = {};
-var dragSrcIdx = null, touchSrcIdx = null, touchClone = null;
-var dateLabelMap = { "稽古":"稽古日", "大会":"大会日", "審査":"審査日" };
-var CFONT = { family:"BIZ UDGothic", size:10 };
-
-for (var i=0;i<8;i++) hitStates.push(false);
-
-/* ── スプラッシュ ── */
 setTimeout(function(){
-  var s = document.getElementById("splash-screen");
-  s.classList.add("fade-out");
+  var s=document.getElementById('splash-screen');
+  s.classList.add('fade-out');
   setTimeout(function(){
-    s.style.display = "none";
-    document.getElementById("main-app").style.display = "flex";
-    loadData(); initHeader(); initGrid(); initUI(); initFilterBars(); initListFilter(); initStatsFilter(); refreshAll();
-  }, 500);
-}, 1500);
+    s.style.display='none';
+    document.getElementById('main-app').style.display='flex';
+    loadData();initHeader();initGrid();initUI();
+    initYazoCanvas();initPlotCanvas();initModalPlotCanvas();
+    initFilterBars();initListFilter();initStatsFilter();refreshAll();
+  },500);
+},1500);
 
-/* ── データ ── */
 function loadData(){
-  try { records = JSON.parse(localStorage.getItem(LS_REC)  || "[]"); } catch(e){ records=[]; }
-  try { dojos   = JSON.parse(localStorage.getItem(LS_DOJO) || "[]"); } catch(e){ dojos=[]; }
+  try{records=JSON.parse(localStorage.getItem(LS_REC)||'[]');}catch(e){records=[];}
+  try{dojos=JSON.parse(localStorage.getItem(LS_DOJO)||'[]');}catch(e){dojos=[];}
 }
-function saveRec()  { try { localStorage.setItem(LS_REC,  JSON.stringify(records)); } catch(e){ toast("保存に失敗しました"); } }
-function saveDojo() { try { localStorage.setItem(LS_DOJO, JSON.stringify(dojos));   } catch(e){ toast("保存に失敗しました"); } }
-function genId()    { return Date.now().toString(36)+Math.random().toString(36).substr(2,5); }
-function dojoName(id){ for(var i=0;i<dojos.length;i++){ if(dojos[i].id===id) return dojos[i].name; } return ""; }
+function saveRec(){try{localStorage.setItem(LS_REC,JSON.stringify(records));}catch(e){toast('\u4fdd\u5b58\u306b\u5931\u6557\u3057\u307e\u3057\u305f');}}
+function saveDojo(){try{localStorage.setItem(LS_DOJO,JSON.stringify(dojos));}catch(e){toast('\u4fdd\u5b58\u306b\u5931\u6557\u3057\u307e\u3057\u305f');}}
+function genId(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
+function dojoName(id){for(var i=0;i<dojos.length;i++){if(dojos[i].id===id)return dojos[i].name;}return '';}
 
-/* ── 全体更新 ── */
-function refreshAll(){
-  refreshDojoSelects();
-  renderDojoList();
-}
+function refreshAll(){refreshDojoSelects();renderDojoList();}
 
-/* ── 弓道場セレクト更新 ── */
 function refreshDojoSelects(){
-  // 記録フォーム：初期選択を1番目の弓道場に
-  var prevDojo = selDojo;
-  rebuildSelect("input-dojo", "", [{id:"",name:"（未選択）"}].concat(dojos));
-  if(!prevDojo && dojos.length){
-    selDojo = dojos[0].id;
-    document.getElementById("input-dojo").value = selDojo;
-  } else {
-    document.getElementById("input-dojo").value = selDojo;
-  }
-
-  // 暦：初期は「すべて」
-  rebuildSelect("cal-dojo-sel", calDojoId, [{id:"",name:"すべて"}].concat(dojos));
-
-  // 履歴フィルターチップ
-  rebuildDojoChips();
-  // 統計フィルターチップ（道場）
-  rebuildStatsDojoChips();
+  var prev=selDojo;
+  rebuildSelect('input-dojo','',[{id:'',name:'\uff08\u672a\u9078\u629e\uff09'}].concat(dojos));
+  if(!prev&&dojos.length){selDojo=dojos[0].id;document.getElementById('input-dojo').value=selDojo;}
+  else document.getElementById('input-dojo').value=selDojo;
+  rebuildSelect('cal-dojo-sel',calDojoId,[{id:'',name:'\u3059\u3079\u3066'}].concat(dojos));
+  rebuildDojoChips();rebuildStatsDojoChips();
 }
-function rebuildSelect(id, curVal, list){
-  var sel = document.getElementById(id);
-  var prev = sel.value || curVal;
-  sel.innerHTML = "";
-  list.forEach(function(d){
-    var o = document.createElement("option");
-    o.value = d.id; o.textContent = d.name; sel.appendChild(o);
-  });
-  // 存在するvalueをセット
-  var found = false;
-  for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===prev){ found=true; break; } }
-  sel.value = found ? prev : (sel.options[0]&&sel.options[0].value)||"";
+function rebuildSelect(id,curVal,list){
+  var sel=document.getElementById(id),prev=sel.value||curVal;
+  sel.innerHTML='';
+  list.forEach(function(d){var o=document.createElement('option');o.value=d.id;o.textContent=d.name;sel.appendChild(o);});
+  var found=false;
+  for(var i=0;i<sel.options.length;i++){if(sel.options[i].value===prev){found=true;break;}}
+  sel.value=found?prev:(sel.options[0]&&sel.options[0].value)||'';
 }
 function rebuildDojoChips(){
-  var wrap = document.getElementById("lf-dojo");
-  var cur  = listFilter.dojo;
-  wrap.innerHTML = '<span class="lf-chip'+(cur===""?" on":"")+'" data-v="">すべて</span>';
+  var wrap=document.getElementById('lf-dojo'),cur=listFilter.dojo;
+  wrap.innerHTML='<span class="lf-chip'+(cur===''?' on':'')+'" data-v="">\u3059\u3079\u3066</span>';
   dojos.forEach(function(d){
-    var c = document.createElement("span");
-    c.className = "lf-chip"+(cur===d.id?" on":"");
-    c.setAttribute("data-v", d.id);
-    c.textContent = d.name;
-    wrap.appendChild(c);
+    var c=document.createElement('span');c.className='lf-chip'+(cur===d.id?' on':'');
+    c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);
   });
-  wrap.querySelectorAll(".lf-chip").forEach(function(c){
-    c.addEventListener("click", function(){
-      wrap.querySelectorAll(".lf-chip").forEach(function(x){ x.classList.remove("on"); });
-      this.classList.add("on");
-      listFilter.dojo = this.getAttribute("data-v");
-      renderList();
+  wrap.querySelectorAll('.lf-chip').forEach(function(c){
+    c.addEventListener('click',function(){
+      wrap.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});
+      this.classList.add('on');listFilter.dojo=this.getAttribute('data-v');renderList();
     });
   });
 }
 function rebuildStatsDojoChips(){
-  var wrap = document.getElementById("sf-dojo");
-  if(!wrap) return;
-  var cur = statsFilter.dojo;
-  wrap.innerHTML = '<span class="lf-chip'+(cur===""?" on":"")+'" data-v="">すべて</span>';
+  var wrap=document.getElementById('sf-dojo');if(!wrap)return;
+  var cur=statsFilter.dojo;
+  wrap.innerHTML='<span class="lf-chip'+(cur===''?' on':'')+'" data-v="">\u3059\u3079\u3066</span>';
   dojos.forEach(function(d){
-    var c = document.createElement("span");
-    c.className = "lf-chip"+(cur===d.id?" on":"");
-    c.setAttribute("data-v", d.id);
-    c.textContent = d.name;
-    wrap.appendChild(c);
+    var c=document.createElement('span');c.className='lf-chip'+(cur===d.id?' on':'');
+    c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);
   });
-  wrap.querySelectorAll(".lf-chip").forEach(function(c){
-    c.addEventListener("click", function(){
-      wrap.querySelectorAll(".lf-chip").forEach(function(x){ x.classList.remove("on"); });
-      this.classList.add("on");
-      statsFilter.dojo = this.getAttribute("data-v");
-      renderStats();
+  wrap.querySelectorAll('.lf-chip').forEach(function(c){
+    c.addEventListener('click',function(){
+      wrap.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});
+      this.classList.add('on');statsFilter.dojo=this.getAttribute('data-v');renderStats();
     });
   });
 }
-
-/* ── 設定：弓道場リスト ── */
 function renderDojoList(){
-  var el = document.getElementById("dojo-list");
-  if(!dojos.length){ el.innerHTML="<div class='dojo-empty'>弓道場が登録されていません</div>"; return; }
-  el.innerHTML="";
-  dojos.forEach(function(d, i){
-    var item = document.createElement("div");
-    item.className = "dojo-item";
-    item.setAttribute("data-index", i);
-    item.setAttribute("draggable","true");
-    item.innerHTML =
-      "<span class='dojo-handle' data-handle='1'>⠿</span>"+
-      "<span class='dojo-order'>"+(i+1)+"</span>"+
-      "<span class='dojo-name-txt'>"+esc(d.name)+"</span>"+
-      "<button class='dojo-del-btn' data-id='"+d.id+"'>削除</button>";
-    item.addEventListener("dragstart",  onDragStart);
-    item.addEventListener("dragover",   onDragOver);
-    item.addEventListener("drop",       onDrop);
-    item.addEventListener("dragend",    onDragEnd);
-    item.querySelector(".dojo-handle").addEventListener("touchstart", onTouchStart, {passive:false});
-    item.querySelector(".dojo-del-btn").addEventListener("click", function(e){
-      dojos = dojos.filter(function(x){ return x.id!==e.target.getAttribute("data-id"); });
-      saveDojo(); refreshAll(); toast("削除しました");
+  var el=document.getElementById('dojo-list');
+  if(!dojos.length){el.innerHTML="<div class='dojo-empty'>\u5f13\u9053\u5834\u304c\u767b\u9332\u3055\u308c\u3066\u3044\u307e\u305b\u3093</div>";return;}
+  el.innerHTML='';
+  dojos.forEach(function(d,i){
+    var item=document.createElement('div');item.className='dojo-item';
+    item.setAttribute('data-index',i);item.setAttribute('draggable','true');
+    item.innerHTML="<span class='dojo-handle' data-handle='1'>\u2807</span><span class='dojo-order'>"+(i+1)+"</span><span class='dojo-name-txt'>"+esc(d.name)+"</span><button class='dojo-del-btn' data-id='"+d.id+"'>\u524a\u9664</button>";
+    item.addEventListener('dragstart',onDragStart);item.addEventListener('dragover',onDragOver);
+    item.addEventListener('drop',onDrop);item.addEventListener('dragend',onDragEnd);
+    item.querySelector('.dojo-handle').addEventListener('touchstart',onTouchStart,{passive:false});
+    item.querySelector('.dojo-del-btn').addEventListener('click',function(e){
+      dojos=dojos.filter(function(x){return x.id!==e.target.getAttribute('data-id');});
+      saveDojo();refreshAll();toast('\u524a\u9664\u3057\u307e\u3057\u305f');
     });
     el.appendChild(item);
   });
 }
-// Drag desktop
-function onDragStart(e){ dragSrcIdx=+this.getAttribute("data-index"); this.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; }
-function onDragOver(e){ e.preventDefault(); document.querySelectorAll(".dojo-item").forEach(function(x){ x.classList.remove("drag-over"); }); this.classList.add("drag-over"); }
-function onDrop(e){ e.preventDefault(); var t=+this.getAttribute("data-index"); if(dragSrcIdx===null||dragSrcIdx===t) return; dojos.splice(t,0,dojos.splice(dragSrcIdx,1)[0]); saveDojo(); refreshAll(); }
-function onDragEnd(){ document.querySelectorAll(".dojo-item").forEach(function(x){ x.classList.remove("dragging","drag-over"); }); dragSrcIdx=null; }
-// Touch
+function onDragStart(e){dragSrcIdx=+this.getAttribute('data-index');this.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function onDragOver(e){e.preventDefault();document.querySelectorAll('.dojo-item').forEach(function(x){x.classList.remove('drag-over');});this.classList.add('drag-over');}
+function onDrop(e){e.preventDefault();var t=+this.getAttribute('data-index');if(dragSrcIdx===null||dragSrcIdx===t)return;dojos.splice(t,0,dojos.splice(dragSrcIdx,1)[0]);saveDojo();refreshAll();}
+function onDragEnd(){document.querySelectorAll('.dojo-item').forEach(function(x){x.classList.remove('dragging','drag-over');});dragSrcIdx=null;}
 function onTouchStart(e){
-  e.preventDefault();
-  var item = this.closest(".dojo-item");
-  touchSrcIdx = +item.getAttribute("data-index");
-  var r = item.getBoundingClientRect();
-  touchClone = item.cloneNode(true);
-  touchClone.style.cssText="position:fixed;left:"+r.left+"px;top:"+r.top+"px;width:"+r.width+"px;opacity:.85;z-index:9999;pointer-events:none;background:#2c2c2c;border-radius:10px;";
-  document.body.appendChild(touchClone);
-  item.classList.add("dragging");
-  document.addEventListener("touchmove",onTouchMove,{passive:false});
-  document.addEventListener("touchend",onTouchEnd);
+  e.preventDefault();var item=this.closest('.dojo-item');touchSrcIdx=+item.getAttribute('data-index');
+  var r=item.getBoundingClientRect();touchClone=item.cloneNode(true);
+  touchClone.style.cssText='position:fixed;left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;opacity:.85;z-index:9999;pointer-events:none;background:#2c2c2c;border-radius:10px;';
+  document.body.appendChild(touchClone);item.classList.add('dragging');
+  document.addEventListener('touchmove',onTouchMove,{passive:false});document.addEventListener('touchend',onTouchEnd);
 }
 function onTouchMove(e){
-  e.preventDefault();
-  var t=e.touches[0];
-  if(touchClone) touchClone.style.top=(t.clientY-24)+"px";
-  document.querySelectorAll(".dojo-item:not(.dragging)").forEach(function(x){ x.classList.remove("drag-over"); });
-  document.querySelectorAll(".dojo-item:not(.dragging)").forEach(function(x){
-    var r=x.getBoundingClientRect();
-    if(t.clientY>=r.top&&t.clientY<=r.bottom) x.classList.add("drag-over");
+  e.preventDefault();var t=e.touches[0];
+  if(touchClone)touchClone.style.top=(t.clientY-24)+'px';
+  document.querySelectorAll('.dojo-item:not(.dragging)').forEach(function(x){x.classList.remove('drag-over');});
+  document.querySelectorAll('.dojo-item:not(.dragging)').forEach(function(x){
+    var r=x.getBoundingClientRect();if(t.clientY>=r.top&&t.clientY<=r.bottom)x.classList.add('drag-over');
   });
 }
 function onTouchEnd(){
-  document.removeEventListener("touchmove",onTouchMove);
-  document.removeEventListener("touchend",onTouchEnd);
-  if(touchClone){ document.body.removeChild(touchClone); touchClone=null; }
-  var tgt = document.querySelector(".dojo-item.drag-over");
-  if(tgt&&touchSrcIdx!==null){
-    var ti=+tgt.getAttribute("data-index");
-    if(ti!==touchSrcIdx){ dojos.splice(ti,0,dojos.splice(touchSrcIdx,1)[0]); saveDojo(); refreshAll(); }
-  }
-  document.querySelectorAll(".dojo-item").forEach(function(x){ x.classList.remove("dragging","drag-over"); });
-  touchSrcIdx=null;
+  document.removeEventListener('touchmove',onTouchMove);document.removeEventListener('touchend',onTouchEnd);
+  if(touchClone){document.body.removeChild(touchClone);touchClone=null;}
+  var tgt=document.querySelector('.dojo-item.drag-over');
+  if(tgt&&touchSrcIdx!==null){var ti=+tgt.getAttribute('data-index');if(ti!==touchSrcIdx){dojos.splice(ti,0,dojos.splice(touchSrcIdx,1)[0]);saveDojo();refreshAll();}}
+  document.querySelectorAll('.dojo-item').forEach(function(x){x.classList.remove('dragging','drag-over');});touchSrcIdx=null;
 }
 
-/* ── ヘッダー ── */
 function initHeader(){
-  var n=new Date(), days=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  document.getElementById("hd-date").textContent=n.getFullYear()+"/"+(n.getMonth()+1)+"/"+n.getDate()+" "+days[n.getDay()];
-  document.getElementById("input-date").valueAsDate=n;
+  var n=new Date(),days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  document.getElementById('hd-date').textContent=n.getFullYear()+'/'+(n.getMonth()+1)+'/'+n.getDate()+' '+days[n.getDay()];
+  document.getElementById('input-date').valueAsDate=n;
 }
 
-/* ── UI初期化 ── */
 function initUI(){
-  // 種別
-  var tc=document.querySelectorAll(".type-chip");
-  tc.forEach(function(c){ c.addEventListener("click",function(){
-    tc.forEach(function(x){x.classList.remove("on");}); this.classList.add("on");
-    selType=this.getAttribute("data-v");
-    document.getElementById("date-label").textContent=dateLabelMap[selType]||"日付";
+  var tc=document.querySelectorAll('.type-chip');
+  tc.forEach(function(c){c.addEventListener('click',function(){
+    tc.forEach(function(x){x.classList.remove('on');});this.classList.add('on');
+    selType=this.getAttribute('data-v');
+    document.getElementById('date-label').textContent=dateLabelMap[selType]||'\u65e5\u4ed8';
   });});
-  // 距離
-  var dc=document.querySelectorAll(".chip");
-  dc.forEach(function(c){ c.addEventListener("click",function(){
-    dc.forEach(function(x){x.classList.remove("on");}); this.classList.add("on");
-    selDist=this.getAttribute("data-v");
+  var dc=document.querySelectorAll('.chip');
+  dc.forEach(function(c){c.addEventListener('click',function(){
+    dc.forEach(function(x){x.classList.remove('on');});this.classList.add('on');selDist=this.getAttribute('data-v');
   });});
-  // 弓道場select
-  document.getElementById("input-dojo").addEventListener("change",function(){ selDojo=this.value; });
-  // 射数
-  document.getElementById("btn-minus").addEventListener("click",function(){ changeCount(-2); });
-  document.getElementById("btn-plus").addEventListener("click", function(){ changeCount(2); });
-  // 保存
-  document.getElementById("btn-save").addEventListener("click", saveRecord);
-  // メモ
-  document.getElementById("input-memo").addEventListener("input",function(){
-    document.getElementById("memo-count").textContent=this.value.length+" / 500";
+  document.getElementById('input-dojo').addEventListener('change',function(){selDojo=this.value;});
+  document.getElementById('btn-minus').addEventListener('click',function(){changeCount(-2);});
+  document.getElementById('btn-plus').addEventListener('click',function(){changeCount(2);});
+  document.getElementById('btn-save').addEventListener('click',saveRecord);
+  document.getElementById('input-memo').addEventListener('input',function(){document.getElementById('memo-count').textContent=this.value.length+' / 500';});
+  document.getElementById('m-close-btn').addEventListener('click',closeModal);
+  document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+  ['record','list','stats','cal','setting'].forEach(function(t){
+    document.getElementById('tab-'+t).addEventListener('click',function(){switchTab(t);});
   });
-  // モーダル
-  document.getElementById("m-close-btn").addEventListener("click",closeModal);
-  document.getElementById("modal").addEventListener("click",function(e){ if(e.target===this) closeModal(); });
-  // タブ
-  ["record","list","stats","cal","setting"].forEach(function(t){
-    document.getElementById("tab-"+t).addEventListener("click",function(){ switchTab(t); });
+  document.getElementById('confirm-yes').addEventListener('click',execDelete);
+  document.getElementById('confirm-no').addEventListener('click',function(){pendingDelId=null;pendingDelFrom=null;document.getElementById('confirm-modal').classList.remove('open');});
+  document.getElementById('confirm-modal').addEventListener('click',function(e){if(e.target===this){pendingDelId=null;pendingDelFrom=null;this.classList.remove('open');}});
+  document.getElementById('btn-add-dojo').addEventListener('click',addDojo);
+  document.getElementById('dojo-name-input').addEventListener('keydown',function(e){if(e.key==='Enter')addDojo();});
+  document.getElementById('cal-prev').addEventListener('click',function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();});
+  document.getElementById('cal-next').addEventListener('click',function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();});
+  document.getElementById('cal-dojo-sel').addEventListener('change',function(){calDojoId=this.value;renderCalendar();});
+  document.getElementById('btn-export').addEventListener('click',exportData);
+  document.getElementById('btn-import').addEventListener('click',function(){document.getElementById('import-file-input').value='';document.getElementById('import-file-input').click();});
+  document.getElementById('import-file-input').addEventListener('change',handleImportFile);
+  document.getElementById('import-confirm-yes').addEventListener('click',execImport);
+  document.getElementById('import-confirm-no').addEventListener('click',function(){pendingImport=null;document.getElementById('import-modal').classList.remove('open');});
+  document.getElementById('import-modal').addEventListener('click',function(e){if(e.target===this){pendingImport=null;this.classList.remove('open');}});
+  document.getElementById('mode-grid-btn').addEventListener('click',function(){setInputMode('grid');});
+  document.getElementById('mode-yazo-btn').addEventListener('click',function(){setInputMode('yazo');});
+  document.getElementById('yazo-btn-minus').addEventListener('click',function(){
+    if(yazoCount<=2)return;yazoCount-=2;
+    while(yazoArrows.length>yazoCount)yazoArrows.pop();
+    document.getElementById('yazo-count-disp').textContent=yazoCount+'\u5c04';updateYazo();
   });
-  // 削除確認
-  document.getElementById("confirm-yes").addEventListener("click",execDelete);
-  document.getElementById("confirm-no").addEventListener("click",function(){
-    pendingDelId=null; pendingDelFrom=null;
-    document.getElementById("confirm-modal").classList.remove("open");
+  document.getElementById('yazo-btn-plus').addEventListener('click',function(){
+    if(yazoCount>=24)return;yazoCount+=2;
+    document.getElementById('yazo-count-disp').textContent=yazoCount+'\u5c04';updateYazo();
   });
-  document.getElementById("confirm-modal").addEventListener("click",function(e){
-    if(e.target===this){ pendingDelId=null; pendingDelFrom=null; this.classList.remove("open"); }
-  });
-  // 弓道場追加
-  document.getElementById("btn-add-dojo").addEventListener("click",addDojo);
-  document.getElementById("dojo-name-input").addEventListener("keydown",function(e){ if(e.key==="Enter") addDojo(); });
-  // カレンダー
-  document.getElementById("cal-prev").addEventListener("click",function(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
-  document.getElementById("cal-next").addEventListener("click",function(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
-  document.getElementById("cal-dojo-sel").addEventListener("change",function(){ calDojoId=this.value; renderCalendar(); });
-  // 統計弓道場別プルダウン（旧select削除済み・チップはinitStatsFilter）
-  // エクスポート/インポート
-  document.getElementById("btn-export").addEventListener("click",exportData);
-  document.getElementById("btn-import").addEventListener("click",function(){ document.getElementById("import-file-input").value=""; document.getElementById("import-file-input").click(); });
-  document.getElementById("import-file-input").addEventListener("change",handleImportFile);
-  document.getElementById("import-confirm-yes").addEventListener("click",execImport);
-  document.getElementById("import-confirm-no").addEventListener("click",function(){ pendingImport=null; document.getElementById("import-modal").classList.remove("open"); });
-  document.getElementById("import-modal").addEventListener("click",function(e){ if(e.target===this){ pendingImport=null; this.classList.remove("open"); } });
+  document.getElementById('btn-undo').addEventListener('click',function(){if(!yazoArrows.length)return;yazoArrows.pop();updateYazo();});
+  document.getElementById('btn-yazo-reset').addEventListener('click',function(){yazoArrows=[];updateYazo();});
 }
 
+function setInputMode(mode){
+  inputMode=mode;
+  document.getElementById('mode-grid-btn').classList.toggle('active',mode==='grid');
+  document.getElementById('mode-yazo-btn').classList.toggle('active',mode==='yazo');
+  document.getElementById('grid-mode').classList.toggle('mode-hidden',mode!=='grid');
+  document.getElementById('yazo-mode').classList.toggle('mode-hidden',mode!=='yazo');
+  if(mode==='yazo'){
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        resizeYazoCanvas();
+        drawTargetCanvas();
+      });
+    });
+  }
+}
 function addDojo(){
-  var inp=document.getElementById("dojo-name-input"), name=inp.value.trim();
-  if(!name){ toast("弓道場名を入力してください"); return; }
-  for(var i=0;i<dojos.length;i++){ if(dojos[i].name===name){ toast("同じ名前が既に存在します"); return; } }
-  dojos.push({id:genId(),name:name});
-  saveDojo(); inp.value=""; refreshAll(); toast("「"+name+"」を追加しました");
+  var inp=document.getElementById('dojo-name-input'),name=inp.value.trim();
+  if(!name){toast('\u5f13\u9053\u5834\u540d\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
+  for(var i=0;i<dojos.length;i++){if(dojos[i].name===name){toast('\u540c\u3058\u540d\u524d\u304c\u65e2\u306b\u5b58\u5728\u3057\u307e\u3059');return;}}
+  dojos.push({id:genId(),name:name});saveDojo();inp.value='';refreshAll();toast('\u300c'+name+'\u300d\u3092\u8ffd\u52a0\u3057\u307e\u3057\u305f');
 }
-
-/* ── 射数グリッド ── */
-function changeCount(d){ arrowCount=Math.max(2,Math.min(24,arrowCount+d)); while(hitStates.length>arrowCount) hitStates.pop(); while(hitStates.length<arrowCount) hitStates.push(false); document.getElementById("count-disp").textContent=arrowCount+"射"; initGrid(); }
+function changeCount(d){arrowCount=Math.max(2,Math.min(24,arrowCount+d));while(hitStates.length>arrowCount)hitStates.pop();while(hitStates.length<arrowCount)hitStates.push(false);document.getElementById('count-disp').textContent=arrowCount+'\u5c04';initGrid();}
 function initGrid(){
-  var g=document.getElementById("arrows-grid"); g.innerHTML="";
+  var g=document.getElementById('arrows-grid');g.innerHTML='';
   hitStates.forEach(function(s,i){
-    var b=document.createElement("button"); b.className="a-btn "+(s?"hit":"miss");
-    b.addEventListener("click",function(){ hitStates[i]=!hitStates[i]; initGrid(); });
+    var b=document.createElement('button');b.className='a-btn '+(s?'hit':'miss');
+    b.addEventListener('click',function(){hitStates[i]=!hitStates[i];initGrid();});
     g.appendChild(b);
   });
   var hits=hitStates.filter(Boolean).length;
-  document.getElementById("hit-num").textContent=hits;
-  document.getElementById("hit-total").textContent="/ "+arrowCount;
-  document.getElementById("hit-rate").textContent=arrowCount?(hits/arrowCount*100).toFixed(1)+"%":"0.0%";
+  document.getElementById('hit-num').textContent=hits;
+  document.getElementById('hit-total').textContent='/ '+arrowCount;
+  document.getElementById('hit-rate').textContent=arrowCount?(hits/arrowCount*100).toFixed(1)+'%':'0.0%';
 }
 
-/* ── 記録保存 ── */
+function initYazoCanvas(){
+  tCanvas=document.getElementById('target-canvas');tCtx=tCanvas.getContext('2d');
+  // Don't resize yet — canvas is hidden (mode-hidden), width=0. Will resize on first switch.
+  tCanvas.addEventListener('click',handleTargetTap);
+  tCanvas.addEventListener('touchstart',handleTargetTap,{passive:false});
+  window.addEventListener('resize',function(){if(tSize>0){resizeYazoCanvas();drawTargetCanvas();}});
+}
+function resizeYazoCanvas(){
+  var dpr=window.devicePixelRatio||1,rect=tCanvas.parentElement.getBoundingClientRect();
+  var w=rect.width;
+  if(w<10)return; // guard: still hidden
+  tSize=w;tCanvas.width=tSize*dpr;tCanvas.height=tSize*dpr;
+  tCtx=tCanvas.getContext('2d');tCtx.scale(dpr,dpr);
+}
+function handleTargetTap(e){
+  e.preventDefault();if(yazoArrows.length>=yazoCount)return;
+  var pos=getTargetPos(e),dist=Math.sqrt(pos.x*pos.x+pos.y*pos.y);
+  yazoArrows.push({x:pos.x,y:pos.y,hit:dist<=1.0,no:yazoArrows.length+1});updateYazo();
+}
+function getTargetPos(e){
+  var rect=tCanvas.getBoundingClientRect(),cx=rect.width/2,cy=rect.height/2,R=rect.width*0.44;
+  var ex,ey;
+  if(e.touches){ex=e.touches[0].clientX;ey=e.touches[0].clientY;}else{ex=e.clientX;ey=e.clientY;}
+  return{x:(ex-rect.left-cx)/R,y:(ey-rect.top-cy)/R};
+}
+function updateYazo(){
+  var hits=yazoArrows.filter(function(a){return a.hit;}).length,total=yazoArrows.length,max=yazoCount;
+  document.getElementById('yazo-hit-num').textContent=hits;
+  document.getElementById('yazo-total').textContent='/ '+max;
+  document.getElementById('yazo-rate').textContent=total?(hits/total*100).toFixed(1)+'%':'0.0%';
+  document.getElementById('yazo-remain').textContent='\u6b8b '+(max-total)+'\u672c';
+  document.getElementById('btn-undo').disabled=yazoArrows.length===0;
+  drawTargetCanvas();
+}
+function drawTargetCanvas(){
+  if(!tCtx||!tSize)return;
+  var ctx=tCtx,s=tSize,cx=s/2,cy=s/2,R=s*0.31;
+  ctx.clearRect(0,0,s,s);
+  // 外側背景：ほぼ白のグレー
+  ctx.fillStyle='rgba(238,238,235,1)';ctx.fillRect(0,0,s,s);
+  // 的（白円）
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle='#ffffff';ctx.fill();
+  // 十文字（円の外まで延長）
+  ctx.strokeStyle='rgba(100,110,130,0.4)';ctx.lineWidth=1;ctx.beginPath();
+  ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  // 的の外周
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(100,110,130,0.55)';ctx.lineWidth=1.5;ctx.stroke();
+  // 矢プロット
+  var dotR=Math.max(7,s*0.032);
+  yazoArrows.forEach(function(a){
+    var px=cx+a.x*R,py=cy+a.y*R;
+    ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);
+    ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();
+    ctx.fillStyle=a.hit?'#f0f0f0':'#fff';
+    ctx.font='bold '+(dotR*0.95)+'px BIZ UDGothic,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(a.no,px,py+0.5);
+  });
+  if(yazoArrows.length>=yazoCount){
+    ctx.fillStyle='rgba(238,238,235,0.55)';ctx.fillRect(0,0,s,s);
+    ctx.fillStyle='rgba(50,50,50,0.7)';ctx.font='bold 13px BIZ UDGothic,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('入力完了',cx,cy);
+  }
+}
+
+function initPlotCanvas(){pCanvas=document.getElementById('plot-canvas');pCtx=pCanvas.getContext('2d');}
+function resizePlotCanvas(){
+  var dpr=window.devicePixelRatio||1,rect=pCanvas.parentElement.getBoundingClientRect();
+  pSize=rect.width;pCanvas.width=pSize*dpr;pCanvas.height=pSize*dpr;
+  pCtx=pCanvas.getContext('2d');pCtx.scale(dpr,dpr);
+}
+function drawPlotCanvas(data){
+  if(!pCtx||!pSize)return;
+  var ctx=pCtx,s=pSize,cx=s/2,cy=s/2,R=s*0.31;
+  ctx.clearRect(0,0,s,s);
+  // 外側：ほぼ白のグレー
+  ctx.fillStyle='rgba(238,238,235,1)';ctx.fillRect(0,0,s,s);
+  // 的（白円）
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle='#ffffff';ctx.fill();
+  // 十文字（円の外まで延長）
+  ctx.strokeStyle='rgba(100,110,130,0.4)';ctx.lineWidth=1;ctx.beginPath();
+  ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  // 外周
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(100,110,130,0.55)';ctx.lineWidth=1.5;ctx.stroke();
+  if(!data.length){
+    ctx.fillStyle='#888';ctx.font='12px BIZ UDGothic,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);
+    document.getElementById('plot-summary').textContent='-';return;
+  }
+  var hits=0;
+  data.forEach(function(a){
+    var px=cx+a.x*R,py=cy+a.y*R;
+    ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+    ctx.fillStyle=a.hit?'rgba(20,20,20,0.85)':'rgba(210,50,50,0.75)';ctx.fill();
+    if(a.hit)hits++;
+  });
+  var rate=(hits/data.length*100).toFixed(1);
+  document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+rate+'%';
+}
+
+function initModalPlotCanvas(){mpCanvas=document.getElementById('modal-plot-canvas');mpCtx=mpCanvas.getContext('2d');}
+function drawModalPlot(arrows){
+  var wrap=document.getElementById('modal-plot-wrap');
+  var yazoArr=arrows.filter(function(a){return a&&a.x!=null;});
+  if(!yazoArr.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  var dpr=window.devicePixelRatio||1,rect=mpCanvas.parentElement.getBoundingClientRect();
+  mpSize=rect.width;mpCanvas.width=mpSize*dpr;mpCanvas.height=mpSize*dpr;
+  mpCtx=mpCanvas.getContext('2d');mpCtx.scale(dpr,dpr);
+  var ctx=mpCtx,s=mpSize,cx=s/2,cy=s/2,R=s*0.31;
+  ctx.clearRect(0,0,s,s);
+  // 外側：ほぼ白のグレー
+  ctx.fillStyle='rgba(238,238,235,1)';ctx.fillRect(0,0,s,s);
+  // 的（白円）
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle='#ffffff';ctx.fill();
+  // 十文字（円の外まで延長）
+  ctx.strokeStyle='rgba(100,110,130,0.4)';ctx.lineWidth=1;ctx.beginPath();
+  ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  // 外周
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='rgba(100,110,130,0.55)';ctx.lineWidth=1.5;ctx.stroke();
+  var dotR=Math.max(7,s*0.038);
+  yazoArr.forEach(function(a,idx){
+    var px=cx+a.x*R,py=cy+a.y*R;
+    ctx.beginPath();ctx.arc(px,py,dotR,0,Math.PI*2);
+    ctx.fillStyle=a.hit?'rgba(20,20,20,0.88)':'rgba(210,50,50,0.82)';ctx.fill();
+    ctx.fillStyle=a.hit?'#f0f0f0':'#fff';
+    ctx.font='bold '+(dotR*0.9)+'px BIZ UDGothic,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    var no=a.no!=null?a.no:(idx+1);
+    ctx.fillText(no,px,py+0.5);
+  });
+}
+
 function saveRecord(){
-  var date=document.getElementById("input-date").value;
-  var memo=document.getElementById("input-memo").value.trim();
-  if(!date){ toast("日付を選択してください"); return; }
-  document.getElementById("btn-save").disabled=true;
-  var hits=hitStates.filter(Boolean).length;
-  records.unshift({id:genId(),date:date,dist:selDist,type:selType,dojoId:selDojo,hits:hits,total:arrowCount,arrows:hitStates.slice(),memo:memo,createdAt:new Date().toISOString()});
-  records.sort(function(a,b){ return b.date>a.date?1:b.date<a.date?-1:0; });
-  saveRec(); toast("記録しました");
-  document.getElementById("input-memo").value="";
-  document.getElementById("memo-count").textContent="0 / 500";
-  hitStates=new Array(arrowCount).fill(false);
-  initGrid(); document.getElementById("btn-save").disabled=false;
+  var date=document.getElementById('input-date').value;
+  var memo=document.getElementById('input-memo').value.trim();
+  if(!date){toast('\u65e5\u4ed8\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044');return;}
+  var hits,total,arrowsData;
+  if(inputMode==='grid'){
+    hits=hitStates.filter(Boolean).length;total=arrowCount;
+    arrowsData=hitStates.map(function(h){return{hit:h,x:null,y:null};});
+  }else{
+    if(yazoArrows.length===0){toast('\u77e2\u6240\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
+    hits=yazoArrows.filter(function(a){return a.hit;}).length;total=yazoArrows.length;
+    arrowsData=yazoArrows.map(function(a){return{hit:a.hit,x:a.x,y:a.y};});
+  }
+  document.getElementById('btn-save').disabled=true;
+  records.unshift({id:genId(),date:date,dist:selDist,type:selType,dojoId:selDojo,hits:hits,total:total,arrows:arrowsData,memo:memo,createdAt:new Date().toISOString()});
+  records.sort(function(a,b){return b.date>a.date?1:b.date<a.date?-1:0;});
+  saveRec();toast('\u8a18\u9332\u3057\u307e\u3057\u305f');
+  document.getElementById('input-memo').value='';document.getElementById('memo-count').textContent='0 / 500';
+  hitStates=new Array(arrowCount).fill(false);initGrid();
+  yazoArrows=[];updateYazo();
+  document.getElementById('btn-save').disabled=false;
 }
-
-/* ── 削除 ── */
-function showConfirm(id,from){ pendingDelId=id; pendingDelFrom=from; document.getElementById("confirm-modal").classList.add("open"); }
+function showConfirm(id,from){pendingDelId=id;pendingDelFrom=from;document.getElementById('confirm-modal').classList.add('open');}
 function execDelete(){
-  var id=pendingDelId, from=pendingDelFrom; pendingDelId=null; pendingDelFrom=null;
-  document.getElementById("confirm-modal").classList.remove("open");
-  records=records.filter(function(r){ return r.id!==id; });
-  saveRec(); if(from==="modal") closeModal();
-  renderList(); renderStats(); renderCalendar(); toast("削除しました");
+  var id=pendingDelId,from=pendingDelFrom;pendingDelId=null;pendingDelFrom=null;
+  document.getElementById('confirm-modal').classList.remove('open');
+  records=records.filter(function(r){return r.id!==id;});
+  saveRec();if(from==='modal')closeModal();
+  renderList();renderStats();renderCalendar();toast('\u524a\u9664\u3057\u307e\u3057\u305f');
 }
-function deleteRecord(id){ showConfirm(id,"modal"); }
-function deleteRecordInline(id){ showConfirm(id,"inline"); }
+function deleteRecord(id){showConfirm(id,'modal');}
+function deleteRecordInline(id){showConfirm(id,'inline');}
 
-/* ── エクスポート/インポート ── */
 function exportData(){
-  if(!records.length){ toast("データがありません"); return; }
-  var n=new Date(), fname="kyudo_"+n.getFullYear()+pad2(n.getMonth()+1)+pad2(n.getDate())+".json";
-  var blob=new Blob([JSON.stringify({version:1,exportedAt:n.toISOString(),records:records,dojos:dojos},null,2)],{type:"application/json"});
-  var url=URL.createObjectURL(blob), a=document.createElement("a");
-  a.href=url; a.download=fname; a.click(); URL.revokeObjectURL(url); toast("エクスポートしました");
+  if(!records.length){toast('\u30c7\u30fc\u30bf\u304c\u3042\u308a\u307e\u305b\u3093');return;}
+  var n=new Date(),fname='kyudo_'+n.getFullYear()+pad2(n.getMonth()+1)+pad2(n.getDate())+'.json';
+  var blob=new Blob([JSON.stringify({version:2,exportedAt:n.toISOString(),records:records,dojos:dojos},null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);toast('\u30a8\u30af\u30b9\u30dd\u30fc\u30c8\u3057\u307e\u3057\u305f');
 }
 function handleImportFile(e){
-  var f=e.target.files[0]; if(!f) return;
+  var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
   r.onload=function(ev){
     try{
       var p=JSON.parse(ev.target.result);
       var ir=Array.isArray(p)?p:(p.records||null);
-      if(!ir||!ir.length){ toast("有効なデータが見つかりません"); return; }
+      if(!ir||!ir.length){toast('\u6709\u52b9\u306a\u30c7\u30fc\u30bf\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093');return;}
       pendingImport={records:ir,dojos:p.dojos||[]};
-      document.getElementById("import-modal-info").textContent=ir.length+" 件のデータが見つかりました。";
-      document.getElementById("import-modal").classList.add("open");
-    }catch(err){ toast("読み込みに失敗しました"); }
-  };
-  r.readAsText(f);
+      document.getElementById('import-modal-info').textContent=ir.length+' \u4ef6\u306e\u30c7\u30fc\u30bf\u304c\u898b\u3064\u304b\u308a\u307e\u3057\u305f\u3002';
+      document.getElementById('import-modal').classList.add('open');
+    }catch(err){toast('\u8aad\u307f\u8fbc\u307f\u306b\u5931\u6557\u3057\u307e\u3057\u305f');}
+  };r.readAsText(f);
 }
 function execImport(){
-  if(!pendingImport) return;
+  if(!pendingImport)return;
   records=pendingImport.records.slice();
-  if(pendingImport.dojos&&pendingImport.dojos.length) dojos=pendingImport.dojos.slice();
-  records.sort(function(a,b){ return b.date>a.date?1:b.date<a.date?-1:0; });
-  saveRec(); saveDojo(); pendingImport=null;
-  document.getElementById("import-modal").classList.remove("open");
-  refreshAll(); renderList(); renderStats(); renderCalendar(); toast("インポートしました");
+  records.forEach(function(r){
+    if(!r.arrows){r.arrows=[];return;}
+    r.arrows=r.arrows.map(function(a){return typeof a==='boolean'?{hit:a,x:null,y:null}:a;});
+  });
+  if(pendingImport.dojos&&pendingImport.dojos.length)dojos=pendingImport.dojos.slice();
+  records.sort(function(a,b){return b.date>a.date?1:b.date<a.date?-1:0;});
+  saveRec();saveDojo();pendingImport=null;
+  document.getElementById('import-modal').classList.remove('open');
+  refreshAll();renderList();renderStats();renderCalendar();toast('\u30a4\u30f3\u30dd\u30fc\u30c8\u3057\u307e\u3057\u305f');
 }
 
-/* ── 履歴 ── */
 function withSessionNos(recs){
-  var cnt={}; recs.forEach(function(r){ cnt[r.date]=(cnt[r.date]||0)+1; });
-  var cur={}, res=[];
-  recs.forEach(function(r){ var rc=Object.assign({},r); if(!cur[r.date]) cur[r.date]=cnt[r.date]; rc.sessionNo=cur[r.date]--; res.push(rc); });
+  var cnt={};recs.forEach(function(r){cnt[r.date]=(cnt[r.date]||0)+1;});
+  var cur={},res=[];
+  recs.forEach(function(r){var rc=Object.assign({},r);if(!cur[r.date])cur[r.date]=cnt[r.date];rc.sessionNo=cur[r.date]--;res.push(rc);});
   return res;
 }
 function renderList(){
-  var el=document.getElementById("record-list");
-  if(!records.length){ el.innerHTML="<div class='empty'><div class='empty-text'>記録がありません</div></div>"; document.getElementById("lf-count").textContent="0 件"; return; }
-  var sorted=records.slice().sort(function(a,b){ return b.date>a.date?1:b.date<a.date?-1:0; });
-  sorted=withSessionNos(sorted);
-  var filtered=applyListFilter(sorted);
-  document.getElementById("lf-count").textContent=filtered.length+" 件";
-  if(!filtered.length){ el.innerHTML="<div class='empty'><div class='empty-text'>条件に一致する記録がありません</div></div>"; return; }
-  var html="";
+  var el=document.getElementById('record-list');
+  if(!records.length){el.innerHTML="<div class='empty'><div class='empty-text'>\u8a18\u9332\u304c\u3042\u308a\u307e\u305b\u3093</div></div>";document.getElementById('lf-count').textContent='0 \u4ef6';return;}
+  var sorted=records.slice().sort(function(a,b){return b.date>a.date?1:b.date<a.date?-1:0;});
+  sorted=withSessionNos(sorted);var filtered=applyListFilter(sorted);
+  document.getElementById('lf-count').textContent=filtered.length+' \u4ef6';
+  if(!filtered.length){el.innerHTML="<div class='empty'><div class='empty-text'>\u6761\u4ef6\u306b\u4e00\u81f4\u3059\u308b\u8a18\u9332\u304c\u3042\u308a\u307e\u305b\u3093</div></div>";return;}
+  var html='';
   filtered.forEach(function(r){
-    var rate=(r.hits/r.total*100).toFixed(1), rn=parseFloat(rate);
-    var d=new Date(r.date), col=rn>=70?"#e8e8e8":rn>=50?"#aaaaaa":"#555555";
-    var dots=r.arrows.map(function(a){ return "<span class='dot "+(a?"h":"m")+"'></span>"; }).join("");
-    var dname=r.dojoId?dojoName(r.dojoId):"";
-    html+="<div class='rec-item'>" +
-      "<div class='rec-date-block'><div class='rec-y'>"+d.getFullYear()+"</div><div class='rec-m'>"+(d.getMonth()+1)+"月</div><div class='rec-d'>"+d.getDate()+"</div></div>" +
-      "<div class='vline'></div><div class='rec-body'>" +
-      "<div class='rec-session'>SESSION No."+r.sessionNo+"</div>" +
-      "<div class='rec-meta'><span class='rec-dist'>"+esc(r.dist)+"</span>" +
-      (r.type?"<span class='rec-type-badge'>"+esc(r.type)+"</span>":"")+
-      (dname?"<span class='rec-dojo-badge'>"+esc(dname)+"</span>":"")+
-      "</div><div class='rec-score'>"+r.hits+" 中 / "+r.total+" 射</div>" +
-      "<div class='rec-dots'>"+dots+"</div>" +
-      (r.memo?"<div class='rec-memo'>"+esc(r.memo)+"</div>":"")+
-      "</div><div class='rec-right'>" +
-      "<span class='rate-badge' style='color:"+col+"'>"+rate+"%</span>" +
-      "<button class='rec-del-btn' data-id='"+r.id+"'>削除</button>" +
+    var rate=(r.hits/r.total*100).toFixed(1),rn=parseFloat(rate);
+    var d=new Date(r.date),col=rn>=70?'#e8e8e8':rn>=50?'#aaaaaa':'#555555';
+    var hasYazo=r.arrows&&r.arrows.some(function(a){return a&&a.x!=null;});
+    var dots=(r.arrows||[]).map(function(a){var h=typeof a==='boolean'?a:(a&&a.hit);return "<span class='dot "+(h?'h':'m')+"'></span>";}).join('');
+    var dname=r.dojoId?dojoName(r.dojoId):'';
+    html+="<div class='rec-item' data-id='"+r.id+"'>"+
+      "<div class='rec-date-block'><div class='rec-y'>"+d.getFullYear()+"</div><div class='rec-m'>"+(d.getMonth()+1)+"\u6708</div><div class='rec-d'>"+d.getDate()+"</div></div>"+
+      "<div class='vline'></div><div class='rec-body'>"+
+      "<div class='rec-session'>SESSION No."+r.sessionNo+"</div>"+
+      "<div class='rec-meta'><span class='rec-dist'>"+esc(r.dist)+"</span>"+
+      (r.type?"<span class='rec-type-badge'>"+esc(r.type)+"</span>":'')+
+      (dname?"<span class='rec-dojo-badge'>"+esc(dname)+"</span>":'')+
+      (hasYazo?"<span class='rec-yazo-badge'>\u77e2\u6240</span>":'')+
+      "</div><div class='rec-score'>"+r.hits+" \u4e2d / "+r.total+" \u5c04</div>"+
+      "<div class='rec-dots'>"+dots+"</div>"+
+      (r.memo?"<div class='rec-memo'>"+esc(r.memo)+"</div>":'')+
+      "</div><div class='rec-right'>"+
+      "<span class='rate-badge' style='color:"+col+"'>"+rate+"%</span>"+
+      "<button class='rec-del-btn' data-id='"+r.id+"'>\u524a\u9664</button>"+
       "</div></div>";
   });
   el.innerHTML=html;
-  el.querySelectorAll(".rec-del-btn").forEach(function(b){
-    b.addEventListener("click",function(e){ e.stopPropagation(); deleteRecordInline(this.getAttribute("data-id")); });
+  el.querySelectorAll('.rec-item').forEach(function(item){
+    item.addEventListener('click',function(e){if(e.target.classList.contains('rec-del-btn'))return;openModal(this.getAttribute('data-id'));});
+  });
+  el.querySelectorAll('.rec-del-btn').forEach(function(b){
+    b.addEventListener('click',function(e){e.stopPropagation();deleteRecordInline(this.getAttribute('data-id'));});
   });
 }
 function initListFilter(){
   function bindGrp(gid,key){
-    var w=document.getElementById(gid); if(!w) return;
-    w.querySelectorAll(".lf-chip").forEach(function(c){ c.addEventListener("click",function(){
-      w.querySelectorAll(".lf-chip").forEach(function(x){x.classList.remove("on");}); this.classList.add("on");
-      listFilter[key]=this.getAttribute("data-v"); renderList();
+    var w=document.getElementById(gid);if(!w)return;
+    w.querySelectorAll('.lf-chip').forEach(function(c){c.addEventListener('click',function(){
+      w.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});this.classList.add('on');
+      listFilter[key]=this.getAttribute('data-v');renderList();
     });});
   }
-  bindGrp("lf-type","type"); bindGrp("lf-dist","dist"); bindGrp("lf-memo","memo");
-  document.getElementById("lf-date-from").addEventListener("change",function(){ listFilter.dateFrom=this.value; renderList(); });
-  document.getElementById("lf-date-to").addEventListener("change",  function(){ listFilter.dateTo=this.value;   renderList(); });
-  document.getElementById("lf-reset").addEventListener("click",function(){
-    listFilter={type:"",dist:"",dojo:"",dateFrom:"",dateTo:"",memo:""};
-    document.getElementById("lf-date-from").value="";
-    document.getElementById("lf-date-to").value="";
-    document.querySelectorAll("#lf-type .lf-chip,#lf-dist .lf-chip,#lf-memo .lf-chip").forEach(function(c){
-      c.classList.toggle("on",c.getAttribute("data-v")==="");
-    });
-    rebuildDojoChips(); renderList();
+  bindGrp('lf-type','type');bindGrp('lf-dist','dist');bindGrp('lf-memo','memo');
+  document.getElementById('lf-date-from').addEventListener('change',function(){listFilter.dateFrom=this.value;renderList();});
+  document.getElementById('lf-date-to').addEventListener('change',function(){listFilter.dateTo=this.value;renderList();});
+  document.getElementById('lf-reset').addEventListener('click',function(){
+    listFilter={type:'',dist:'',dojo:'',dateFrom:'',dateTo:'',memo:''};
+    document.getElementById('lf-date-from').value='';document.getElementById('lf-date-to').value='';
+    document.querySelectorAll('#lf-type .lf-chip,#lf-dist .lf-chip,#lf-memo .lf-chip').forEach(function(c){c.classList.toggle('on',c.getAttribute('data-v')==='');});
+    rebuildDojoChips();renderList();
   });
 }
 function initStatsFilter(){
   function bindGrp(gid,key){
-    var w=document.getElementById(gid); if(!w) return;
-    w.querySelectorAll(".lf-chip").forEach(function(c){ c.addEventListener("click",function(){
-      w.querySelectorAll(".lf-chip").forEach(function(x){x.classList.remove("on");}); this.classList.add("on");
-      statsFilter[key]=this.getAttribute("data-v"); renderStats();
+    var w=document.getElementById(gid);if(!w)return;
+    w.querySelectorAll('.lf-chip').forEach(function(c){c.addEventListener('click',function(){
+      w.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});this.classList.add('on');
+      statsFilter[key]=this.getAttribute('data-v');renderStats();
     });});
   }
-  bindGrp("sf-type","type"); bindGrp("sf-dist","dist");
-  document.getElementById("sf-reset").addEventListener("click",function(){
-    statsFilter={type:"",dist:"",dojo:""};
-    document.querySelectorAll("#sf-type .lf-chip,#sf-dist .lf-chip").forEach(function(c){
-      c.classList.toggle("on",c.getAttribute("data-v")==="");
-    });
-    rebuildStatsDojoChips();
-    renderStats();
+  bindGrp('sf-type','type');bindGrp('sf-dist','dist');
+  document.getElementById('sf-reset').addEventListener('click',function(){
+    statsFilter={type:'',dist:'',dojo:''};
+    document.querySelectorAll('#sf-type .lf-chip,#sf-dist .lf-chip').forEach(function(c){c.classList.toggle('on',c.getAttribute('data-v')==='');});
+    rebuildStatsDojoChips();renderStats();
   });
 }
 function applyListFilter(recs){
   return recs.filter(function(r){
-    if(listFilter.type     && r.type!==listFilter.type)     return false;
-    if(listFilter.dist     && r.dist!==listFilter.dist)     return false;
-    if(listFilter.dojo     && r.dojoId!==listFilter.dojo)   return false;
-    if(listFilter.dateFrom && r.date<listFilter.dateFrom)   return false;
-    if(listFilter.dateTo   && r.date>listFilter.dateTo)     return false;
-    if(listFilter.memo==="yes" && !r.memo) return false;
-    if(listFilter.memo==="no"  &&  r.memo) return false;
+    if(listFilter.type&&r.type!==listFilter.type)return false;
+    if(listFilter.dist&&r.dist!==listFilter.dist)return false;
+    if(listFilter.dojo&&r.dojoId!==listFilter.dojo)return false;
+    if(listFilter.dateFrom&&r.date<listFilter.dateFrom)return false;
+    if(listFilter.dateTo&&r.date>listFilter.dateTo)return false;
+    if(listFilter.memo==='yes'&&!r.memo)return false;
+    if(listFilter.memo==='no'&&r.memo)return false;
     return true;
   });
 }
-
-/* ── フィルターバー初期化 ── */
 function initFilterBars(){
-  bindFilterBar("#filter-bar .filter-btn", function(n){
-    dailyFilter = n;
-    renderCharts(applyStatsFilter());
-  });
+  bindFilterBar('#filter-bar .filter-btn',function(n){dailyFilter=n;renderCharts(applyStatsFilter());});
 }
 function bindFilterBar(sel,cb){
   var btns=document.querySelectorAll(sel);
-  btns.forEach(function(b){ b.addEventListener("click",function(){
-    btns.forEach(function(x){x.classList.remove("active");}); this.classList.add("active");
-    cb(parseInt(this.getAttribute("data-n")));
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    btns.forEach(function(x){x.classList.remove('active');});this.classList.add('active');cb(parseInt(this.getAttribute('data-n')));
   });});
 }
-
-/* ── 統計フィルター適用ヘルパー ── */
 function applyStatsFilter(){
   return records.filter(function(r){
-    if(statsFilter.type && r.type   !== statsFilter.type)  return false;
-    if(statsFilter.dist && r.dist   !== statsFilter.dist)  return false;
-    if(statsFilter.dojo && r.dojoId !== statsFilter.dojo)  return false;
+    if(statsFilter.type&&r.type!==statsFilter.type)return false;
+    if(statsFilter.dist&&r.dist!==statsFilter.dist)return false;
+    if(statsFilter.dojo&&r.dojoId!==statsFilter.dojo)return false;
     return true;
   });
 }
-
-/* ── 統計 ── */
 function renderStats(){
-  var grid=document.getElementById("stats-grid");
-  var mainIds=["cc1","cc2","cc3","cc4","cc5","cc6","lbl-monthly","lbl-yearly","filter-bar"];
-
-  var filtered = applyStatsFilter();
-
+  var grid=document.getElementById('stats-grid');
+  var mainIds=['cc1','cc2','cc3','cc4','cc5','cc6','lbl-monthly','lbl-yearly','filter-bar','lbl-yazo-plot'];
+  var filtered=applyStatsFilter();
   if(!filtered.length){
-    grid.innerHTML=sc("–","Average Rate")+sc("–","Sessions")+sc("–","Total Hits")+sc("–","Total Arrows");
-    mainIds.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display="none"; });
-    return;
+    grid.innerHTML=sc('-','Average Rate')+sc('-','Sessions')+sc('-','Total Hits')+sc('-','Total Arrows');
+    mainIds.forEach(function(id){var e=document.getElementById(id);if(e)e.style.display='none';});
+    document.getElementById('yazo-plot-card').style.display='none';return;
   }
-  var th=0,ta=0; filtered.forEach(function(r){ th+=r.hits; ta+=r.total; });
-  grid.innerHTML=sc((th/ta*100).toFixed(1)+"%","Average Rate")+sc(filtered.length,"Sessions")+sc(th,"Total Hits")+sc(ta,"Total Arrows");
-  mainIds.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display=id==="filter-bar"?"flex":"block"; });
+  var th=0,ta=0;filtered.forEach(function(r){th+=r.hits;ta+=r.total;});
+  grid.innerHTML=sc((th/ta*100).toFixed(1)+'%','Average Rate')+sc(filtered.length,'Sessions')+sc(th,'Total Hits')+sc(ta,'Total Arrows');
+  mainIds.forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=id==='filter-bar'?'flex':'block';});
+  var yazoData=[];
+  filtered.forEach(function(r){(r.arrows||[]).forEach(function(a){if(a&&a.x!=null)yazoData.push(a);});});
+  var card=document.getElementById('yazo-plot-card');
+  var lblYazo=document.getElementById('lbl-yazo-plot');
+  if(yazoData.length){
+    card.style.display='block';if(lblYazo)lblYazo.style.display='block';
+    setTimeout(function(){resizePlotCanvas();drawPlotCanvas(yazoData);},50);
+  }else{card.style.display='none';if(lblYazo)lblYazo.style.display='none';}
   renderCharts(filtered);
 }
-function sc(v,l){ return "<div class='stat-card'><div class='stat-val'>"+v+"</div><div class='stat-lbl'>"+l+"</div></div>"; }
-
-/* ── 集計 ── */
+function sc(v,l){return "<div class='stat-card'><div class='stat-val'>"+v+"</div><div class='stat-lbl'>"+l+"</div></div>";}
 function buildDaily(recs,n){
-  var by={}; recs.forEach(function(r){ if(!by[r.date])by[r.date]={hits:0,total:0}; by[r.date].hits+=r.hits; by[r.date].total+=r.total; });
-  var keys=Object.keys(by).sort(); if(n>0&&keys.length>n) keys=keys.slice(keys.length-n);
+  var by={};recs.forEach(function(r){if(!by[r.date])by[r.date]={hits:0,total:0};by[r.date].hits+=r.hits;by[r.date].total+=r.total;});
+  var keys=Object.keys(by).sort();if(n>0&&keys.length>n)keys=keys.slice(keys.length-n);
   var L=[],R=[],H=[],T=[];
-  keys.forEach(function(k){ var dt=new Date(k); L.push((dt.getMonth()+1)+"/"+dt.getDate()); R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1))); H.push(by[k].hits); T.push(by[k].total); });
-  return {labels:L,rates:R,hits:H,totals:T};
+  keys.forEach(function(k){var dt=new Date(k);L.push((dt.getMonth()+1)+'/'+dt.getDate());R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1)));H.push(by[k].hits);T.push(by[k].total);});
+  return{labels:L,rates:R,hits:H,totals:T};
 }
 function buildMonthly(recs){
-  var by={}; recs.forEach(function(r){ var k=r.date.substr(0,7); if(!by[k])by[k]={hits:0,total:0}; by[k].hits+=r.hits; by[k].total+=r.total; });
-  var keys=Object.keys(by).sort(); if(keys.length>12) keys=keys.slice(keys.length-12);
+  var by={};recs.forEach(function(r){var k=r.date.substr(0,7);if(!by[k])by[k]={hits:0,total:0};by[k].hits+=r.hits;by[k].total+=r.total;});
+  var keys=Object.keys(by).sort();if(keys.length>12)keys=keys.slice(keys.length-12);
   var L=[],R=[],H=[],T=[];
-  keys.forEach(function(k){ var p=k.split("-"); L.push(p[0].substr(2)+"/"+p[1]); R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1))); H.push(by[k].hits); T.push(by[k].total); });
-  return {labels:L,rates:R,hits:H,totals:T};
+  keys.forEach(function(k){var p=k.split('-');L.push(p[0].substr(2)+'/'+p[1]);R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1)));H.push(by[k].hits);T.push(by[k].total);});
+  return{labels:L,rates:R,hits:H,totals:T};
 }
 function buildYearly(recs){
-  var by={}; recs.forEach(function(r){ var k=r.date.substr(0,4); if(!by[k])by[k]={hits:0,total:0}; by[k].hits+=r.hits; by[k].total+=r.total; });
-  var keys=Object.keys(by).sort(); var L=[],R=[],H=[],T=[];
-  keys.forEach(function(k){ L.push(k); R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1))); H.push(by[k].hits); T.push(by[k].total); });
-  return {labels:L,rates:R,hits:H,totals:T};
+  var by={};recs.forEach(function(r){var k=r.date.substr(0,4);if(!by[k])by[k]={hits:0,total:0};by[k].hits+=r.hits;by[k].total+=r.total;});
+  var keys=Object.keys(by).sort();var L=[],R=[],H=[],T=[];
+  keys.forEach(function(k){L.push(k);R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1)));H.push(by[k].hits);T.push(by[k].total);});
+  return{labels:L,rates:R,hits:H,totals:T};
 }
-
 function renderCharts(recs){
-  if(!recs) recs=records;
-  destroyCharts(["cr","ch","cr-m","ch-m","cr-y","ch-y"]);
-  mkLine("cr",  buildDaily(recs,dailyFilter));
-  mkBar( "ch",  buildDaily(recs,dailyFilter));
-  mkLine("cr-m",buildMonthly(recs));
-  mkBar( "ch-m",buildMonthly(recs));
-  mkLine("cr-y",buildYearly(recs));
-  mkBar( "ch-y",buildYearly(recs));
+  if(!recs)recs=records;
+  destroyCharts(['cr','ch','cr-m','ch-m','cr-y','ch-y']);
+  mkLine('cr',buildDaily(recs,dailyFilter));mkBar('ch',buildDaily(recs,dailyFilter));
+  mkLine('cr-m',buildMonthly(recs));mkBar('ch-m',buildMonthly(recs));
+  mkLine('cr-y',buildYearly(recs));mkBar('ch-y',buildYearly(recs));
 }
-function renderDojoCharts(){
-  destroyCharts(["dcr","dch","dcr-m","dch-m","dcr-y","dch-y"]);
-  var filtered=records.filter(function(r){ return r.dojoId===statsDojoId; });
-  if(!filtered.length) return;
-  mkLine("dcr",  buildDaily(filtered,dailyFilterDojo));
-  mkBar( "dch",  buildDaily(filtered,dailyFilterDojo));
-  mkLine("dcr-m",buildMonthly(filtered));
-  mkBar( "dch-m",buildMonthly(filtered));
-  mkLine("dcr-y",buildYearly(filtered));
-  mkBar( "dch-y",buildYearly(filtered));
-}
-function destroyCharts(ids){ ids.forEach(function(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }); }
+function destroyCharts(ids){ids.forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}});}
 function mkLine(id,data){
-  var ctx=document.getElementById(id).getContext("2d");
-  var g=ctx.createLinearGradient(0,0,0,180); g.addColorStop(0,"rgba(220,220,220,0.12)"); g.addColorStop(1,"rgba(220,220,220,0)");
-  charts[id]=new Chart(ctx,{type:"line",data:{labels:data.labels,datasets:[{data:data.rates,borderColor:"#c8c8c8",backgroundColor:g,borderWidth:1.5,pointBackgroundColor:"#f0f0f0",pointBorderColor:"#181818",pointBorderWidth:2,pointRadius:4,tension:0,fill:true}]},
-    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.parsed.y+"%;"}},backgroundColor:"#222",titleColor:"#888",bodyColor:"#f0f0f0",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,padding:10}},
-    scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+"%";},color:"#666",font:CFONT},grid:{color:"rgba(255,255,255,0.05)"}},x:{ticks:{color:"#666",font:CFONT},grid:{display:false}}}}});
+  var ctx=document.getElementById(id).getContext('2d');
+  var g=ctx.createLinearGradient(0,0,0,180);g.addColorStop(0,'rgba(220,220,220,0.12)');g.addColorStop(1,'rgba(220,220,220,0)');
+  charts[id]=new Chart(ctx,{type:'line',data:{labels:data.labels,datasets:[{data:data.rates,borderColor:'#c8c8c8',backgroundColor:g,borderWidth:1.5,pointBackgroundColor:'#f0f0f0',pointBorderColor:'#181818',pointBorderWidth:2,pointRadius:4,tension:0,fill:true}]},
+    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.parsed.y+'%;'}},backgroundColor:'#222',titleColor:'#888',bodyColor:'#f0f0f0',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10}},
+    scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+'%';},color:'#666',font:CFONT},grid:{color:'rgba(255,255,255,0.05)'}},x:{ticks:{color:'#666',font:CFONT},grid:{display:false}}}}});
 }
 function mkBar(id,data){
-  var ctx=document.getElementById(id).getContext("2d");
-  charts[id]=new Chart(ctx,{type:"bar",data:{labels:data.labels,datasets:[{label:"射数",data:data.totals,backgroundColor:"rgba(70,70,70,0.75)",borderRadius:0,borderSkipped:"bottom",order:2},{label:"的中数",data:data.hits,backgroundColor:"rgba(220,220,220,0.9)",borderRadius:0,borderSkipped:"bottom",order:1}]},
-    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:true,labels:{color:"#888",font:CFONT,boxWidth:10}},tooltip:{backgroundColor:"#222",titleColor:"#888",bodyColor:"#f0f0f0",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,padding:10}},
-    scales:{y:{ticks:{color:"#666",font:CFONT},grid:{color:"rgba(255,255,255,0.05)"}},x:{ticks:{color:"#666",font:CFONT},grid:{display:false}}}}});
+  var ctx=document.getElementById(id).getContext('2d');
+  charts[id]=new Chart(ctx,{type:'bar',data:{labels:data.labels,datasets:[{label:'\u5c04\u6570',data:data.totals,backgroundColor:'rgba(70,70,70,0.75)',borderRadius:0,borderSkipped:'bottom',order:2},{label:'\u7684\u4e2d\u6570',data:data.hits,backgroundColor:'rgba(220,220,220,0.9)',borderRadius:0,borderSkipped:'bottom',order:1}]},
+    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:true,labels:{color:'#888',font:CFONT,boxWidth:10}},tooltip:{backgroundColor:'#222',titleColor:'#888',bodyColor:'#f0f0f0',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10}},
+    scales:{y:{ticks:{color:'#666',font:CFONT},grid:{color:'rgba(255,255,255,0.05)'}},x:{ticks:{color:'#666',font:CFONT},grid:{display:false}}}}});
 }
-
-/* ── 暦 ── */
 function buildDailyMap(dojoId){
   var map={};
-  records.forEach(function(r){ if(dojoId&&r.dojoId!==dojoId) return; if(!map[r.date])map[r.date]={hits:0,total:0}; map[r.date].hits+=r.hits; map[r.date].total+=r.total; });
+  records.forEach(function(r){if(dojoId&&r.dojoId!==dojoId)return;if(!map[r.date])map[r.date]={hits:0,total:0};map[r.date].hits+=r.hits;map[r.date].total+=r.total;});
   return map;
 }
 function renderCalendar(){
-  document.getElementById("cal-title").textContent=calYear+" / "+(calMonth+1<10?"0":"")+(calMonth+1);
+  document.getElementById('cal-title').textContent=calYear+' / '+(calMonth+1<10?'0':'')+(calMonth+1);
   var map=buildDailyMap(calDojoId);
-  var today=new Date(), todayStr=today.getFullYear()+"-"+pad2(today.getMonth()+1)+"-"+pad2(today.getDate());
-  var first=new Date(calYear,calMonth,1).getDay(), days=new Date(calYear,calMonth+1,0).getDate();
-  var grid=document.getElementById("cal-grid"); grid.innerHTML="";
-  for(var i=0;i<first;i++){ var e=document.createElement("div"); e.className="cal-cell empty"; grid.appendChild(e); }
+  var today=new Date(),todayStr=today.getFullYear()+'-'+pad2(today.getMonth()+1)+'-'+pad2(today.getDate());
+  var first=new Date(calYear,calMonth,1).getDay(),days=new Date(calYear,calMonth+1,0).getDate();
+  var grid=document.getElementById('cal-grid');grid.innerHTML='';
+  for(var i=0;i<first;i++){var e=document.createElement('div');e.className='cal-cell empty';grid.appendChild(e);}
   for(var d=1;d<=days;d++){
-    var ds=calYear+"-"+pad2(calMonth+1)+"-"+pad2(d);
-    var cell=document.createElement("div"), data=map[ds], cls="cal-cell";
-    if(ds===todayStr) cls+=" today";
-    if(data){ var rt=data.hits/data.total*100; cls+=rt>=70?" rate-high":rt>=50?" rate-mid":" rate-low"; }
+    var ds=calYear+'-'+pad2(calMonth+1)+'-'+pad2(d);
+    var cell=document.createElement('div'),data=map[ds],cls='cal-cell';
+    if(ds===todayStr)cls+=' today';
+    if(data){var rt=data.hits/data.total*100;cls+=rt>=70?' rate-high':rt>=50?' rate-mid':' rate-low';}
     cell.className=cls;
-    var dayEl=document.createElement("div"); dayEl.className="cal-day"; dayEl.textContent=d; cell.appendChild(dayEl);
+    var dayEl=document.createElement('div');dayEl.className='cal-day';dayEl.textContent=d;cell.appendChild(dayEl);
     if(data){
-      var div=document.createElement("div"); div.className="cal-data";
-      div.innerHTML="<div class='cal-rate'>"+(data.hits/data.total*100).toFixed(0)+"%</div><div class='cal-sub'>"+data.total+"射</div><div class='cal-sub'>"+data.hits+"中</div>";
+      var div=document.createElement('div');div.className='cal-data';
+      div.innerHTML="<div class='cal-rate'>"+(data.hits/data.total*100).toFixed(0)+"%</div><div class='cal-sub'>"+data.total+"\u5c04</div><div class='cal-sub'>"+data.hits+"\u4e2d</div>";
       cell.appendChild(div);
     }
     grid.appendChild(cell);
   }
 }
-
-/* ── モーダル ── */
 function openModal(id){
-  var r=records.find(function(x){ return x.id===id; }); if(!r) return;
-  var rate=(r.hits/r.total*100).toFixed(1), d=new Date(r.date);
-  var dots=r.arrows.map(function(a){ return "<span class='dot "+(a?"h":"m")+"'></span>"; }).join("");
-  var dname=r.dojoId?dojoName(r.dojoId):"";
-  document.getElementById("m-title").textContent=d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();
-  document.getElementById("m-body").innerHTML=
-    "<div class='sheet-row'><div class='sheet-lbl'>種別</div><div class='sheet-val'>"+(r.type||"–")+"</div></div>"+
-    "<div class='sheet-row'><div class='sheet-lbl'>距離</div><div class='sheet-val'>"+esc(r.dist)+"</div></div>"+
-    (dname?"<div class='sheet-row'><div class='sheet-lbl'>弓道場</div><div class='sheet-val'>"+esc(dname)+"</div></div>":"")+
-    "<div class='sheet-row'><div class='sheet-lbl'>的中</div><div class='sheet-val'>"+r.hits+" 中 / "+r.total+" 射（"+rate+"%）<div class='rec-dots' style='margin-top:7px'>"+dots+"</div></div></div>"+
-    (r.memo?"<div class='sheet-row'><div class='sheet-lbl'>メモ</div><div class='sheet-val'>"+esc(r.memo)+"</div></div>":"");
-  document.getElementById("m-del-btn").onclick=function(){ deleteRecord(id); };
-  document.getElementById("modal").classList.add("open");
+  var r=records.find(function(x){return x.id===id;});if(!r)return;
+  var rate=(r.hits/r.total*100).toFixed(1),d=new Date(r.date);
+  var arrows=r.arrows||[];
+  var dots=arrows.map(function(a){var h=typeof a==='boolean'?a:(a&&a.hit);return "<span class='dot "+(h?'h':'m')+"'></span>";}).join('');
+  var dname=r.dojoId?dojoName(r.dojoId):'';
+  document.getElementById('m-title').textContent=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+  document.getElementById('m-body').innerHTML=
+    "<div class='sheet-row'><div class='sheet-lbl'>\u7a2e\u5225</div><div class='sheet-val'>"+(r.type||'\u2013')+"</div></div>"+
+    "<div class='sheet-row'><div class='sheet-lbl'>\u8ddd\u96e2</div><div class='sheet-val'>"+esc(r.dist)+"</div></div>"+
+    (dname?"<div class='sheet-row'><div class='sheet-lbl'>\u5f13\u9053\u5834</div><div class='sheet-val'>"+esc(dname)+"</div></div>":'')+
+    "<div class='sheet-row'><div class='sheet-lbl'>\u7684\u4e2d</div><div class='sheet-val'>"+r.hits+" \u4e2d / "+r.total+" \u5c04\uff08"+rate+"%\uff09<div class='rec-dots' style='margin-top:7px'>"+dots+"</div></div></div>"+
+    (r.memo?"<div class='sheet-row'><div class='sheet-lbl'>\u30e1\u30e2</div><div class='sheet-val'>"+esc(r.memo)+"</div></div>":'');
+  document.getElementById('m-del-btn').onclick=function(){deleteRecord(id);};
+  document.getElementById('modal').classList.add('open');
+  setTimeout(function(){drawModalPlot(arrows);},80);
 }
-function closeModal(){ document.getElementById("modal").classList.remove("open"); }
-
-/* ── タブ切替 ── */
+function closeModal(){document.getElementById('modal').classList.remove('open');}
 function switchTab(tab){
-  ["record","list","cal","stats","setting"].forEach(function(t){
-    document.getElementById("tab-"+t).classList.toggle("active",t===tab);
-    document.getElementById("section-"+t).classList.toggle("active",t===tab);
+  ['record','list','cal','stats','setting'].forEach(function(t){
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('section-'+t).classList.toggle('active',t===tab);
   });
-  if(tab==="list")    renderList();
-  if(tab==="stats")   renderStats();
-  if(tab==="cal")     renderCalendar();
-  if(tab==="setting") renderDojoList();
+  if(tab==='list')renderList();
+  if(tab==='stats')renderStats();
+  if(tab==='cal')renderCalendar();
+  if(tab==='setting')renderDojoList();
 }
-
-/* ── ユーティリティ ── */
-function pad2(n){ return n<10?"0"+n:""+n; }
-function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function toast(msg){ var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(function(){ t.classList.remove("show"); },2200); }
-
+function pad2(n){return n<10?'0'+n:''+n;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
 })();
 </script>
 
