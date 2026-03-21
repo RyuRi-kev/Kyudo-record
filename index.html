@@ -25,7 +25,7 @@ header{padding:28px 24px 0;flex-shrink:0}
 .logo-wrap{display:flex;flex-direction:column;gap:3px}
 .logo-main{font-family:"Zen Antique",serif;font-size:30px;color:#fff;letter-spacing:.3em;line-height:1;text-shadow:1px 1px 0 rgba(0,0,0,.9)}
 .logo-ruby{font-size:9px;color:#888;letter-spacing:.25em;text-transform:uppercase}
-.header-date{font-family:"BIZ UDGothic",sans-serif;font-size:13px;color:#c8c8c8}
+.header-date{font-family:"BIZ UDGothic",sans-serif;font-size:11px;color:#c8c8c8}
 .header-rule{width:100%;height:1px;margin-top:16px;background:linear-gradient(to right,transparent,rgba(255,255,255,.25) 20%,rgba(255,255,255,.1) 80%,transparent)}
 .tab-bar{display:flex;margin:16px 24px 0;border:1px solid rgba(255,255,255,.14);border-radius:6px;overflow:hidden;flex-shrink:0}
 .tab-btn{flex:1;padding:11px 2px;background:transparent;border:none;border-right:1px solid rgba(255,255,255,.14);color:#888;font-family:"BIZ UDGothic",sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background .2s,color .2s}
@@ -466,10 +466,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
       <span class="yazo-plot-summary" id="plot-summary">-</span>
     </div>
     <div class="plot-wrap"><canvas id="plot-canvas"></canvas></div>
-    <div class="plot-legend">
-      <div class="plot-legend-item"><span class="plot-legend-dot hit"></span>的中</div>
-      <div class="plot-legend-item"><span class="plot-legend-dot miss"></span>外れ</div>
-    </div>
+
   </div>
   <div class="chart-section-label" style="margin-top:24px">データ管理</div>
   <div class="data-card">
@@ -1117,7 +1114,7 @@ function buildMonthly(recs){
   var by={};recs.forEach(function(r){var k=r.date.substr(0,7);if(!by[k])by[k]={hits:0,total:0};by[k].hits+=r.hits;by[k].total+=r.total;});
   var keys=Object.keys(by).sort();if(keys.length>12)keys=keys.slice(keys.length-12);
   var L=[],R=[],H=[],T=[];
-  keys.forEach(function(k){var p=k.split('-');L.push(p[0].substr(2)+'/'+p[1]);R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1)));H.push(by[k].hits);T.push(by[k].total);});
+  keys.forEach(function(k){var p=k.split('-');L.push(p[0].substr(2)+'/'+parseInt(p[1]));R.push(parseFloat((by[k].hits/by[k].total*100).toFixed(1)));H.push(by[k].hits);T.push(by[k].total);});
   return{labels:L,rates:R,hits:H,totals:T};
 }
 function buildYearly(recs){
