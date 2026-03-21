@@ -63,18 +63,16 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .type-chip.on{background:#fff;border-color:#fff;color:#333;font-weight:700}
 .arrow-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .arrow-hint{font-size:12px;color:#888}
-.input-mode-toggle{display:flex;border:1px solid rgba(255,255,255,.14);border-radius:6px;overflow:hidden;flex-shrink:0}
-.mode-btn{padding:6px 11px;background:transparent;border:none;color:#666;font-family:"BIZ UDGothic",sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;border-right:1px solid rgba(255,255,255,.14);white-space:nowrap}
-.mode-btn:last-child{border-right:none}
-.mode-btn.active{background:#fff;color:#333}
+.mode-btn{padding:6px 14px;background:transparent;border:1px solid rgba(255,255,255,.2);border-radius:6px;color:#666;font-family:"BIZ UDGothic",sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.mode-btn.active{background:rgba(100,150,180,.15);border-color:rgba(100,150,180,.5);color:#7ab}
 .count-ctrl{display:flex;align-items:center;gap:14px}
 .ctrl-btn{width:32px;height:32px;background:#2c2c2c;border:1px solid rgba(255,255,255,.14);border-radius:8px;color:#c8c8c8;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .ctrl-val{font-size:15px;font-weight:500;color:#f0f0f0;min-width:34px;text-align:center}
 .arrows-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
 .a-btn{aspect-ratio:1;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);background:#222;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#444;line-height:1}
 .a-btn.hit{background:#fff;border-color:#fff;color:#333}
-.a-btn.miss::after{content:"x"}
-.a-btn.hit::after{content:"o"}
+.a-btn.miss::after{content:"×"}
+.a-btn.hit::after{content:"○"}
 .hit-summary{text-align:center;margin:18px 0 4px}
 .hit-fraction{display:flex;align-items:baseline;justify-content:center;gap:4px}
 .hit-num{font-size:54px;font-weight:500;color:#fff;line-height:1}
@@ -126,11 +124,32 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .stat-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,#3d3d3d,transparent)}
 .stat-val{font-size:28px;font-weight:500;color:#fff;line-height:1;margin-bottom:6px}
 .stat-lbl{font-size:9px;color:#888;letter-spacing:.12em;text-transform:uppercase}
+
+/* ── 縦ブレットグラフ ── */
+.vbullet-chart{display:flex;align-items:flex-end;height:180px;position:relative;padding-left:28px;padding-bottom:20px}
+.vbullet-grid{position:absolute;left:28px;right:0;top:0;bottom:20px;pointer-events:none}
+.grid-line{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,.05)}
+.grid-label{position:absolute;left:-28px;font-size:9px;color:#666;transform:translateY(50%);text-align:right;width:24px}
+.vbullet-legend{display:flex;gap:16px;margin-bottom:14px}
+.vbullet-legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#888}
+.vlegend-swatch{border-radius:2px;flex-shrink:0}
+.vlegend-swatch.total{width:12px;height:10px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18)}
+.vlegend-swatch.hit{width:12px;height:7px;background:#c8c8c8}
+.vbullet-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.vbullet-track{width:60%;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center}
+.vbar-total{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.14);border-radius:0;height:0%;transition:height .55s cubic-bezier(.4,0,.2,1)}
+.vbar-hit{position:absolute;bottom:0;left:2px;right:2px;background:#c8c8c8;border-radius:0;height:0%;transition:height .55s cubic-bezier(.4,0,.2,1) .04s}
+.vbullet-xlabel{position:absolute;bottom:-20px;font-size:10px;color:#666;white-space:nowrap}
+.vbullet-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#222;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 10px;font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#f0f0f0;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10}
+.vbullet-tip.show{opacity:1}
+.vbullet-tip .tip-label{font-family:“BIZ UDGothic”,sans-serif;font-size:9px;font-weight:400;color:#888;margin-bottom:3px}
+.vbullet-tip .tip-hit{font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#f0f0f0;font-weight:700}
+.vbullet-tip .tip-total{font-family:“BIZ UDGothic”,sans-serif;font-size:11px;color:#666;font-weight:400}
 .chart-card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;margin-bottom:14px}
 .chart-heading{font-size:12px;color:#888;margin-bottom:14px}
 .chart-section-label{font-size:10px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin:16px 0 8px}
 .filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.filter-btn{padding:6px 12px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:20px;color:#888;font-family:"BIZ UDGothic",sans-serif;font-size:11px;cursor:pointer;transition:all .2s}
+.filter-btn{padding:6px 12px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:20px;color:#888;font-family:“BIZ UDGothic”,sans-serif;font-size:11px;cursor:pointer;transition:all .2s}
 .filter-btn.active{background:#fff;border-color:#fff;color:#333;font-weight:500}
 .yazo-plot-card{background:#181818;border:1px solid rgba(100,150,180,.2);border-radius:12px;padding:18px;margin-bottom:14px}
 .yazo-plot-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -153,17 +172,17 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .lf-dojo-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
 .lf-dojo-scroll::-webkit-scrollbar{display:none}
 .list-filter-date-row{display:flex;align-items:center;gap:6px;flex:1}
-.lf-date-input{flex:1;background:#222;border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:5px 8px;color:#f0f0f0;font-family:"BIZ UDGothic",sans-serif;font-size:11px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0}
+.lf-date-input{flex:1;background:#222;border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:5px 8px;color:#f0f0f0;font-family:“BIZ UDGothic”,sans-serif;font-size:11px;outline:none;-webkit-appearance:none;-webkit-text-fill-color:#f0f0f0}
 .lf-date-input:focus{border-color:#c8c8c8}
 .lf-date-input::-webkit-calendar-picker-indicator{filter:invert(.5);width:14px;height:14px}
 .lf-date-sep{font-size:11px;color:#666;flex-shrink:0}
 .list-filter-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
 .lf-count{font-size:11px;color:#666}
-.lf-reset-btn{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#666;font-size:11px;padding:4px 10px;cursor:pointer;font-family:"BIZ UDGothic",sans-serif;transition:all .2s}
+.lf-reset-btn{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#666;font-size:11px;padding:4px 10px;cursor:pointer;font-family:“BIZ UDGothic”,sans-serif;transition:all .2s}
 .data-card{background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;margin-bottom:14px}
 .data-card-title{font-size:11px;font-weight:700;color:#888;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
 .data-btn-row{display:flex;gap:10px}
-.btn-data{flex:1;padding:13px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#c8c8c8;font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-data{flex:1;padding:13px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#c8c8c8;font-family:“BIZ UDGothic”,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
 .btn-data.import{color:#88bbee;border-color:rgba(100,140,200,.25)}
 .btn-data.export{color:#88dd88;border-color:rgba(80,160,80,.25)}
 .cal-filter-wrap{margin-bottom:14px}
@@ -197,7 +216,7 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .setting-label{font-size:10px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin:0 0 10px}
 .dojo-add-row{display:flex;gap:8px;margin-bottom:14px}
 .dojo-add-row input{flex:1}
-.btn-add{padding:12px 18px;background:#fff;border:none;border-radius:8px;color:#333;font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-add{padding:12px 18px;background:#fff;border:none;border-radius:8px;color:#333;font-family:“BIZ UDGothic”,sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .dojo-list{margin-bottom:14px}
 .dojo-item{display:flex;align-items:center;gap:10px;background:#181818;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 14px;margin-bottom:8px;transition:opacity .2s;user-select:none;-webkit-user-select:none}
 .dojo-item.dragging{opacity:.35}
@@ -220,15 +239,16 @@ textarea::placeholder{color:#555;-webkit-text-fill-color:#555}
 .sheet-val{font-size:15px;color:#f0f0f0}
 .modal-plot-wrap{width:100%;aspect-ratio:1;max-width:200px;margin:0 auto 14px}
 #modal-plot-canvas{width:100%;height:100%;display:block}
-.btn-del-modal{width:100%;padding:13px;background:transparent;border:1px solid rgba(255,100,100,.3);border-radius:10px;color:rgba(255,120,120,.85);font-family:"BIZ UDGothic",sans-serif;font-size:14px;cursor:pointer;margin-top:6px}
-.btn-close-sheet{width:100%;padding:13px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#888;font-family:"BIZ UDGothic",sans-serif;font-size:14px;cursor:pointer;margin-top:8px}
+.btn-del-modal{width:100%;padding:13px;background:transparent;border:1px solid rgba(255,100,100,.3);border-radius:10px;color:rgba(255,120,120,.85);font-family:“BIZ UDGothic”,sans-serif;font-size:14px;cursor:pointer;margin-top:6px}
+.btn-close-sheet{width:100%;padding:13px;background:#222;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#888;font-family:“BIZ UDGothic”,sans-serif;font-size:14px;cursor:pointer;margin-top:8px}
 .toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(80px);background:#222;border:1px solid rgba(255,255,255,.14);color:#f0f0f0;padding:11px 24px;border-radius:24px;font-size:14px;z-index:300;transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 30px rgba(0,0,0,.6);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:#2c2c2c;border-radius:2px}
-canvas{width:100%!important}
+#cr,#ch,#cr-m,#ch-m,#cr-y,#ch-y{width:100%!important}
 #import-file-input{display:none}
 </style>
+
 </head>
 <body>
 <div id="splash-screen">
@@ -287,10 +307,7 @@ canvas{width:100%!important}
     <div class="field">
       <div class="arrow-header">
         <span class="field-label" style="margin-bottom:0">射数と的中</span>
-        <div class="input-mode-toggle">
-          <button class="mode-btn active" id="mode-grid-btn">グリッド</button>
-          <button class="mode-btn" id="mode-yazo-btn">矢所</button>
-        </div>
+        <button class="mode-btn" id="mode-yazo-btn">矢所モード</button>
       </div>
       <div id="grid-mode">
         <div class="arrow-header" style="margin-top:12px">
@@ -436,13 +453,13 @@ canvas{width:100%!important}
     <button class="filter-btn" data-n="0">全期間</button>
   </div>
   <div class="chart-card" id="cc1" style="display:none"><div class="chart-heading">的中率の推移（日別）</div><canvas id="cr"></canvas></div>
-  <div class="chart-card" id="cc2" style="display:none"><div class="chart-heading">的中数 / 射数（日別）</div><canvas id="ch"></canvas></div>
+  <div class="chart-card" id="cc2" style="display:none"><div class="chart-heading">的中数 / 射数（日別）</div><div class="vbullet-legend"><div class="vbullet-legend-item"><span class="vlegend-swatch total"></span>射数</div><div class="vbullet-legend-item"><span class="vlegend-swatch hit"></span>的中数</div></div><div class="vbullet-chart" id="ch"><div class="vbullet-grid" id="ch-grid"></div></div></div>
   <div class="chart-section-label" id="lbl-monthly" style="display:none">月別（直近12ヶ月）</div>
   <div class="chart-card" id="cc3" style="display:none"><div class="chart-heading">的中率の推移（月別）</div><canvas id="cr-m"></canvas></div>
-  <div class="chart-card" id="cc4" style="display:none"><div class="chart-heading">的中数 / 射数（月別）</div><canvas id="ch-m"></canvas></div>
+  <div class="chart-card" id="cc4" style="display:none"><div class="chart-heading">的中数 / 射数（月別）</div><div class="vbullet-legend"><div class="vbullet-legend-item"><span class="vlegend-swatch total"></span>射数</div><div class="vbullet-legend-item"><span class="vlegend-swatch hit"></span>的中数</div></div><div class="vbullet-chart" id="ch-m"><div class="vbullet-grid" id="chm-grid"></div></div></div>
   <div class="chart-section-label" id="lbl-yearly" style="display:none">年別</div>
   <div class="chart-card" id="cc5" style="display:none"><div class="chart-heading">的中率の推移（年別）</div><canvas id="cr-y"></canvas></div>
-  <div class="chart-card" id="cc6" style="display:none"><div class="chart-heading">的中数 / 射数（年別）</div><canvas id="ch-y"></canvas></div>
+  <div class="chart-card" id="cc6" style="display:none"><div class="chart-heading">的中数 / 射数（年別）</div><div class="vbullet-legend"><div class="vbullet-legend-item"><span class="vlegend-swatch total"></span>射数</div><div class="vbullet-legend-item"><span class="vlegend-swatch hit"></span>的中数</div></div><div class="vbullet-chart" id="ch-y"><div class="vbullet-grid" id="chy-grid"></div></div></div>
   <div class="chart-section-label" id="lbl-yazo-plot" style="display:none">矢所分布</div>
   <div class="yazo-plot-card" id="yazo-plot-card" style="display:none">
     <div class="yazo-plot-header">
@@ -705,8 +722,9 @@ function initUI(){
   document.getElementById('import-confirm-yes').addEventListener('click',execImport);
   document.getElementById('import-confirm-no').addEventListener('click',function(){pendingImport=null;document.getElementById('import-modal').classList.remove('open');});
   document.getElementById('import-modal').addEventListener('click',function(e){if(e.target===this){pendingImport=null;this.classList.remove('open');}});
-  document.getElementById('mode-grid-btn').addEventListener('click',function(){setInputMode('grid');});
-  document.getElementById('mode-yazo-btn').addEventListener('click',function(){setInputMode('yazo');});
+  document.getElementById('mode-yazo-btn').addEventListener('click',function(){
+    setInputMode(inputMode==='yazo'?'grid':'yazo');
+  });
   document.getElementById('yazo-btn-minus').addEventListener('click',function(){
     if(yazoCount<=2)return;yazoCount-=2;
     while(yazoArrows.length>yazoCount)yazoArrows.pop();
@@ -722,8 +740,9 @@ function initUI(){
 
 function setInputMode(mode){
   inputMode=mode;
-  document.getElementById('mode-grid-btn').classList.toggle('active',mode==='grid');
-  document.getElementById('mode-yazo-btn').classList.toggle('active',mode==='yazo');
+  var btn=document.getElementById('mode-yazo-btn');
+  btn.classList.toggle('active',mode==='yazo');
+  btn.textContent=mode==='yazo'?'矢所モード ON':'矢所モード';
   document.getElementById('grid-mode').classList.toggle('mode-hidden',mode!=='grid');
   document.getElementById('yazo-mode').classList.toggle('mode-hidden',mode!=='yazo');
   if(mode==='yazo'){
@@ -775,9 +794,12 @@ function handleTargetTap(e){
   yazoArrows.push({x:pos.x,y:pos.y,hit:dist<=1.0,no:yazoArrows.length+1});updateYazo();
 }
 function getTargetPos(e){
-  var rect=tCanvas.getBoundingClientRect(),cx=rect.width/2,cy=rect.height/2,R=rect.width*0.44;
+  // Use tSize (CSS px set during resize) so R exactly matches drawTargetCanvas
+  var rect=tCanvas.getBoundingClientRect();
+  var s=tSize,cx=s/2,cy=s/2,R=s*0.31;
   var ex,ey;
   if(e.touches){ex=e.touches[0].clientX;ey=e.touches[0].clientY;}else{ex=e.clientX;ey=e.clientY;}
+  // rect.left/top give the canvas origin in viewport coords
   return{x:(ex-rect.left-cx)/R,y:(ey-rect.top-cy)/R};
 }
 function updateYazo(){
@@ -1107,23 +1129,57 @@ function buildYearly(recs){
 function renderCharts(recs){
   if(!recs)recs=records;
   destroyCharts(['cr','ch','cr-m','ch-m','cr-y','ch-y']);
-  mkLine('cr',buildDaily(recs,dailyFilter));mkBar('ch',buildDaily(recs,dailyFilter));
-  mkLine('cr-m',buildMonthly(recs));mkBar('ch-m',buildMonthly(recs));
-  mkLine('cr-y',buildYearly(recs));mkBar('ch-y',buildYearly(recs));
+  mkLine('cr',buildDaily(recs,dailyFilter));mkBar('ch',buildDaily(recs,dailyFilter),'ch-grid');
+  mkLine('cr-m',buildMonthly(recs));mkBar('ch-m',buildMonthly(recs),'chm-grid');
+  mkLine('cr-y',buildYearly(recs));mkBar('ch-y',buildYearly(recs),'chy-grid');
 }
-function destroyCharts(ids){ids.forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}});}
+function destroyCharts(ids){ids.forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}else{var el=document.getElementById(id);if(el&&el.classList.contains('vbullet-chart')){el.querySelectorAll('.vbullet-col').forEach(function(c){c.remove();});var g=el.querySelector('.vbullet-grid');if(g)g.innerHTML='';}}}); }
 function mkLine(id,data){
   var ctx=document.getElementById(id).getContext('2d');
   var g=ctx.createLinearGradient(0,0,0,180);g.addColorStop(0,'rgba(220,220,220,0.12)');g.addColorStop(1,'rgba(220,220,220,0)');
   charts[id]=new Chart(ctx,{type:'line',data:{labels:data.labels,datasets:[{data:data.rates,borderColor:'#c8c8c8',backgroundColor:g,borderWidth:1.5,pointBackgroundColor:'#f0f0f0',pointBorderColor:'#181818',pointBorderWidth:2,pointRadius:4,tension:0,fill:true}]},
-    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.parsed.y+'%;'}},backgroundColor:'#222',titleColor:'#888',bodyColor:'#f0f0f0',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10}},
+    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:false},tooltip:{displayColors:false,callbacks:{title:function(c){return c[0].label;},label:function(c){return c.parsed.y+'%';}},backgroundColor:'#222',titleColor:'#888',bodyColor:'#f0f0f0',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10,cornerRadius:6,boxPadding:4,titleFont:{family:'BIZ UDGothic',size:9,weight:'normal'},bodyFont:{family:'BIZ UDGothic',size:11,weight:'bold'}}},
     scales:{y:{min:0,max:100,ticks:{callback:function(v){return v+'%';},color:'#666',font:CFONT},grid:{color:'rgba(255,255,255,0.05)'}},x:{ticks:{color:'#666',font:CFONT},grid:{display:false}}}}});
 }
-function mkBar(id,data){
-  var ctx=document.getElementById(id).getContext('2d');
-  charts[id]=new Chart(ctx,{type:'bar',data:{labels:data.labels,datasets:[{label:'\u5c04\u6570',data:data.totals,backgroundColor:'rgba(70,70,70,0.75)',borderRadius:0,borderSkipped:'bottom',order:2},{label:'\u7684\u4e2d\u6570',data:data.hits,backgroundColor:'rgba(220,220,220,0.9)',borderRadius:0,borderSkipped:'bottom',order:1}]},
-    options:{responsive:true,animation:{duration:600},plugins:{legend:{display:true,labels:{color:'#888',font:CFONT,boxWidth:10}},tooltip:{backgroundColor:'#222',titleColor:'#888',bodyColor:'#f0f0f0',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10}},
-    scales:{y:{ticks:{color:'#666',font:CFONT},grid:{color:'rgba(255,255,255,0.05)'}},x:{ticks:{color:'#666',font:CFONT},grid:{display:false}}}}});
+function mkBar(id,data,gridId){
+  var container=document.getElementById(id);
+  container.querySelectorAll('.vbullet-col').forEach(function(c){c.remove();});
+  var grid=document.getElementById(gridId);
+  if(grid)grid.innerHTML='';
+  if(!data.labels.length)return;
+  var maxTotal=Math.max.apply(null,data.totals);
+  if(grid){
+    [0,0.25,0.5,0.75,1.0].forEach(function(p){
+      var line=document.createElement('div');line.className='grid-line';line.style.bottom=(p*100)+'%';
+      var lbl=document.createElement('div');lbl.className='grid-label';lbl.textContent=Math.round(maxTotal*p);lbl.style.bottom=(p*100)+'%';
+      line.appendChild(lbl);grid.appendChild(line);
+    });
+  }
+  data.labels.forEach(function(label,i){
+    var col=document.createElement('div');col.className='vbullet-col';
+    var track=document.createElement('div');track.className='vbullet-track';
+    var barTotal=document.createElement('div');barTotal.className='vbar-total';
+    var barHit=document.createElement('div');barHit.className='vbar-hit';
+    // ツールチップ
+    var tip=document.createElement('div');tip.className='vbullet-tip';
+    tip.innerHTML='<div class="tip-label">'+label+'</div><span class="tip-hit">'+data.hits[i]+'中</span><span class="tip-total"> / '+data.totals[i]+'射</span>';
+    track.appendChild(barTotal);track.appendChild(barHit);track.appendChild(tip);
+    // タップ／クリックで表示トグル
+    var allTips=[];
+    track.addEventListener('click',function(e){
+      e.stopPropagation();
+      var isShow=tip.classList.contains('show');
+      // 同チャート内の他tipを閉じる
+      container.querySelectorAll('.vbullet-tip').forEach(function(t){t.classList.remove('show');});
+      if(!isShow)tip.classList.add('show');
+    });
+    var xlabel=document.createElement('div');xlabel.className='vbullet-xlabel';xlabel.textContent=label;
+    col.appendChild(track);col.appendChild(xlabel);container.appendChild(col);
+    setTimeout(function(){
+      barTotal.style.height=(data.totals[i]/maxTotal*100).toFixed(1)+'%';
+      barHit.style.height=(data.hits[i]/maxTotal*100).toFixed(1)+'%';
+    },80+i*40);
+  });
 }
 function buildDailyMap(dojoId){
   var map={};
@@ -1182,6 +1238,10 @@ function switchTab(tab){
 }
 function pad2(n){return n<10?'0'+n:''+n;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+// ブレットグラフのtip: チャート外タップで全閉じ
+document.addEventListener('click',function(){
+  document.querySelectorAll('.vbullet-tip.show').forEach(function(t){t.classList.remove('show');});
+});
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
 })();
 </script>
