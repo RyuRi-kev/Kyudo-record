@@ -712,7 +712,7 @@ function initUI(){
   document.getElementById('yazo-btn-minus').addEventListener('click',function(){if(yazoCount<=2)return;yazoCount-=2;while(yazoArrows.length>yazoCount)yazoArrows.pop();document.getElementById('yazo-count-disp').textContent=yazoCount+'\u5c04';updateYazo();});
   document.getElementById('yazo-btn-plus').addEventListener('click',function(){if(yazoCount>=24)return;yazoCount+=2;document.getElementById('yazo-count-disp').textContent=yazoCount+'\u5c04';updateYazo();});
   document.getElementById('btn-undo').addEventListener('click',function(){if(!yazoArrows.length)return;yazoArrows.pop();updateYazo();});
-  document.getElementById('btn-yazo-reset').addEventListener('click',function(){yazoArrows=[];updateYazo();});
+  document.getElementById('btn-yazo-reset').addEventListener('click',function(){yazoArrows=[];updateYazo();});}
     // テーマボタン生成
   var themeMeta={
     dark:     {label:'黒',     color:'#c8c8c8', bg:'#111111'},
