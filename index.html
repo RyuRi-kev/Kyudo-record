@@ -64,15 +64,15 @@ header{padding:28px 24px 0;flex-shrink:0}
 .rec-filter-row:last-child{margin-bottom:0}
 .rec-filter-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.08em;min-width:28px;flex-shrink:0}
 .rec-filter-chips{display:flex;flex-wrap:wrap;gap:6px}
-.rc-chip{padding:5px 11px;background:var(–chip-bg);border:1px solid var(–border2);border-radius:20px;font-size:12px;color:var(–text3);cursor:pointer;white-space:nowrap;user-select:none;-webkit-user-select:none}
+.rc-chip{display:inline-block;padding:5px 11px;background:var(–chip-bg);border:1px solid var(–border);border-radius:20px;font-size:12px;color:var(–text3);cursor:pointer;white-space:nowrap;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .rc-chip.on{background:var(–crimson);border-color:var(–crimson);color:var(–card);font-weight:700}
 .rc-dojo-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
 .rc-dojo-scroll::-webkit-scrollbar{display:none}
 /* 日付行：コンパクト1行 */
 .rec-date-row{display:flex;align-items:center;gap:8px;flex:1}
-.rec-date-input{flex:1;background:var(–input-bg);border:1px solid var(–input-border);border-radius:8px;padding:6px 12px;color:var(–text);font-family:“BIZ UDGothic”,sans-serif;font-size:14px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:var(–text);min-height:36px}
+.rec-date-input{flex:1;background:var(–input-bg);border:1px solid var(–input-border);border-radius:8px;padding:6px 12px;color:var(–text)!important;font-family:“BIZ UDGothic”,sans-serif;font-size:14px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:var(–text)!important;min-height:36px}
 .rec-date-input:focus{border-color:var(–crimson)}
-.rec-date-input::-webkit-calendar-picker-indicator{opacity:.6;width:18px;height:18px;cursor:pointer}
+.rec-date-input::-webkit-calendar-picker-indicator{opacity:.6;width:18px;height:18px;cursor:pointer;filter:none}
 .rec-date-input::-webkit-date-and-time-value{font-family:“BIZ UDGothic”,sans-serif;font-size:14px;color:var(–text);text-align:left}
 
 .field{margin-bottom:18px}
@@ -100,7 +100,7 @@ textarea::placeholder{color:var(–text4);-webkit-text-fill-color:var(–text4)}
 .type-chip.on{background:var(–crimson);border-color:var(–crimson);color:var(–card);font-weight:700}
 .arrow-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .arrow-hint{font-size:12px;color:var(–text3)}
-.mode-btn{padding:6px 14px;background:var(–chip-bg);border:1px solid var(–border);border-radius:6px;color:var(–text3);font-family:“BIZ UDGothic”,sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.mode-btn{padding:6px 14px;background:var(–chip-bg);border:1px solid var(–border);border-radius:6px;color:var(–text3);font-family:“BIZ UDGothic”,sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;-webkit-appearance:none;appearance:none}
 .mode-btn.active{background:var(–crimson);border-color:var(–crimson);color:var(–card)}
 .count-ctrl{display:flex;align-items:center;gap:14px}
 .ctrl-btn{width:32px;height:32px;background:var(–chip-bg);border:1px solid var(–border);border-radius:8px;color:var(–text2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
@@ -197,7 +197,7 @@ font-family:“BIZ UDGothic”,sans-serif;font-size:16px;font-weight:700;cursor:
 .list-filter-row:last-child{margin-bottom:0}
 .list-filter-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.08em;min-width:28px;flex-shrink:0}
 .list-filter-chips{display:flex;flex-wrap:wrap;gap:6px}
-.lf-chip{padding:5px 11px;background:var(–chip-bg);border:1px solid var(–border2);border-radius:20px;font-size:12px;color:var(–text3);cursor:pointer;white-space:nowrap}
+.lf-chip{display:inline-block;padding:5px 11px;background:var(–chip-bg);border:1px solid var(–border2);border-radius:20px;font-size:12px;color:var(–text3);cursor:pointer;white-space:nowrap}
 .lf-chip.on{background:var(–crimson);border-color:var(–crimson);color:var(–card);font-weight:700}
 .lf-dojo-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
 .lf-dojo-scroll::-webkit-scrollbar{display:none}
