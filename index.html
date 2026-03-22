@@ -498,16 +498,16 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
 
 <div class="section" id="section-setting">
 <div class="card">
-    <div class="setting-label">カラーテーマ</div>
-    <div id="theme-btns" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-  </div>
-  <div class="card">
     <div class="setting-label">弓道場の管理</div>
     <div class="dojo-add-row">
       <input type="text" id="dojo-name-input" placeholder="弓道場名を入力" maxlength="30">
       <button class="btn-add" id="btn-add-dojo">追加</button>
     </div>
     <div class="dojo-list" id="dojo-list"></div>
+  </div>
+    <div class="card">
+    <div class="setting-label">カラーテーマ</div>
+    <div id="theme-btns" style="display:flex;flex-direction:column;"></div>
   </div>
   <div class="data-card">
     <div class="data-card-title">バックアップ / 復元</div>
@@ -774,7 +774,7 @@ function updateThemeBtns(){
     b.style.transform=active?'scaleX(1.03)':'scaleX(1)';
     b.style.filter=active?'brightness(1.18)':'brightness(1)';
     b.style.zIndex=active?'1':'0';
-    b.style.opacity=active?'1':'0.45';
+    b.style.opacity=active?'1':'0.35';
   });
 }
 
