@@ -29,7 +29,7 @@
   --input-border:rgba(0,0,0,.15);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-button{-webkit-appearance:none;appearance:none;font-family:"BIZ UDGothic",sans-serif}
+button{-webkit-appearance:none;appearance:none;font-family:"BIZ UDGothic",sans-serif;color:inherit}
 html{background:var(--sky);height:100%}
 body{font-family:"BIZ UDGothic",sans-serif;background:var(--bg);color:var(--text);font-size:15px;-webkit-text-size-adjust:100%;min-height:100%;padding-bottom:env(safe-area-inset-bottom)}
 #splash-screen{position:fixed;inset:0;background:linear-gradient(160deg,var(--sky) 0%,var(--sakura-l) 50%,var(--bg) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;gap:20px}
@@ -70,10 +70,10 @@ header{padding:28px 24px 0;flex-shrink:0}
 .rc-dojo-scroll::-webkit-scrollbar{display:none}
 /* 日付行：コンパクト1行 */
 .rec-date-row{display:flex;align-items:center;gap:8px;flex:1}
-.rec-date-input{flex:1;background:var(–input-bg);border:1px solid var(–input-border);border-radius:8px;padding:6px 12px;color:var(–text)!important;font-family:“BIZ UDGothic”,sans-serif;font-size:14px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:var(–text)!important;min-height:36px}
+.rec-date-input{flex:1;background:var(–input-bg);border:1px solid var(–input-border);border-radius:8px;padding:6px 12px;color:var(–text)!important;font-family:“BIZ UDGothic”,sans-serif;font-size:14px;outline:none;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:var(–text)!important;min-height:36px;color-scheme:light}
 .rec-date-input:focus{border-color:var(–crimson)}
 .rec-date-input::-webkit-calendar-picker-indicator{opacity:.6;width:18px;height:18px;cursor:pointer;filter:none}
-.rec-date-input::-webkit-date-and-time-value{font-family:“BIZ UDGothic”,sans-serif;font-size:14px;color:var(–text);text-align:left}
+.rec-date-input::-webkit-date-and-time-value{font-family:“BIZ UDGothic”,sans-serif;font-size:14px;color:var(–text)!important;text-align:left}
 
 .field{margin-bottom:18px}
 .field-label{display:block;font-size:12px;font-weight:700;color:var(–text2);letter-spacing:.08em;margin-bottom:8px}
@@ -318,31 +318,32 @@ font-family:“BIZ UDGothic”,sans-serif;font-size:14px;font-weight:700;cursor:
     <div class="rec-filter-row">
       <span class="rec-filter-label">種別</span>
       <div class="rec-filter-chips" id="rc-type">
-        <span class="rc-chip on" data-v="稽古">稽古</span>
-        <span class="rc-chip" data-v="大会">大会</span>
-        <span class="rc-chip" data-v="審査">審査</span>
+        <button type="button" class="rc-chip on" data-v="稽古">稽古</button>
+        <button type="button" class="rc-chip" data-v="大会">大会</button>
+        <button type="button" class="rc-chip" data-v="審査">審査</button>
       </div>
     </div>
     <!-- 日付 -->
     <div class="rec-filter-row">
       <span class="rec-filter-label" id="date-label">稽古日</span>
-      <div class="rec-date-row">
-        <input type="date" id="input-date" class="rec-date-input">
+      <div class="rec-date-row" style="position:relative">
+        <button type="button" id="date-display-btn" class="rc-chip on" style="font-size:13px;border-radius:8px;padding:6px 14px;min-width:120px;text-align:left;background:var(--chip-bg);border-color:var(--border)">--</button>
+        <input type="date" id="input-date" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;z-index:1">
       </div>
     </div>
     <!-- 距離 -->
     <div class="rec-filter-row">
       <span class="rec-filter-label">距離</span>
       <div class="rec-filter-chips" id="rc-dist">
-        <span class="rc-chip on" data-v="近的（28m）">近的 28m</span>
-        <span class="rc-chip" data-v="遠的（60m）">遠的 60m</span>
+        <button type="button" class="rc-chip on" data-v="近的（28m）">近的 28m</button>
+        <button type="button" class="rc-chip" data-v="遠的（60m）">遠的 60m</button>
       </div>
     </div>
     <!-- 道場 -->
     <div class="rec-filter-row">
       <span class="rec-filter-label">道場</span>
       <div class="rec-filter-chips rc-dojo-scroll" id="rc-dojo">
-        <span class="rc-chip on" data-v="">未選択</span>
+        <button type="button" class="rc-chip on" data-v="">未選択</button>
       </div>
     </div>
   </div>
@@ -735,6 +736,16 @@ function initHeader(){
   var n=new Date(),days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   document.getElementById('hd-date').textContent=n.getFullYear()+'/'+(n.getMonth()+1)+'/'+n.getDate()+' '+days[n.getDay()];
   document.getElementById('input-date').valueAsDate=n;
+  updateDateBtn();
+  document.getElementById('input-date').addEventListener('change',updateDateBtn);
+}
+function updateDateBtn(){
+  var v=document.getElementById('input-date').value;
+  var btn=document.getElementById('date-display-btn');
+  if(!btn)return;
+  if(!v){btn.textContent='--';return;}
+  var parts=v.split('-');
+  btn.textContent=parts[0]+'/'+(parseInt(parts[1]))+'/'+parseInt(parts[2]);
 }
 function initUI(){
   /* 記録タブ：種別チップ */
