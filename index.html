@@ -708,9 +708,10 @@ function initUI(){
     btn.style.opacity=isToday?'0.35':'1';
     btn.style.cursor=isToday?'not-allowed':'pointer';
   }
-  document.getElementById('btn-today').addEventListener('click',function(){
+    document.getElementById('btn-today').addEventListener('click',function(){
     var today=new Date();
-    document.getElementById('input-date').valueAsDate=today;
+    var todayStr=today.getFullYear()+'-'+pad2(today.getMonth()+1)+'-'+pad2(today.getDate());
+    document.getElementById('input-date').value=todayStr;
     updateTodayBtn();
   });
   document.getElementById('input-date').addEventListener('change',function(){updateTodayBtn();});
