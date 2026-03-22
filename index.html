@@ -287,7 +287,8 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
   <div class="content">
 
 <div class="section active" id="section-record">
-          <div class="list-filter-wrap" style="margin-bottom:0;box-shadow:none;border:none;padding:0;">
+  <div class="card">
+    <div class="list-filter-wrap" style="margin-bottom:0;box-shadow:none;border:none;padding:0;">
       <div class="list-filter-row">
         <span class="list-filter-label">種別</span>
         <div class="list-filter-chips" id="rec-type-chips">
@@ -309,13 +310,12 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
           <span class="lf-chip on" data-v="">未選択</span>
         </div>
       </div>
-      <div class="list-filter-row">
+      <div class="list-filter-row" style="margin-bottom:0">
         <span class="list-filter-label" id="date-label">日付</span>
         <div class="list-filter-date-row">
           <input type="date" id="input-date" class="lf-date-input" style="flex:1;">
         </div>
       </div>
-    </div>
     </div>
     <div class="divider"></div>
     <div class="field">
@@ -619,12 +619,16 @@ function refreshAll(){refreshDojoSelects();renderDojoList();}
 
 function refreshDojoSelects(){
   var prev=selDojo;
-  rebuildSelect('input-dojo','',[{id:'',name:'\uff08\u672a\u9078\u629e\uff09'}].concat(dojos));
-  if(!prev&&dojos.length){selDojo=dojos[0].id;document.getElementById('input-dojo').value=selDojo;}
-  else document.getElementById('input-dojo').value=selDojo;
   rebuildSelect('cal-dojo-sel',calDojoId,[{id:'',name:'\u3059\u3079\u3066'}].concat(dojos));
-  rebuildDojoChips();rebuildStatsDojoChips();
+  rebuildDojoChips();rebuildStatsDojoChips();rebuildRecDojoChips();
 }
+function rebuildRecDojoChips(){
+  var wrap=document.getElementById('rec-dojo-chips');if(!wrap)return;
+  wrap.innerHTML='<span class="lf-chip'+(selDojo===''?' on':'')+'" data-v="">\u672a\u9078\u629e</span>';
+  dojos.forEach(function(d){var c=document.createElement('span');c.className='lf-chip'+(selDojo===d.id?' on':'');c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);});
+  wrap.querySelectorAll('.lf-chip').forEach(function(c){c.addEventListener('click',function(){wrap.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});this.classList.add('on');selDojo=this.getAttribute('data-v');});});
+}
+
 function rebuildSelect(id,curVal,list){
   var sel=document.getElementById(id),prev=sel.value||curVal;sel.innerHTML='';
   list.forEach(function(d){var o=document.createElement('option');o.value=d.id;o.textContent=d.name;sel.appendChild(o);});
