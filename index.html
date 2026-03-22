@@ -903,7 +903,15 @@ function saveRecord(){
   var date=document.getElementById('input-date').value,memo=document.getElementById('input-memo').value.trim();
   if(!date){toast('\u65e5\u4ed8\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044');return;}
   var hits,total,arrowsData;
-  if(inputMode==='grid'){hits=hitStates.filter(Boolean).length;total=arrowCount;arrowsData=hitStates.map(function(h){return{hit:h,x:null,y:null};});}
+    if(yazoArrows.length>0&&yazoArrows.some(function(a){return a.x!=null;})){
+    hits=yazoArrows.filter(function(a){return a.hit;}).length;total=yazoArrows.length;arrowsData=yazoArrows.map(function(a){return{hit:a.hit,x:a.x,y:a.y};});
+  } else if(inputMode==='grid'){
+    hits=hitStates.filter(Boolean).length;total=arrowCount;arrowsData=hitStates.map(function(h){return{hit:h,x:null,y:null};});
+  } else {
+    if(yazoArrows.length===0){toast('\u77e2\u6240\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
+    hits=yazoArrows.filter(function(a){return a.hit;}).length;total=yazoArrows.length;arrowsData=yazoArrows.map(function(a){return{hit:a.hit,x:a.x,y:a.y};});
+  }
+
   else{if(yazoArrows.length===0){toast('\u77e2\u6240\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}hits=yazoArrows.filter(function(a){return a.hit;}).length;total=yazoArrows.length;arrowsData=yazoArrows.map(function(a){return{hit:a.hit,x:a.x,y:a.y};});}
   document.getElementById('btn-save').disabled=true;
   records.unshift({id:genId(),date:date,dist:selDist,type:selType,dojoId:selDojo,hits:hits,total:total,arrows:arrowsData,memo:memo,createdAt:new Date().toISOString()});
