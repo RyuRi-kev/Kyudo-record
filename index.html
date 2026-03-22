@@ -10,23 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sky:#111111;
-  --sakura-l:#2c2c2c;
-  --sakura:#555555;
-  --sakura-d:#aaaaaa;
-  --crimson:#c8c8c8;
-  --bg:#111111;
-  --bg2:#1c1c1c;
-  --card:#1c1c1c;
-  --border:rgba(255,255,255,.12);
-  --border2:rgba(255,255,255,.08);
-  --text:#c8c8c8;
-  --text2:#dddddd;
-  --text3:#888888;
-  --text4:#555555;
-  --chip-bg:#2a2a2a;
-  --input-bg:#2a2a2a;
-  --input-border:rgba(255,255,255,.15);
+  --sky:#e8e8e8;
+  --sakura-l:#d8d8d8;
+  --sakura:#aaaaaa;
+  --sakura-d:#555555;
+  --crimson:#1a1a1a;
+  --bg:#ffffff;
+  --bg2:#f2f2f2;
+  --card:#ffffff;
+  --border:rgba(0,0,0,.12);
+  --border2:rgba(0,0,0,.08);
+  --text:#1a1a1a;
+  --text2:#222222;
+  --text3:#666666;
+  --text4:#999999;
+  --chip-bg:#eeeeee;
+  --input-bg:#fafafa;
+  --input-border:rgba(0,0,0,.15);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 button{-webkit-appearance:none;appearance:none;font-family:"BIZ UDGothic",sans-serif}
@@ -583,9 +583,9 @@ var THEMES={
   white:   {'--sky':'#e8e8e8','--sakura-l':'#d8d8d8','--sakura':'#aaaaaa','--sakura-d':'#555555','--crimson':'#1a1a1a','--bg':'#ffffff','--bg2':'#f2f2f2','--card':'#FFFFFF','--border':'rgba(0,0,0,.12)','--border2':'rgba(0,0,0,.08)','--text':'#1a1a1a','--text2':'#222222','--text3':'#666666','--text4':'#999999','--chip-bg':'#eeeeee','--input-bg':'#fafafa','--input-border':'rgba(0,0,0,.15)','HIT':'rgba(0,0,0,0.88)','MISS':'rgba(210,50,50,0.85)'},
 };
 var LS_THEME='kyudo_theme';
-var currentTheme='dark';
-var HIT_COLOR=THEMES.dark.HIT;
-var MISS_COLOR=THEMES.dark.MISS;
+var currentTheme='white';
+var HIT_COLOR=THEMES.white.HIT;
+var MISS_COLOR=THEMES.white.MISS;
 
 function applyTheme(name){
   var t=THEMES[name];if(!t)return;
