@@ -720,13 +720,14 @@ function initUI(){
   var BASE_URL='https://raw.githubusercontent.com/RyuRi-kev/Kyudo-record/main/';
   var themeMeta={
     dark:     {label:'黒',     color:'#c8c8c8', img:null,        grad:'linear-gradient(135deg,#1a1a1a 0%,#2c2c2c 100%)'},
+    white:    {label:'白',     color:'#333333', img:null,        grad:'linear-gradient(135deg,#ffffff 0%,#e8e8e8 100%)'},
     sakura:   {label:'桜',     color:'#ffffff', img:BASE_URL+'image_sakura.jpg',   grad:null},
     bamboo:   {label:'竹',     color:'#ffffff', img:BASE_URL+'image_bamboo.jpg',   grad:null},
     wisteria: {label:'藤',     color:'#ffffff', img:BASE_URL+'image_wisteria.jpg', grad:null},
     sky:      {label:'空',     color:'#ffffff', img:BASE_URL+'image_sky.jpg',      grad:null},
     maple:    {label:'楓',     color:'#ffffff', img:BASE_URL+'image_maple.jpg',    grad:null},
-    white:    {label:'白',     color:'#333333', img:null,        grad:'linear-gradient(135deg,#ffffff 0%,#e8e8e8 100%)'},
   };
+
   var tbWrap=document.getElementById('theme-btns');
   Object.keys(themeMeta).forEach(function(key){
     var m=themeMeta[key];
@@ -750,7 +751,7 @@ function initUI(){
       'font-size:14px',
       'font-weight:700',
       'cursor:pointer',
-      'text-shadow:0 1px 4px rgba(0,0,0,0.55)',
+      'text-shadow:0 1px 6px rgba(0,0,0,0.9),0 0 12px rgba(0,0,0,0.7)',
       'margin-bottom:8px',
       'box-sizing:border-box',
     ].join(';');
@@ -766,8 +767,10 @@ function updateThemeBtns(){
   tbWrap.querySelectorAll('button').forEach(function(b){
     var key=b.getAttribute('data-theme');
     var active=key===currentTheme;
-    b.style.borderColor=active?'rgba(255,255,255,0.9)':'transparent';
-    b.style.opacity=active?'1':'0.75';
+    var borderCol=key==='white'?'#aaaaaa':'rgba(255,215,0,0.9)';
+    b.style.borderColor=active?borderCol:'transparent';
+    b.style.outline=active?'none':'none';
+    b.style.opacity=active?'1':'0.82';
     b.querySelector('.theme-check').style.opacity=active?'1':'0';
   });
 }
