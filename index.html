@@ -260,7 +260,7 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
 ::-webkit-scrollbar-thumb{background:var(--sakura-l);border-radius:2px}
 #cr,#ch,#cr-m,#ch-m,#cr-y,#ch-y{width:100%!important}
 #import-file-input{display:none}
-#theme-btns{display:flex;flex-direction:column;}
+#theme-btns{display:flex;flex-direction:column;overflow:hidden;border-radius:12px;}
 </style>
 </head>
 <body>
@@ -736,26 +736,30 @@ function initUI(){
     var bg=m.img
       ? 'url('+m.img+') center/cover no-repeat'
       : m.grad;
-    btn.style.cssText=[
+        btn.style.cssText=[
       'display:flex',
       'align-items:center',
-      'justify-content:space-between',
+      'justify-content:flex-start',
       'width:100%',
       'padding:0 16px',
-      'height:56px',
-      'border-radius:10px',
-      'border:2px solid transparent',
+      'height:60px',
+      'border-radius:0',
+      'border:none',
       'background:'+bg,
       'color:'+m.color,
       'font-family:"BIZ UDGothic",sans-serif',
-      'font-size:14px',
+      'font-size:15px',
       'font-weight:700',
       'cursor:pointer',
       'text-shadow:0 1px 6px rgba(0,0,0,0.9),0 0 12px rgba(0,0,0,0.7)',
-      'margin-bottom:8px',
+      'margin-bottom:0',
       'box-sizing:border-box',
+      'transition:transform .15s ease,filter .15s ease',
+      'position:relative',
+      'z-index:0',
     ].join(';');
-    btn.innerHTML='<span>'+m.label+'</span><span class="theme-check" style="font-size:18px;opacity:0">✓</span>';
+    btn.innerHTML='<span>'+m.label+'</span>';
+
     btn.addEventListener('click',function(){
       applyTheme(this.getAttribute('data-theme'));
       updateThemeBtns();
@@ -767,11 +771,10 @@ function updateThemeBtns(){
   tbWrap.querySelectorAll('button').forEach(function(b){
     var key=b.getAttribute('data-theme');
     var active=key===currentTheme;
-    var borderCol=key==='white'?'#aaaaaa':'rgba(255,215,0,0.9)';
-    b.style.borderColor=active?borderCol:'transparent';
-    b.style.outline=active?'none':'none';
-    b.style.opacity=active?'1':'0.82';
-    b.querySelector('.theme-check').style.opacity=active?'1':'0';
+    b.style.transform=active?'scaleX(1.03)':'scaleX(1)';
+    b.style.filter=active?'brightness(1.18)':'brightness(1)';
+    b.style.zIndex=active?'1':'0';
+    b.style.opacity=active?'1':'0.85';
   });
 }
 
