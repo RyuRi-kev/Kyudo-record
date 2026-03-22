@@ -172,7 +172,7 @@ font-family:"BIZ UDGothic",sans-serif;font-size:16px;font-weight:700;cursor:poin
 .yazo-plot-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 1px 6px rgba(255,255,255,.04)}
 .yazo-plot-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .yazo-plot-summary{font-size:11px;color:var(--text3)}
-.plot-wrap{width:100%;}
+.plot-wrap{width:100%;aspect-ratio:1}
 #plot-canvas{width:100%;height:100%;display:block}
 .list-filter-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 6px rgba(255,255,255,.04)}
 .list-filter-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -862,9 +862,7 @@ function initPlotCanvas(){pCanvas=document.getElementById('plot-canvas');pCtx=pC
 function resizePlotCanvas(){
   var dpr=window.devicePixelRatio||1,rect=pCanvas.parentElement.getBoundingClientRect();
   pSize=rect.width;
-  var pH=Math.round(pSize*1.15);
-  pCanvas.width=pSize*dpr;pCanvas.height=pH*dpr;
-  pCanvas.style.height=pH+'px';
+  pCanvas.width=pSize*dpr;pCanvas.height=pSize*dpr;
   pCtx=pCanvas.getContext('2d');pCtx.scale(dpr,dpr);
   var wrap=pCanvas.parentElement;
   wrap.style.border='1px solid '+THEMES[currentTheme]['--border'];
@@ -875,8 +873,8 @@ function resizePlotCanvas(){
 function drawPlotCanvas(data){
   if(!pCtx||!pSize)return;
   var t=THEMES[currentTheme];
-  var ctx=pCtx,s=pSize,pH=Math.round(s*1.15),cx=s/2,cy=pH/2,R=s*0.31;
-  ctx.clearRect(0,0,s,pH);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,pH);
+  var ctx=pCtx,s=pSize,cx=s/2,cy=s/2,R=s*0.31;
+ctx.clearRect(0,0,s,s);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,s);
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=t['--card'];ctx.fill();
   ctx.strokeStyle=t['--border'];ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,pH);ctx.stroke();
@@ -915,8 +913,8 @@ function drawPlotCanvas(data){
 var corner=R*0.72; // 的の端より外側の角方向へ
 drawCorner(zLabel(z.tl), cx-corner, cy-corner, 'center');  // 左上
 drawCorner(zLabel(z.tr), cx+corner, cy-corner, 'center');  // 右上
-drawCorner(zLabel(z.bl), cx-corner, cy+corner, 'center');  // 左下
-drawCorner(zLabel(z.br), cx+corner, cy+corner, 'center');  // 右下
+drawCorner(zLabel(z.bl), pad, s-pad-13, 'left');
+drawCorner(zLabel(z.br), s-pad, s-pad-13, 'right');
   document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+(hits/data.length*100).toFixed(1)+'%';
 }
 
