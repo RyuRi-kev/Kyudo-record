@@ -997,7 +997,8 @@ function initStatsFilter(){
   document.getElementById('sf-reset').addEventListener('click',function(){statsFilter={type:'',dist:'',dojo:''};document.querySelectorAll('#sf-type .lf-chip,#sf-dist .lf-chip').forEach(function(c){c.classList.toggle('on',c.getAttribute('data-v')==='');});rebuildStatsDojoChips();renderStats();});
 }
 function applyListFilter(recs){return recs.filter(function(r){if(listFilter.type&&r.type!==listFilter.type)return false;if(listFilter.dist&&r.dist!==listFilter.dist)return false;if(listFilter.dojo&&r.dojoId!==listFilter.dojo)return false;if(listFilter.dateFrom&&r.date<listFilter.dateFrom)return false;if(listFilter.dateTo&&r.date>listFilter.dateTo)return false;if(listFilter.memo==='yes'&&!r.memo)return false;if(listFilter.memo==='no'&&r.memo)return false;return true;});}
-function initFilterBars(){bindFilterBar('#filter-bar .filter-btn',function(n){dailyFilter=n;renderCharts(applyStatsFilter());});}
+function initFilterBars(){bindFilterBar('#filter-bar .filter-btn',function(n){dailyFilter=n;renderStats();});}
+
 function bindFilterBar(sel,cb){var btns=document.querySelectorAll(sel);btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active');});this.classList.add('active');cb(parseInt(this.getAttribute('data-n')));});});}
 function applyStatsFilter(){return records.filter(function(r){if(statsFilter.type&&r.type!==statsFilter.type)return false;if(statsFilter.dist&&r.dist!==statsFilter.dist)return false;if(statsFilter.dojo&&r.dojoId!==statsFilter.dojo)return false;return true;});}
 function renderStats(){
