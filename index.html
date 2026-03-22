@@ -408,24 +408,24 @@ font-family:“BIZ UDGothic”,sans-serif;font-size:14px;font-weight:700;cursor:
     <div class="list-filter-row">
       <span class="list-filter-label">種別</span>
       <div class="list-filter-chips" id="lf-type">
-        <span class="lf-chip on" data-v="">すべて</span>
-        <span class="lf-chip" data-v="稽古">稽古</span>
-        <span class="lf-chip" data-v="大会">大会</span>
-        <span class="lf-chip" data-v="審査">審査</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
+        <button type="button" class="lf-chip" data-v="稽古">稽古</button>
+        <button type="button" class="lf-chip" data-v="大会">大会</button>
+        <button type="button" class="lf-chip" data-v="審査">審査</button>
       </div>
     </div>
     <div class="list-filter-row">
       <span class="list-filter-label">距離</span>
       <div class="list-filter-chips" id="lf-dist">
-        <span class="lf-chip on" data-v="">すべて</span>
-        <span class="lf-chip" data-v="近的（28m）">近的</span>
-        <span class="lf-chip" data-v="遠的（60m）">遠的</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
+        <button type="button" class="lf-chip" data-v="近的（28m）">近的</button>
+        <button type="button" class="lf-chip" data-v="遠的（60m）">遠的</button>
       </div>
     </div>
     <div class="list-filter-row">
       <span class="list-filter-label">道場</span>
       <div class="list-filter-chips lf-dojo-scroll" id="lf-dojo">
-        <span class="lf-chip on" data-v="">すべて</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
       </div>
     </div>
     <div class="list-filter-row">
@@ -439,9 +439,9 @@ font-family:“BIZ UDGothic”,sans-serif;font-size:14px;font-weight:700;cursor:
     <div class="list-filter-row">
       <span class="list-filter-label">メモ</span>
       <div class="list-filter-chips" id="lf-memo">
-        <span class="lf-chip on" data-v="">すべて</span>
-        <span class="lf-chip" data-v="yes">あり</span>
-        <span class="lf-chip" data-v="no">なし</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
+        <button type="button" class="lf-chip" data-v="yes">あり</button>
+        <button type="button" class="lf-chip" data-v="no">なし</button>
       </div>
     </div>
     <div class="list-filter-footer">
@@ -457,24 +457,24 @@ font-family:“BIZ UDGothic”,sans-serif;font-size:14px;font-weight:700;cursor:
     <div class="list-filter-row">
       <span class="list-filter-label">種別</span>
       <div class="list-filter-chips" id="sf-type">
-        <span class="lf-chip on" data-v="">すべて</span>
-        <span class="lf-chip" data-v="稽古">稽古</span>
-        <span class="lf-chip" data-v="大会">大会</span>
-        <span class="lf-chip" data-v="審査">審査</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
+        <button type="button" class="lf-chip" data-v="稽古">稽古</button>
+        <button type="button" class="lf-chip" data-v="大会">大会</button>
+        <button type="button" class="lf-chip" data-v="審査">審査</button>
       </div>
     </div>
     <div class="list-filter-row">
       <span class="list-filter-label">距離</span>
       <div class="list-filter-chips" id="sf-dist">
-        <span class="lf-chip on" data-v="">すべて</span>
-        <span class="lf-chip" data-v="近的（28m）">近的</span>
-        <span class="lf-chip" data-v="遠的（60m）">遠的</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
+        <button type="button" class="lf-chip" data-v="近的（28m）">近的</button>
+        <button type="button" class="lf-chip" data-v="遠的（60m）">遠的</button>
       </div>
     </div>
     <div class="list-filter-row">
       <span class="list-filter-label">道場</span>
       <div class="list-filter-chips lf-dojo-scroll" id="sf-dojo">
-        <span class="lf-chip on" data-v="">すべて</span>
+        <button type="button" class="lf-chip on" data-v="">すべて</button>
       </div>
     </div>
     <div class="list-filter-row">
@@ -666,9 +666,10 @@ function rebuildSelect(id,curVal,list){
 /* 記録タブ：道場チップ再構築 */
 function rebuildRecordDojoChips(){
   var wrap=document.getElementById('rc-dojo'),cur=selDojo;
-  wrap.innerHTML='<span class="rc-chip'+(cur===''?' on':'')+'" data-v="">\u672a\u9078\u629e</span>';
+  wrap.innerHTML='<button type="button" class="rc-chip'+(cur===''?' on':'')+'" data-v="">\u672a\u9078\u629e</button>';
   dojos.forEach(function(d){
-    var c=document.createElement('span');
+    var c=document.createElement('button');
+    c.type='button';
     c.className='rc-chip'+(cur===d.id?' on':'');
     c.setAttribute('data-v',d.id);
     c.textContent=d.name;
@@ -685,14 +686,14 @@ function rebuildRecordDojoChips(){
 
 function rebuildDojoChips(){
   var wrap=document.getElementById('lf-dojo'),cur=listFilter.dojo;
-  wrap.innerHTML='<span class="lf-chip'+(cur===''?' on':'')+'" data-v="">\u3059\u3079\u3066</span>';
-  dojos.forEach(function(d){var c=document.createElement('span');c.className='lf-chip'+(cur===d.id?' on':'');c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);});
+  wrap.innerHTML='<button type="button" class="lf-chip'+(cur===''?' on':'')+'" data-v="">\u3059\u3079\u3066</button>';
+  dojos.forEach(function(d){var c=document.createElement('button');c.type='button';c.className='lf-chip'+(cur===d.id?' on':'');c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);});
   wrap.querySelectorAll('.lf-chip').forEach(function(c){c.addEventListener('click',function(){wrap.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});this.classList.add('on');listFilter.dojo=this.getAttribute('data-v');renderList();});});
 }
 function rebuildStatsDojoChips(){
   var wrap=document.getElementById('sf-dojo');if(!wrap)return;var cur=statsFilter.dojo;
-  wrap.innerHTML='<span class="lf-chip'+(cur===''?' on':'')+'" data-v="">\u3059\u3079\u3066</span>';
-  dojos.forEach(function(d){var c=document.createElement('span');c.className='lf-chip'+(cur===d.id?' on':'');c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);});
+  wrap.innerHTML='<button type="button" class="lf-chip'+(cur===''?' on':'')+'" data-v="">\u3059\u3079\u3066</button>';
+  dojos.forEach(function(d){var c=document.createElement('button');c.type='button';c.className='lf-chip'+(cur===d.id?' on':'');c.setAttribute('data-v',d.id);c.textContent=d.name;wrap.appendChild(c);});
   wrap.querySelectorAll('.lf-chip').forEach(function(c){c.addEventListener('click',function(){wrap.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});this.classList.add('on');statsFilter.dojo=this.getAttribute('data-v');renderStats();});});
 }
 function renderDojoList(){
