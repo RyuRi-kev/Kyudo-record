@@ -725,8 +725,8 @@ function initUI(){
     // テーマボタン生成
   var BASE_URL='https://raw.githubusercontent.com/RyuRi-kev/Kyudo-record/main/';
     var themeMeta={
-    white:    {label:'白',     color:'#333333', img:null,        grad:'linear-gradient(135deg,#ffffff 0%,#e8e8e8 100%)'},
-    dark:     {label:'黒',     color:'#c8c8c8', img:null,        grad:'linear-gradient(135deg,#1a1a1a 0%,#2c2c2c 100%)'},
+    white:    {label:'白',     color:'#333333', img:null,        grad:'linear-gradient(135deg,#ffffff 0%,#e8e8e8 100%)', border:'inset 0 0 0 1px rgba(0,0,0,0.25)'},
+    dark:     {label:'黒',     color:'#c8c8c8', img:null,        grad:'linear-gradient(135deg,#1a1a1a 0%,#2c2c2c 100%)', border:'inset 0 0 0 1px rgba(255,255,255,0.4)'},
     sakura:   {label:'桜',     color:'#ffffff', img:BASE_URL+'image_sakura.jpg',   grad:null},
     bamboo:   {label:'竹',     color:'#ffffff', img:BASE_URL+'image_bamboo.jpg',   grad:null},
     wisteria: {label:'藤',     color:'#ffffff', img:BASE_URL+'image_wisteria.jpg', grad:null},
@@ -763,7 +763,7 @@ function initUI(){
       'transition:transform .15s ease,filter .15s ease',
       'position:relative',
       'z-index:0',
-      'box-shadow:inset 0 0 0 1px rgba(255,255,255,0.5)',
+      'box-shadow:'+(m.border||'inset 0 0 0 1px rgba(255,255,255,0.3)'),
     ].join(';');
     btn.innerHTML='<span>'+m.label+'</span>';
 
