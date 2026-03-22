@@ -909,10 +909,10 @@ ctx.clearRect(0,0,s,s);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,s);
     ctx.font='10px BIZ UDGothic,sans-serif';
     ctx.fillStyle=t['--text3'];ctx.textBaseline='top';ctx.fillText(lines[1],x,y);
   }
-  var pad=s*0.04;
-var corner=R*0.72; // 的の端より外側の角方向へ
-drawCorner(zLabel(z.tl), cx-corner, cy-corner, 'center');  // 左上
-drawCorner(zLabel(z.tr), cx+corner, cy-corner, 'center');  // 右上
+
+var pad=s*0.05;
+drawCorner(zLabel(z.tl), pad, pad+13, 'left');
+drawCorner(zLabel(z.tr), s-pad, pad+13, 'right');
 drawCorner(zLabel(z.bl), pad, s-pad-13, 'left');
 drawCorner(zLabel(z.br), s-pad, s-pad-13, 'right');
   document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+(hits/data.length*100).toFixed(1)+'%';
