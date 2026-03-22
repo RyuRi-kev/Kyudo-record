@@ -287,24 +287,35 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
   <div class="content">
 
 <div class="section active" id="section-record">
-      <div class="field">
-      <span class="field-label" id="date-label">稽古日</span>
-      <input type="date" id="input-date">
-    </div>
-    <div class="field">
-      <span class="field-label">距離 / 種別 / 道場</span>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div class="chip-group">
-          <span class="chip on" data-v="近的（28m）">近的 28m</span>
-          <span class="chip" data-v="遠的（60m）">遠的 60m</span>
+          <div class="list-filter-wrap" style="margin-bottom:0;box-shadow:none;border:none;padding:0;">
+      <div class="list-filter-row">
+        <span class="list-filter-label">種別</span>
+        <div class="list-filter-chips" id="rec-type-chips">
+          <span class="lf-chip on" data-v="稽古">稽古</span>
+          <span class="lf-chip" data-v="大会">大会</span>
+          <span class="lf-chip" data-v="審査">審査</span>
         </div>
-        <div class="type-chips">
-          <span class="type-chip on" data-v="稽古">稽古</span>
-          <span class="type-chip" data-v="大会">大会</span>
-          <span class="type-chip" data-v="審査">審査</span>
-        </div>
-        <select id="input-dojo"><option value="">（未選択）</option></select>
       </div>
+      <div class="list-filter-row">
+        <span class="list-filter-label">距離</span>
+        <div class="list-filter-chips" id="rec-dist-chips">
+          <span class="lf-chip on" data-v="近的（28m）">近的</span>
+          <span class="lf-chip" data-v="遠的（60m）">遠的</span>
+        </div>
+      </div>
+      <div class="list-filter-row">
+        <span class="list-filter-label">道場</span>
+        <div class="list-filter-chips lf-dojo-scroll" id="rec-dojo-chips">
+          <span class="lf-chip on" data-v="">未選択</span>
+        </div>
+      </div>
+      <div class="list-filter-row">
+        <span class="list-filter-label" id="date-label">日付</span>
+        <div class="list-filter-date-row">
+          <input type="date" id="input-date" class="lf-date-input" style="flex:1;">
+        </div>
+      </div>
+    </div>
     </div>
     <div class="divider"></div>
     <div class="field">
@@ -675,11 +686,12 @@ function initHeader(){
   document.getElementById('input-date').valueAsDate=n;
 }
 function initUI(){
-  var tc=document.querySelectorAll('.type-chip');
+    var tcWrap=document.getElementById('rec-type-chips');
+  var tc=tcWrap.querySelectorAll('.lf-chip');
   tc.forEach(function(c){c.addEventListener('click',function(){tc.forEach(function(x){x.classList.remove('on');});this.classList.add('on');selType=this.getAttribute('data-v');document.getElementById('date-label').textContent=dateLabelMap[selType]||'\u65e5\u4ed8';});});
-  var dc=document.querySelectorAll('.chip');
+  var dcWrap=document.getElementById('rec-dist-chips');
+  var dc=dcWrap.querySelectorAll('.lf-chip');
   dc.forEach(function(c){c.addEventListener('click',function(){dc.forEach(function(x){x.classList.remove('on');});this.classList.add('on');selDist=this.getAttribute('data-v');});});
-  document.getElementById('input-dojo').addEventListener('change',function(){selDojo=this.value;});
   document.getElementById('btn-minus').addEventListener('click',function(){changeCount(-2);});
   document.getElementById('btn-plus').addEventListener('click',function(){changeCount(2);});
   document.getElementById('btn-save').addEventListener('click',saveRecord);
