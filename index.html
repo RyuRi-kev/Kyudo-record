@@ -784,8 +784,19 @@ function setInputMode(mode){
   btn.classList.toggle('active',mode==='yazo');btn.textContent=mode==='yazo'?'矢所モード ON':'矢所モード';
   document.getElementById('grid-mode').classList.toggle('mode-hidden',mode!=='grid');
   document.getElementById('yazo-mode').classList.toggle('mode-hidden',mode!=='yazo');
-  if(mode==='yazo'){requestAnimationFrame(function(){requestAnimationFrame(function(){resizeYazoCanvas();drawTargetCanvas();});});}
+  if(mode==='yazo'){
+    requestAnimationFrame(function(){requestAnimationFrame(function(){resizeYazoCanvas();drawTargetCanvas();});});
+  }
+  if(mode==='grid'&&yazoArrows.length>0){
+    var newCount=yazoArrows.length;
+    arrowCount=newCount;
+    hitStates=yazoArrows.map(function(a){return a.hit;});
+    while(hitStates.length<arrowCount)hitStates.push(false);
+    document.getElementById('count-disp').textContent=arrowCount+'射';
+    initGrid();
+  }
 }
+
 function addDojo(){
   var inp=document.getElementById('dojo-name-input'),name=inp.value.trim();
   if(!name){toast('\u5f13\u9053\u5834\u540d\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
