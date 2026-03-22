@@ -1008,12 +1008,9 @@ function renderStats(){
   var th=0,ta=0;filtered.forEach(function(r){th+=r.hits;ta+=r.total;});
   grid.innerHTML=sc((th/ta*100).toFixed(1)+'%','Average Rate')+sc(filtered.length,'Sessions')+sc(th,'Total Hits')+sc(ta,'Total Arrows');
   mainIds.forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=id==='filter-bar'?'flex':'block';});
-  var yazoData=[];filtered.forEach(function(r){(r.arrows||[]).forEach(function(a){if(a&&a.x!=null)yazoData.push(a);});});
-  var card=document.getElementById('yazo-plot-card'),lblYazo=document.getElementById('lbl-yazo-plot');
-  if(yazoData.length){card.style.display='block';if(lblYazo)lblYazo.style.display='block';setTimeout(function(){resizePlotCanvas();drawPlotCanvas(yazoData);},50);}
-  else{card.style.display='none';if(lblYazo)lblYazo.style.display='none';}
   renderCharts(filtered);
 }
+
 function sc(v,l){return "<div class='stat-card'><div class='stat-val'>"+v+"</div><div class='stat-lbl'>"+l+"</div></div>";}
 function buildDaily(recs,n){
   var by={};recs.forEach(function(r){if(!by[r.date])by[r.date]={hits:0,total:0};by[r.date].hits+=r.hits;by[r.date].total+=r.total;});
