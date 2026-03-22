@@ -314,6 +314,7 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
         <span class="list-filter-label" id="date-label">日付</span>
         <div class="list-filter-date-row">
           <input type="date" id="input-date" class="lf-date-input" style="flex:1;">
+          <button id="btn-today" style="flex-shrink:0;padding:0 12px;height:42px;background:var(--crimson);border:none;border-radius:8px;color:var(--card);font-family:'BIZ UDGothic',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">今日</button>
         </div>
       </div>
     </div>
@@ -696,6 +697,21 @@ function initUI(){
   var dcWrap=document.getElementById('rec-dist-chips');
   var dc=dcWrap.querySelectorAll('.lf-chip');
   dc.forEach(function(c){c.addEventListener('click',function(){dc.forEach(function(x){x.classList.remove('on');});this.classList.add('on');selDist=this.getAttribute('data-v');});});
+  function updateTodayBtn(){
+    var today=new Date(),todayStr=today.getFullYear()+'-'+pad2(today.getMonth()+1)+'-'+pad2(today.getDate());
+    var btn=document.getElementById('btn-today');
+    var isToday=document.getElementById('input-date').value===todayStr;
+    btn.disabled=isToday;
+    btn.style.opacity=isToday?'0.35':'1';
+    btn.style.cursor=isToday?'not-allowed':'pointer';
+  }
+  document.getElementById('btn-today').addEventListener('click',function(){
+    var today=new Date();
+    document.getElementById('input-date').valueAsDate=today;
+    updateTodayBtn();
+  });
+  document.getElementById('input-date').addEventListener('change',function(){updateTodayBtn();});
+  updateTodayBtn();
   document.getElementById('btn-minus').addEventListener('click',function(){changeCount(-2);});
   document.getElementById('btn-plus').addEventListener('click',function(){changeCount(2);});
   document.getElementById('btn-save').addEventListener('click',saveRecord);
