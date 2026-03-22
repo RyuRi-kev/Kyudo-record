@@ -851,6 +851,10 @@ function initPlotCanvas(){pCanvas=document.getElementById('plot-canvas');pCtx=pC
 function resizePlotCanvas(){
   var dpr=window.devicePixelRatio||1,rect=pCanvas.parentElement.getBoundingClientRect();
   pSize=rect.width;pCanvas.width=pSize*dpr;pCanvas.height=pSize*dpr;pCtx=pCanvas.getContext('2d');pCtx.scale(dpr,dpr);
+  var wrap=pCanvas.parentElement;
+  wrap.style.border='1px solid '+THEMES[currentTheme]['--border'];
+  wrap.style.borderRadius='12px';
+  wrap.style.overflow='hidden';
 }
 function drawPlotCanvas(data){
   if(!pCtx||!pSize)return;
