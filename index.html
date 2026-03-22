@@ -454,6 +454,14 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
         <span class="lf-chip on" data-v="">すべて</span>
       </div>
     </div>
+    <div class="list-filter-row">
+      <span class="list-filter-label">日付</span>
+      <div class="list-filter-date-row">
+        <input type="date" id="sf-date-from" class="lf-date-input">
+        <span class="lf-date-sep">-</span>
+        <input type="date" id="sf-date-to" class="lf-date-input">
+      </div>
+    </div>
     <div class="list-filter-footer" style="border-top:none;padding-top:0;margin-top:4px">
       <span></span>
       <button class="lf-reset-btn" id="sf-reset">リセット</button>
@@ -461,12 +469,7 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
   </div>
   <div class="stats-grid" id="stats-grid"></div>
   <div class="chart-section-label">日別</div>
-  <div class="filter-bar" id="filter-bar">
-    <button class="filter-btn active" data-n="10">直近10日</button>
-    <button class="filter-btn" data-n="20">直近20日</button>
-    <button class="filter-btn" data-n="30">直近30日</button>
-    <button class="filter-btn" data-n="0">全期間</button>
-  </div>
+  <div class="filter-bar" id="filter-bar" style="display:none"></div>
   <div class="chart-card" id="cc1" style="display:none"><div class="chart-heading">的中率の推移（日別）</div><canvas id="cr"></canvas></div>
   <div class="chart-card" id="cc2" style="display:none"><div class="chart-heading">的中数 / 射数（日別）</div><div class="vbullet-legend"><div class="vbullet-legend-item"><span class="vlegend-swatch total"></span>射数</div><div class="vbullet-legend-item"><span class="vlegend-swatch hit"></span>的中数</div></div><div class="vbullet-chart" id="ch"><div class="vbullet-grid" id="ch-grid"></div></div></div>
   <div class="chart-section-label" id="lbl-monthly" style="display:none">月別（直近12ヶ月）</div>
@@ -564,7 +567,7 @@ var records=[],dojos=[],hitStates=[];
 var selDist='\u8fd1\u7684\uff0828m\uff09',selType='\u7a3d\u53e4',selDojo='',arrowCount=4;
 var calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calDojoId='';
 var dailyFilter=10;
-var statsFilter={type:'',dist:'',dojo:''};
+var statsFilter={type:'',dist:'',dojo:'',dateFrom:'',dateTo:''};
 var listFilter={type:'',dist:'',dojo:'',dateFrom:'',dateTo:'',memo:''};
 var pendingDelId=null,pendingDelFrom=null,pendingImport=null;
 var charts={};
@@ -1063,21 +1066,29 @@ function initListFilter(){
 function initStatsFilter(){
   function bindGrp(gid,key){var w=document.getElementById(gid);if(!w)return;w.querySelectorAll('.lf-chip').forEach(function(c){c.addEventListener('click',function(){w.querySelectorAll('.lf-chip').forEach(function(x){x.classList.remove('on');});this.classList.add('on');statsFilter[key]=this.getAttribute('data-v');renderStats();});});}
   bindGrp('sf-type','type');bindGrp('sf-dist','dist');
-  document.getElementById('sf-reset').addEventListener('click',function(){statsFilter={type:'',dist:'',dojo:''};document.querySelectorAll('#sf-type .lf-chip,#sf-dist .lf-chip').forEach(function(c){c.classList.toggle('on',c.getAttribute('data-v')==='');});rebuildStatsDojoChips();renderStats();});
+  document.getElementById('sf-date-from').addEventListener('change',function(){statsFilter.dateFrom=this.value;renderStats();});
+  document.getElementById('sf-date-to').addEventListener('change',function(){statsFilter.dateTo=this.value;renderStats();});
+  document.getElementById('sf-reset').addEventListener('click',function(){
+    statsFilter={type:'',dist:'',dojo:'',dateFrom:'',dateTo:''};
+    document.getElementById('sf-date-from').value='';
+    document.getElementById('sf-date-to').value='';
+    document.querySelectorAll('#sf-type .lf-chip,#sf-dist .lf-chip').forEach(function(c){c.classList.toggle('on',c.getAttribute('data-v')==='');});
+    rebuildStatsDojoChips();renderStats();
+  });
 }
 function applyListFilter(recs){return recs.filter(function(r){if(listFilter.type&&r.type!==listFilter.type)return false;if(listFilter.dist&&r.dist!==listFilter.dist)return false;if(listFilter.dojo&&r.dojoId!==listFilter.dojo)return false;if(listFilter.dateFrom&&r.date<listFilter.dateFrom)return false;if(listFilter.dateTo&&r.date>listFilter.dateTo)return false;if(listFilter.memo==='yes'&&!r.memo)return false;if(listFilter.memo==='no'&&r.memo)return false;return true;});}
 function initFilterBars(){bindFilterBar('#filter-bar .filter-btn',function(n){dailyFilter=n;renderStats();});}
 
 function bindFilterBar(sel,cb){var btns=document.querySelectorAll(sel);btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.classList.remove('active');});this.classList.add('active');cb(parseInt(this.getAttribute('data-n')));});});}
-function applyStatsFilter(){return records.filter(function(r){if(statsFilter.type&&r.type!==statsFilter.type)return false;if(statsFilter.dist&&r.dist!==statsFilter.dist)return false;if(statsFilter.dojo&&r.dojoId!==statsFilter.dojo)return false;return true;});}
+function applyStatsFilter(){return records.filter(function(r){if(statsFilter.type&&r.type!==statsFilter.type)return false;if(statsFilter.dist&&r.dist!==statsFilter.dist)return false;if(statsFilter.dojo&&r.dojoId!==statsFilter.dojo)return false;if(statsFilter.dateFrom&&r.date<statsFilter.dateFrom)return false;if(statsFilter.dateTo&&r.date>statsFilter.dateTo)return false;return true;});}
 function renderStats(){
   var grid=document.getElementById('stats-grid');
-  var mainIds=['cc1','cc2','cc3','cc4','cc5','cc6','lbl-monthly','lbl-yearly','filter-bar','lbl-yazo-plot'];
+  var mainIds=['cc1','cc2','cc3','cc4','cc5','cc6','lbl-monthly','lbl-yearly','lbl-yazo-plot'];
   var filtered=applyStatsFilter();
   if(!filtered.length){grid.innerHTML=sc('-','Average Rate')+sc('-','Sessions')+sc('-','Total Hits')+sc('-','Total Arrows');mainIds.forEach(function(id){var e=document.getElementById(id);if(e)e.style.display='none';});document.getElementById('yazo-plot-card').style.display='none';return;}
   var th=0,ta=0;filtered.forEach(function(r){th+=r.hits;ta+=r.total;});
   grid.innerHTML=sc((th/ta*100).toFixed(1)+'%','Average Rate')+sc(filtered.length,'Sessions')+sc(th,'Total Hits')+sc(ta,'Total Arrows');
-  mainIds.forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=id==='filter-bar'?'flex':'block';});
+  mainIds.forEach(function(id){var e=document.getElementById(id);if(e)e.style.display='block';});
   renderCharts(filtered);
 }
 
@@ -1105,21 +1116,11 @@ function buildYearly(recs){
 function renderCharts(recs){
   if(!recs)recs=records;
   destroyCharts(['cr','ch','cr-m','ch-m','cr-y','ch-y']);
-  mkLine('cr',buildDaily(recs,dailyFilter));mkBar('ch',buildDaily(recs,dailyFilter),'ch-grid');
+  mkLine('cr',buildDaily(recs,0));mkBar('ch',buildDaily(recs,0),'ch-grid');
   mkLine('cr-m',buildMonthly(recs));mkBar('ch-m',buildMonthly(recs),'chm-grid');
   mkLine('cr-y',buildYearly(recs));mkBar('ch-y',buildYearly(recs),'chy-grid');
   var yazoData=[];
-  if(dailyFilter===0){
-    recs.forEach(function(r){(r.arrows||[]).forEach(function(a){if(a&&a.x!=null)yazoData.push(a);});});
-  } else {
-    var by={};recs.forEach(function(r){if(!by[r.date])by[r.date]=[];(r.arrows||[]).forEach(function(a){if(a&&a.x!=null)by[r.date].push(a);});});
-    var keys=Object.keys(by).sort();if(keys.length>dailyFilter)keys=keys.slice(keys.length-dailyFilter);
-    keys.forEach(function(k){yazoData=yazoData.concat(by[k]);});
-  }
-  var card=document.getElementById('yazo-plot-card'),lblYazo=document.getElementById('lbl-yazo-plot');
-  if(yazoData.length){card.style.display='block';if(lblYazo)lblYazo.style.display='block';setTimeout(function(){resizePlotCanvas();drawPlotCanvas(yazoData);},50);}
-  else{card.style.display='none';if(lblYazo)lblYazo.style.display='none';}
-}
+  recs.forEach(function(r){(r.arrows||[]).forEach(function(a){if(a&&a.x!=null)yazoData.push(a);});});
 
 function destroyCharts(ids){ids.forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}else{var el=document.getElementById(id);if(el&&el.classList.contains('vbullet-chart')){el.querySelectorAll('.vbullet-col').forEach(function(c){c.remove();});var g=el.querySelector('.vbullet-grid');if(g)g.innerHTML=';'}}});}
 function mkLine(id,data){
