@@ -172,7 +172,7 @@ font-family:"BIZ UDGothic",sans-serif;font-size:16px;font-weight:700;cursor:poin
 .yazo-plot-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 1px 6px rgba(255,255,255,.04)}
 .yazo-plot-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .yazo-plot-summary{font-size:11px;color:var(--text3)}
-.plot-wrap{width:100%;aspect-ratio:1}
+.plot-wrap{width:100%;}
 #plot-canvas{width:100%;height:100%;display:block}
 .list-filter-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 6px rgba(255,255,255,.04)}
 .list-filter-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -861,25 +861,69 @@ function drawTargetCanvas(){
 function initPlotCanvas(){pCanvas=document.getElementById('plot-canvas');pCtx=pCanvas.getContext('2d');}
 function resizePlotCanvas(){
   var dpr=window.devicePixelRatio||1,rect=pCanvas.parentElement.getBoundingClientRect();
-  pSize=rect.width;pCanvas.width=pSize*dpr;pCanvas.height=pSize*dpr;pCtx=pCanvas.getContext('2d');pCtx.scale(dpr,dpr);
+  pSize=rect.width;
+  var pH=Math.round(pSize*1.4);
+  pCanvas.width=pSize*dpr;pCanvas.height=pH*dpr;
+  pCanvas.style.height=pH+'px';
+  pCtx=pCanvas.getContext('2d');pCtx.scale(dpr,dpr);
   var wrap=pCanvas.parentElement;
   wrap.style.border='1px solid '+THEMES[currentTheme]['--border'];
   wrap.style.borderRadius='12px';
   wrap.style.overflow='hidden';
 }
+
 function drawPlotCanvas(data){
   if(!pCtx||!pSize)return;
   var t=THEMES[currentTheme];
-  var ctx=pCtx,s=pSize,cx=s/2,cy=s/2,R=s*0.31;
-  ctx.clearRect(0,0,s,s);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,s);
+  var ctx=pCtx,s=pSize,pH=Math.round(s*1.4);
+  var margin=s*0.18; // 上下左右の余白幅
+  var cx=s/2,cy=pH/2,R=s*0.31;
+  ctx.clearRect(0,0,s,pH);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,pH);
+  // 的
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=t['--card'];ctx.fill();
-  ctx.strokeStyle=t['--border'];ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,s);ctx.stroke();
+  ctx.strokeStyle=t['--border'];ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,pH);ctx.stroke();
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=t['--sakura-d'];ctx.lineWidth=1.5;ctx.stroke();
-  if(!data.length){ctx.fillStyle=t['--text3'];ctx.font='12px BIZ UDGothic,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);document.getElementById('plot-summary').textContent='-';return;}
+  if(!data.length){
+    ctx.fillStyle=t['--text3'];ctx.font='12px BIZ UDGothic,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);
+    document.getElementById('plot-summary').textContent='-';return;
+  }
+  // 矢のプロット
   var hits=0;
-  data.forEach(function(a){var px=cx+a.x*R,py=cy+a.y*R;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();if(a.hit)hits++;});
+  data.forEach(function(a){
+    var px=cx+a.x*R,py=cy+a.y*R;
+    ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+    ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();
+    if(a.hit)hits++;
+  });
+  // 4方向集計
+  var zones={up:{h:0,t:0},down:{h:0,t:0},left:{h:0,t:0},right:{h:0,t:0}};
+  data.forEach(function(a){
+    if(a.y<0){zones.up.t++;if(a.hit)zones.up.h++;}
+    else{zones.down.t++;if(a.hit)zones.down.h++;}
+    if(a.x<0){zones.left.t++;if(a.hit)zones.left.h++;}
+    else{zones.right.t++;if(a.hit)zones.right.h++;}
+  });
+  function zoneText(z){
+    if(!z.t)return['--',''];
+    return[z.h+'/'+z.t+'射',(z.h/z.t*100).toFixed(0)+'%'];
+  }
+  function drawZone(lines,x,y,align){
+    ctx.textAlign=align;ctx.textBaseline='middle';
+    ctx.font='bold 13px BIZ UDGothic,sans-serif';
+    ctx.fillStyle=t['--crimson'];ctx.fillText(lines[1],x,y);
+    ctx.font='11px BIZ UDGothic,sans-serif';
+    ctx.fillStyle=t['--text3'];ctx.fillText(lines[0],x,y+17);
+  }
+  var up=zoneText(zones.up),dn=zoneText(zones.down),lf=zoneText(zones.left),rt=zoneText(zones.right);
+  drawZone(up, cx, cy-R-margin*0.55, 'center');   // 上
+  drawZone(dn, cx, cy+R+margin*0.55, 'center');   // 下
+  drawZone(lf, margin*0.45, cy, 'center');         // 左
+  drawZone(rt, s-margin*0.45, cy, 'center');       // 右
   document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+(hits/data.length*100).toFixed(1)+'%';
 }
+
 function initModalPlotCanvas(){mpCanvas=document.getElementById('modal-plot-canvas');mpCtx=mpCanvas.getContext('2d');}
 function drawModalPlot(arrows){
   var wrap=document.getElementById('modal-plot-wrap'),yazoArr=arrows.filter(function(a){return a&&a.x!=null;});
