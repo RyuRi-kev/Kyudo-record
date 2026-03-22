@@ -862,7 +862,7 @@ function initPlotCanvas(){pCanvas=document.getElementById('plot-canvas');pCtx=pC
 function resizePlotCanvas(){
   var dpr=window.devicePixelRatio||1,rect=pCanvas.parentElement.getBoundingClientRect();
   pSize=rect.width;
-  var pH=Math.round(pSize*1.4);
+  var pH=Math.round(pSize*1.15);
   pCanvas.width=pSize*dpr;pCanvas.height=pH*dpr;
   pCanvas.style.height=pH+'px';
   pCtx=pCanvas.getContext('2d');pCtx.scale(dpr,dpr);
@@ -875,21 +875,18 @@ function resizePlotCanvas(){
 function drawPlotCanvas(data){
   if(!pCtx||!pSize)return;
   var t=THEMES[currentTheme];
-  var ctx=pCtx,s=pSize,pH=Math.round(s*1.4);
-  var margin=s*0.18; // 上下左右の余白幅
-  var cx=s/2,cy=pH/2,R=s*0.31;
+  var ctx=pCtx,s=pSize,pH=Math.round(s*1.15),cx=s/2,cy=pH/2,R=s*0.27;
   ctx.clearRect(0,0,s,pH);ctx.fillStyle=t['--chip-bg'];ctx.fillRect(0,0,s,pH);
-  // 的
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=t['--card'];ctx.fill();
   ctx.strokeStyle=t['--border'];ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(s,cy);ctx.moveTo(cx,0);ctx.lineTo(cx,pH);ctx.stroke();
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=t['--sakura-d'];ctx.lineWidth=1.5;ctx.stroke();
   if(!data.length){
     ctx.fillStyle=t['--text3'];ctx.font='12px BIZ UDGothic,sans-serif';
-    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('矢所データなし',cx,cy);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('矢所データなし',cx,cy);
     document.getElementById('plot-summary').textContent='-';return;
   }
-  // 矢のプロット
   var hits=0;
   data.forEach(function(a){
     var px=cx+a.x*R,py=cy+a.y*R;
@@ -897,30 +894,28 @@ function drawPlotCanvas(data){
     ctx.fillStyle=a.hit?HIT_COLOR:MISS_COLOR;ctx.fill();
     if(a.hit)hits++;
   });
-  // 4方向集計
-  var zones={up:{h:0,t:0},down:{h:0,t:0},left:{h:0,t:0},right:{h:0,t:0}};
+  // 4象限で重複なく集計
+  var z={tl:{h:0,t:0},tr:{h:0,t:0},bl:{h:0,t:0},br:{h:0,t:0}};
   data.forEach(function(a){
-    if(a.y<0){zones.up.t++;if(a.hit)zones.up.h++;}
-    else{zones.down.t++;if(a.hit)zones.down.h++;}
-    if(a.x<0){zones.left.t++;if(a.hit)zones.left.h++;}
-    else{zones.right.t++;if(a.hit)zones.right.h++;}
+    var key=(a.y<0?'t':'b')+(a.x<0?'l':'r');
+    z[key].t++;if(a.hit)z[key].h++;
   });
-  function zoneText(z){
-    if(!z.t)return['--',''];
-    return[z.h+'/'+z.t+'射',(z.h/z.t*100).toFixed(0)+'%'];
+  function zLabel(q){
+    if(!q.t)return['--',''];
+    return[(q.h/q.t*100).toFixed(0)+'%',q.h+'/'+q.t+'射'];
   }
-  function drawZone(lines,x,y,align){
-    ctx.textAlign=align;ctx.textBaseline='middle';
+  function drawCorner(lines,x,y,align){
+    ctx.textAlign=align;
     ctx.font='bold 13px BIZ UDGothic,sans-serif';
-    ctx.fillStyle=t['--crimson'];ctx.fillText(lines[1],x,y);
-    ctx.font='11px BIZ UDGothic,sans-serif';
-    ctx.fillStyle=t['--text3'];ctx.fillText(lines[0],x,y+17);
+    ctx.fillStyle=t['--crimson'];ctx.textBaseline='bottom';ctx.fillText(lines[0],x,y);
+    ctx.font='10px BIZ UDGothic,sans-serif';
+    ctx.fillStyle=t['--text3'];ctx.textBaseline='top';ctx.fillText(lines[1],x,y);
   }
-  var up=zoneText(zones.up),dn=zoneText(zones.down),lf=zoneText(zones.left),rt=zoneText(zones.right);
-  drawZone(up, cx, cy-R-margin*0.55, 'center');   // 上
-  drawZone(dn, cx, cy+R+margin*0.55, 'center');   // 下
-  drawZone(lf, margin*0.45, cy, 'center');         // 左
-  drawZone(rt, s-margin*0.45, cy, 'center');       // 右
+  var pad=s*0.04;
+  drawCorner(zLabel(z.tl), pad, cy-pad, 'left');       // 左上
+  drawCorner(zLabel(z.tr), s-pad, cy-pad, 'right');     // 右上
+  drawCorner(zLabel(z.bl), pad, cy+pad, 'left');        // 左下
+  drawCorner(zLabel(z.br), s-pad, cy+pad, 'right');     // 右下
   document.getElementById('plot-summary').textContent=data.length+'射 '+hits+'中 '+(hits/data.length*100).toFixed(1)+'%';
 }
 
