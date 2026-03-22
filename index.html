@@ -763,7 +763,9 @@ function initUI(){
       'transition:transform .15s ease,filter .15s ease',
       'position:relative',
       'z-index:0',
-      'box-shadow:'+(m.border||'inset 0 0 0 1px rgba(255,255,255,0.3)'),
+      'border:none',
+      'outline:'+(m.border||'1px solid rgba(255,255,255,0.3)'),
+      'outline-offset:-1px',
     ].join(';');
     btn.innerHTML='<span>'+m.label+'</span>';
 
