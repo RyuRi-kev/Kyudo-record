@@ -789,7 +789,7 @@ function updateThemeBtns(){
 
 function setInputMode(mode){
   inputMode=mode;var btn=document.getElementById('mode-yazo-btn');
-  btn.classList.toggle('active',mode==='yazo');btn.textContent=mode==='yazo'?'矢所モード ON':'矢所モード';
+btn.classList.toggle('active',mode==='yazo');btn.textContent='矢所モード';
   document.getElementById('grid-mode').classList.toggle('mode-hidden',mode!=='grid');
   document.getElementById('yazo-mode').classList.toggle('mode-hidden',mode!=='yazo');
   if(mode==='yazo'){
