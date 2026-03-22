@@ -260,6 +260,7 @@ font-family:"BIZ UDGothic",sans-serif;font-size:14px;font-weight:700;cursor:poin
 ::-webkit-scrollbar-thumb{background:var(--sakura-l);border-radius:2px}
 #cr,#ch,#cr-m,#ch-m,#cr-y,#ch-y{width:100%!important}
 #import-file-input{display:none}
+#theme-btns{display:flex;flex-direction:column;}
 </style>
 </head>
 <body>
@@ -716,22 +717,44 @@ function initUI(){
   document.getElementById('btn-undo').addEventListener('click',function(){if(!yazoArrows.length)return;yazoArrows.pop();updateYazo();});
   document.getElementById('btn-yazo-reset').addEventListener('click',function(){yazoArrows=[];updateYazo();});}
     // テーマボタン生成
+  var BASE_URL='https://raw.githubusercontent.com/RyuRi-kev/Kyudo-record/main/';
   var themeMeta={
-    dark:     {label:'黒',     color:'#c8c8c8', bg:'#111111'},
-    sakura:   {label:'桜',         color:'#B83258', bg:'#FDF0F2'},
-    bamboo:   {label:'竹',         color:'#3D6B4F', bg:'#F2F7EF'},
-    wisteria: {label:'藤',         color:'#9B6BB5', bg:'#F5F0F8'},
-    sky:      {label:'空',         color:'#1A3A6B', bg:'#F0F5F8'},
-    maple:    {label:'楓',       color:'#C03828', bg:'#FDF5EE'},
-    white:    {label:'白',   color:'#1a1a1a', bg:'#ffffff'},
+    dark:     {label:'黒',     color:'#c8c8c8', img:null,        grad:'linear-gradient(135deg,#1a1a1a 0%,#2c2c2c 100%)'},
+    sakura:   {label:'桜',     color:'#ffffff', img:BASE_URL+'image_sakura.jpg',   grad:null},
+    bamboo:   {label:'竹',     color:'#ffffff', img:BASE_URL+'image_bamboo.jpg',   grad:null},
+    wisteria: {label:'藤',     color:'#ffffff', img:BASE_URL+'image_wisteria.jpg', grad:null},
+    sky:      {label:'空',     color:'#ffffff', img:BASE_URL+'image_sky.jpg',      grad:null},
+    maple:    {label:'楓',     color:'#ffffff', img:BASE_URL+'image_maple.jpg',    grad:null},
+    white:    {label:'白',     color:'#333333', img:null,        grad:'linear-gradient(135deg,#ffffff 0%,#e8e8e8 100%)'},
   };
   var tbWrap=document.getElementById('theme-btns');
   Object.keys(themeMeta).forEach(function(key){
     var m=themeMeta[key];
     var btn=document.createElement('button');
     btn.setAttribute('data-theme',key);
-    btn.style.cssText='flex:1;min-width:72px;padding:10px 4px;border-radius:8px;border:2px solid transparent;background:'+m.bg+';color:'+m.color+';font-family:"BIZ UDGothic",sans-serif;font-size:12px;font-weight:700;cursor:pointer;';
-    btn.textContent=m.label;
+    var bg=m.img
+      ? 'url('+m.img+') center/cover no-repeat'
+      : m.grad;
+    btn.style.cssText=[
+      'display:flex',
+      'align-items:center',
+      'justify-content:space-between',
+      'width:100%',
+      'padding:0 16px',
+      'height:56px',
+      'border-radius:10px',
+      'border:2px solid transparent',
+      'background:'+bg,
+      'color:'+m.color,
+      'font-family:"BIZ UDGothic",sans-serif',
+      'font-size:14px',
+      'font-weight:700',
+      'cursor:pointer',
+      'text-shadow:0 1px 4px rgba(0,0,0,0.55)',
+      'margin-bottom:8px',
+      'box-sizing:border-box',
+    ].join(';');
+    btn.innerHTML='<span>'+m.label+'</span><span class="theme-check" style="font-size:18px;opacity:0">✓</span>';
     btn.addEventListener('click',function(){
       applyTheme(this.getAttribute('data-theme'));
       updateThemeBtns();
@@ -743,11 +766,12 @@ function updateThemeBtns(){
   tbWrap.querySelectorAll('button').forEach(function(b){
     var key=b.getAttribute('data-theme');
     var active=key===currentTheme;
-    b.style.borderColor=active?themeMeta[key].color:'transparent';
-    b.style.opacity=active?'1':'0.65';
-    b.style.fontWeight=active?'700':'400';
+    b.style.borderColor=active?'rgba(255,255,255,0.9)':'transparent';
+    b.style.opacity=active?'1':'0.75';
+    b.querySelector('.theme-check').style.opacity=active?'1':'0';
   });
 }
+
 function setInputMode(mode){
   inputMode=mode;var btn=document.getElementById('mode-yazo-btn');
   btn.classList.toggle('active',mode==='yazo');btn.textContent=mode==='yazo'?'矢所モード ON':'矢所モード';
